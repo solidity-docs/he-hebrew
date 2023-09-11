@@ -15,5 +15,4 @@
 | English        | Hebrew     |
 | -------------- | ---------- |
 | Solidity       | סולידיטי   |
-| Glossary       | אוצר מילים |
 | Smart Contract | חוזה חכם   |
