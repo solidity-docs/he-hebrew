@@ -10,9 +10,9 @@
 
 מנהלים:
 
-- @ChefAharoni
-- @davidBar-On
+- [@ChefAharoni](https://github.com/ChefAharoni)
+- [@davidBar-On](https://github.com/davidBar-On)
 
 ## תרומה לתרגום
 
-לתרומה לתרגום המסמך, ניתן לבחור עמוד שלא נמצא בתרגום מתוך הרשימה הנמצאת ב[progress-checklist](maintainers/progress-checklist.md),להוסיף את שמכם לרשימת ליד העמוד, לפתוח פול ריקווסט עם התרגום ולסמן את העמוד כמושלם ברשימה.
+לתרומה לתרגום המסמך, ניתן לבחור עמוד שלא נמצא בתרגום מתוך הרשימה הנמצאת ב[Progress Checklist](maintainers/progress-checklist.md),להוסיף את שמכם לרשימת ליד העמוד, לפתוח פול ריקווסט עם התרגום ולסמן את העמוד כמושלם ברשימה.

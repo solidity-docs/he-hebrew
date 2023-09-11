@@ -4,8 +4,8 @@ This document helps to track the state of your translation. Please copy it as an
 
 ### Maintainer List
 
-@ChefAharoni
-@davidBar-On
+[@ChefAharoni](https://github.com/) <br>
+[@davidBar-On](https://github.com/davidBar-On)
 
 ### Information for New Translators
 
@@ -35,7 +35,8 @@ These pages need to be translated before the translation will be added as a new 
 
 #### Basics
 
-- [ ] index (@ChefAharoni)
+- [ ] readme [@ChefAharoni](https://github.com/)
+- [ ] index [@ChefAharoni](https://github.com/)
 - [ ] intro-to-smart-contracts
 - [ ] installing-solidity
 - [ ] solidity-by-example
