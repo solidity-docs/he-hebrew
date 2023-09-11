@@ -1,13 +1,16 @@
-Solidity
+סולידיטי
 ========
 
-Solidity is an object-oriented, high-level language for implementing smart contracts.
-Smart contracts are programs that govern the behavior of accounts within the Ethereum state.
+סולידיטי היא שפת תכנות עילית מובנת עצמים, המשמשת להטמעה של ״חוזים חכמים״.
+חוזים חכמים הן תוכניות שנועדו לנהל התנהגות של חשבונות בתוך מצב האתריום (Ethereum State).
 
-Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ designed to target the Ethereum Virtual Machine (EVM).
-It is influenced by C++, Python, and JavaScript.
-You can find more details about which languages Solidity has been inspired by in the :doc:`language influences <language-influences>` section.
+סולידיטי היא
+`שפת סוגריים-מסולסלים <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_
+התוכננה לטרגט את המכונה הוירטואלית של אתריום. השפה מושפעת על ידי C++, פייתון, וג׳אבאסקריפט.
 
+ניתן למצוא מידע נוסף על השפות מהן הושפעה סולידיטי ב :doc:`language influences <language-influences>`
+
+סולידיטי נכתבת בצורה סטטית, תומכת ירושה, ספריות,
 Solidity is statically typed, supports inheritance, libraries, and complex user-defined types, among other features.
 
 With Solidity, you can create contracts for uses such as voting, crowdfunding, blind auctions, and multi-signature wallets.
