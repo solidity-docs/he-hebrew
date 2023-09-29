@@ -14,5 +14,6 @@
 
 | English        | Hebrew     |
 | -------------- | ---------- |
-| Solidity       | סולידיטי   |
+| Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
+| Solidity       | סולידיטי   |
