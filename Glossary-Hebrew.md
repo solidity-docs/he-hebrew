@@ -4,11 +4,12 @@
 
 | English                     | Hebrew            |
 | --------------------------- | ----------------- |
+| Datatype                    | טיפוס נתונים     |
 | Documentation               | מסמך תיעוד        |
 | Glossary                    | אוצר מילים        |
 | Maintainers                 | מתחזקים           |
-| Pull Request                | פול ריקווסט       |
 | Object Oriented Programming | תכנות מונחה עצמים |
+| Pull Request                | פול ריקווסט       |
 
 ## מבוסס סולידיטי
 
