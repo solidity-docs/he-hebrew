@@ -6,6 +6,7 @@
 | --------------------------- | ----------------- |
 | Datatype                    | טיפוס נתונים     |
 | Documentation               | מסמך תיעוד        |
+| Event                       | אירוע             |
 | Glossary                    | אוצר מילים        |
 | Maintainers                 | מתחזקים           |
 | Object Oriented Programming | תכנות מונחה עצמים |
