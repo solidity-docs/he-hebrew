@@ -17,3 +17,4 @@
 | Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
+| Subcurrency    | תת-מטבע    |
