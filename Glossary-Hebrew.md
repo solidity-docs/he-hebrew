@@ -16,7 +16,8 @@
 
 | English        | Hebrew     |
 | -------------- | ---------- |
-| Ethereum       | איטריום    |
+| Amount         | כמות       |
+| Ethereum       | איתריום    |
 | Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
