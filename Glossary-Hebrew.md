@@ -18,6 +18,7 @@
 | English        | Hebrew     |
 | -------------- | ---------- |
 | Amount         | כמות       |
+| Block          | בלוק       |
 | Ethereum       | איתריום    |
 | Mint           | יצירת מטבעות |
 | Overflow       | גלישה      |
@@ -26,4 +27,4 @@
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
 | Subcurrency    | תת-מטבע    |
-| Transactions   | תנועה      |
+| Transactions   | טרנזקציה   |
