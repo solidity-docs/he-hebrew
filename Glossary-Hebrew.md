@@ -11,6 +11,7 @@
 | Maintainers                 | מתחזקים           |
 | Object Oriented Programming | תכנות מונחה עצמים |
 | Pull Request                | פול ריקווסט       |
+| Statement                   | הצהרה              |
 
 ## מבוסס סולידיטי
 
