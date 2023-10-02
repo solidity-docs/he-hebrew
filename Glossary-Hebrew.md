@@ -29,4 +29,4 @@
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
 | Subcurrency    | תת-מטבע    |
-| Transactions   | טרנזקציה   |
+| Transactions   | (עסקה) טרנזקציה   |
