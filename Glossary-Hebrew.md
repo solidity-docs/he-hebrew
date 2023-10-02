@@ -7,9 +7,11 @@
 | Datatype                    | טיפוס נתונים     |
 | Documentation               | מסמך תיעוד        |
 | Event                       | אירוע             |
+| Exception                   | חריגה             |
 | Glossary                    | אוצר מילים        |
 | Maintainers                 | מתחזקים           |
 | Object Oriented Programming | תכנות מונחה עצמים |
+| Opcode                      | אופקוד            |
 | Pull Request                | פול ריקווסט       |
 | persistent                  | תמידי              |
 | Statement                   | הצהרה              |
@@ -22,9 +24,10 @@
 | Block          | בלוק       |
 | Ether          | איתר       |
 | Ethereum       | איתריום    |
+| Message Call   | קריאה לחוזה |
 | Mint           | יצירת מטבעות |
 | Overflow       | גלישה      |
-| Revert         | ביטול      |
+| Revert         | החזרה לאחור \ בטול |
 | Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
