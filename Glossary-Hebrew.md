@@ -1,5 +1,5 @@
 # אוצר מילים
-
+(ראו גם באתר [מעות - מילון מונחי מחשב ומערכות מידע](https://www.ribao.co.uk/lex7/glosMarkers/glosItems2.php))
 ## כללי
 
 | English                     | Hebrew            |
@@ -26,3 +26,4 @@
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
 | Subcurrency    | תת-מטבע    |
+| Transactions   | תנועה      |
