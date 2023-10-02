@@ -18,6 +18,9 @@
 | -------------- | ---------- |
 | Amount         | כמות       |
 | Ethereum       | איתריום    |
+| Mint           | יצירת מטבעות |
+| Overflow       | גלישה      |
+| Revert         | ביטול      |
 | Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
