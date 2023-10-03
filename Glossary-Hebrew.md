@@ -4,6 +4,7 @@
 
 | English                     | Hebrew            |
 | --------------------------- | ----------------- |
+| Breaking Changes            | שינויי התנהגות   |
 | Datatype                    | טיפוס נתונים     |
 | Documentation               | מסמך תיעוד        |
 | Event                       | אירוע             |
@@ -27,7 +28,8 @@
 | Message Call   | קריאה לחוזה |
 | Mint           | יצירת מטבעות |
 | Overflow       | גלישה      |
-| Revert         | החזרה לאחור \ בטול |
+| Remix          | רמיקס      |
+| Revert         | החזרה לאחור \ ביטול |
 | Slot           | סלוט       |
 | Smart Contract | חוזה חכם   |
 | Solidity       | סולידיטי   |
