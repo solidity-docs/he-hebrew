@@ -3,60 +3,54 @@
 .. _installing-solidity:
 
 ################################
-Installing the Solidity Compiler
+התקנת הקומפיילר של סולידיטי
 ################################
 
-Versioning
+גרסאות
 ==========
 
-Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
-addition, patch-level releases with major release 0 (i.e. 0.x.y) will not
-contain breaking changes. That means code that compiles with version 0.x.y
-can be expected to compile with 0.x.z where z > y.
+מספרי הגרסות של סולידיטי נקבעות על-פי `גירסאות סמנטיות <https://semver.org>`_. 
+בנוסף, גרסאות תיקון (patch) עם גרסה עיקרית 0 (כלומר 0.x.y) לא
+מכילות שינויי התנהגות. ז"א שניתן להניח שקוד שמתקמפל עם גרסה 0.x.y
+יתקמפל גם עם גרסה 0.x.z שבה z > y.
 
-In addition to releases, we provide **nightly development builds** to make
-it easy for developers to try out upcoming features and
-provide early feedback. Note, however, that while the nightly builds are usually
-very stable, they contain bleeding-edge code from the development branch and are
-not guaranteed to be always working. Despite our best efforts, they might
-contain undocumented and/or broken changes that will not become a part of an
-actual release. They are not meant for production use.
+בנוסף לגרסאות, אנו מספקים **בניות nightly לפתוח** כדי להקל
+על מפתחים לנסות תכונות עתידיות
+ולספק משוב מוקדם. שימו לב עם זאת שלמרות שבדרך כלל בניות ה-nightly
+יציבות מאוד, הן מכילות קוד שהוא עדיין בפיתוח ולכן
+לא מובטח שיעבדו תמיד. למרות מאמצינו, הן עשויות
+להכיל שינויים לא מתועדים ו/או שמשנים את ההתנהגות של הקוד הקיים, שינויים
+שלא יהפכו לחלק משחרור בפועל. גרסאות ה-nightly לא מיועדות לשימוש בייצור.
 
-When deploying contracts, you should use the latest released version of Solidity. This
-is because breaking changes, as well as new features and bug fixes are introduced regularly.
-We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+בעת הטמעת חוזים חדשים לשימוש, עליכם להשתמש בגרסה האחרונה של סולידיטי ששוחררה.
+זאת מכיוון ששינויים שמשנים התנהגות, כמו גם תכונות חדשות ותיקוני באגים, מתווספים לסולידיטי באופן קבוע.
+אנחנו משתמשים כעת במספר גרסה 0.x `כדי לציין את קצב השינוי המהיר הזה <https://semver.org/#spec-item-4>`_.
 
-Remix
-=====
+רמיקס
+======
 
-*We recommend Remix for small contracts and for quickly learning Solidity.*
+*אנחנו ממליצים על רמיקס (Remix) עבור חוזים קטנים וללמידה מהירה של סולידיטי.*
 
-`Access Remix online <https://remix.ethereum.org/>`_, you do not need to install anything.
-If you want to use it without connection to the Internet, go to
-https://github.com/ethereum/remix-live/tree/gh-pages#readme and follow the instructions on that page.
-Remix is also a convenient option for testing nightly builds
-without installing multiple Solidity versions.
+`לשימוש מקוון ברמיקס <https://remix.ethereum.org/>`_, אין צורך להתקין דבר. אם אתם רוצים להשתמש בו ללא חיבור לאינטרנט, ראו https://github.com/ethereum/remix-live/tree/gh-pages#readme ופעלו לפי ההוראות בדף זה. רמיקס הוא גם אפשרות נוחה לבדיקת בניית nightly מבלי להתקין מספר גרסאות סולידיטי שונות.
 
-Further options on this page detail installing command-line Solidity compiler software
-on your computer. Choose a command-line compiler if you are working on a larger contract
-or if you require more compilation options.
+אפשרויות נוספות בדף זה מפרטות את אופן ההתקנה של הקומפיילר של סולידיטי שתומך בשורות-פקודה (command-line). בחרו קומפיילר שתומך בשורות-פקודה אם אתם עובדים על חוזה גדול יותר או אם אתם זקוקים לאפשרויות קומפילציה נוספות.
 
 .. _solcjs:
 
 npm / Node.js
 =============
 
-Use ``npm`` for a convenient and portable way to install ``solcjs``, a Solidity compiler. The
-`solcjs` program has fewer features than the ways to access the compiler described
-further down this page. The
-:ref:`commandline-compiler` documentation assumes you are using
-the full-featured compiler, ``solc``. The usage of ``solcjs`` is documented inside its own
-`repository <https://github.com/ethereum/solc-js>`_.
+השתמשו ב-``npm`` כדרך נוחה וניידת להתקנת ``solcjs``, הקומפיילר של סולידיטי.
+לתוכנת `solcjs` יש פחות תכונות מהדרכים לגישה לקומפיילר שיתוארו
+בהמשך בדף זה.
+תיעוד :ref:`commandline-compiler` מניח שאתם משתמשים
+בקומפיילר עם התכונות המלאות, ``solc``. השימוש ב- ``solcjs`` מתועד בתוך
+`הרפוזיטורי <https://github.com/ethereum/solc-js>`_ שלו.
 
-Note: The solc-js project is derived from the C++
-`solc` by using Emscripten, which means that both use the same compiler source code.
-`solc-js` can be used in JavaScript projects directly (such as Remix).
-Please refer to the solc-js repository for instructions.
+הערה: פרויקט solc-js נגזר מה-C++
+`solc` באמצעות Emscripten, כלומר שניהם משתמשים באותו קוד מקור של הקומפיילר.
+ניתן להשתמש ב-solc-js בפרוייקטים של JavaScript ישירות (כגון רמיקס).
+בבקשה הסתכלו במאגר solc-js לקבלת הוראות.
 
 .. code-block:: bash
 
@@ -64,55 +58,57 @@ Please refer to the solc-js repository for instructions.
 
 .. note::
 
-    The command-line executable is named ``solcjs``.
+    קובץ ההפעלה של שורות-הפקודה נקרא ``solcjs``.
 
-    The command-line options of ``solcjs`` are not compatible with ``solc`` and tools (such as ``geth``)
-    expecting the behavior of ``solc`` will not work with ``solcjs``.
+ 	אפשרויות שורות-הפקודה של ``solcjs`` אינן תואמות ל``solc`` ולכלים (כגון ``geth``)
+ 	כך שההתנהגות של ``solc`` לא תעבוד עם ``solcjs``.
 
 Docker
 ======
 
-Docker images of Solidity builds are available using the ``solc`` image from the ``ethereum`` organization.
-Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the develop branch.
+"תמונות דוקר" (Docker images)
+של בניית סולידיטי זמינות באמצעות תמונת ``solc`` מארגון ``ethereum``.
+השתמשו בתג ``stable`` עבור הגרסה האחרונה שפורסמה, וב-``nightly`` לשינויים שעלולים להיות לא יציבים.
 
-The Docker image runs the compiler executable so that you can pass all compiler arguments to it.
-For example, the command below pulls the stable version of the ``solc`` image (if you do not have it already),
-and runs it in a new container, passing the ``--help`` argument.
+תמונת דוקר מריצה את קובץ ההפעלה של הקומפיילר כך שתוכלו להעביר אליו את כל ארגומנטי המהדר.
+לדוגמה, הפקודה למטה מושכת את הגרסה היציבה של תמונת ``solc`` (אם היא עדיין לא מותקנת אצלכם),
+ומריצה אותה בקונטיינר חדש, עם העברת הארגומנט ``--help``.
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --help
 
-For example, You can specify release build versions in the tag for the 0.5.4 release.
+לדוגמה, אתם יכולים לציין גרסאות בניית גרסה ע"י תג עבור גרסה 0.5.4.
 
 .. code-block:: bash
 
     docker run ethereum/solc:0.5.4 --help
 
-To use the Docker image to compile Solidity files on the host machine, mount a
-local folder for input and output, and specify the contract to compile. For example.
+כדי להשתמש בתמונת דוקר כדי לקמפל קבצי סולידיטי במחשב המארח, התקינו
+תיקיה מקומית עבור קלט ופלט, וציינו את החוזה לקימפול. לדוגמה:
 
 .. code-block:: bash
 
     docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
 
-You can also use the standard JSON interface (which is recommended when using the compiler with tooling).
-When using this interface, it is not necessary to mount any directories as long as the JSON input is
-self-contained (i.e. it does not refer to any external files that would have to be
-:ref:`loaded by the import callback <initial-vfs-content-standard-json-with-import-callback>`).
+אתם יכולים גם להשתמש בממשק JSON הסטנדרטי (מומלץ בעת שימוש בקומפיילר עם כלי עבודה).
+בעת שימוש בממשק זה, אין צורך להעלות ספריות כל עוד קלט ה- JSON הוא
+עצמאי (כלומר, אין התייחסות לקבצים חיצוניים כלשהם שצריכים
+:ref:`להטען על ידי ה-import callback
+<initial-vfs-content-standard-json-with-import-callback>`).
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --standard-json < input.json > output.json
 
-Linux Packages
+חבילות לינוקס
 ==============
 
-Binary packages of Solidity are available at
+חבילות בינאריות של סולידיטי זמינות ב-
 `solidity/releases <https://github.com/ethereum/solidity/releases>`_.
 
-We also have PPAs for Ubuntu, you can get the latest stable
-version using the following commands:
+יש לנו גם PPAs עבור אובונטו. אתם יכולים לקבל את הגרסה היציבה האחרונה
+באמצעות הפקודות הבאות:
 
 .. code-block:: bash
 
@@ -120,7 +116,7 @@ version using the following commands:
     sudo apt-get update
     sudo apt-get install solc
 
-The nightly version can be installed using these commands:
+ניתן להתקין את גרסת ה-nightly באמצעות הפקודות הבאות:
 
 .. code-block:: bash
 
@@ -129,27 +125,27 @@ The nightly version can be installed using these commands:
     sudo apt-get update
     sudo apt-get install solc
 
-Furthermore, some Linux distributions provide their own packages. These packages are not directly
-maintained by us but usually kept up-to-date by the respective package maintainers.
+יתר על כן, חלק מההפצות של לינוקס מספקות חבילות משלהן. חבילות אלו אינן
+מתוחזקות ישירות על ידינו אך בדרך כלל מעודכנות על ידי מנהלי החבילות בהתאמה.
 
-For example, Arch Linux has packages for the latest development version as AUR packages: `solidity <https://aur.archlinux.org/packages/solidity>`_
-and `solidity-bin <https://aur.archlinux.org/packages/solidity-bin>`_.
+לדוגמה, ל- Arch Linux יש חבילות לגרסת הפיתוח העדכנית ביותר כחבילות AUR: `סולידיטי <https://aur.archlinux.org/packages/solidity>`_
+ו-`solidity-bin <https://aur.archlinux.org/packages/solidity-bin>`_.
 
 .. note::
 
-    Please be aware that `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ packages
-    are user-produced content and unofficial packages. Exercise caution when using them.
+    שימו לב שחבילות `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_
+ 	הן תוכן המיוצר על ידי המשתמש וחבילות לא רשמיות. היזהרו בעת השימוש בהן.
 
-There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
-It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
-install the latest stable version of solc:
+קיימת גם `חבילת snap <https://snapcraft.io/solc>`_, עם זאת, היא **כרגע לא מתוחזקת**.
+החבילה ניתנת להתקנה בכל `ההפצות הנתמכות של לינוקס <https://snapcraft.io/docs/core/install>`_.
+להתקנת הגרסה היציבה האחרונה של solc:
 
 .. code-block:: bash
 
     sudo snap install solc
 
-If you want to help testing the latest development version of Solidity
-with the most recent changes, please use the following:
+אם אתם רוצים לעזור בבדיקת גרסת הפיתוח העדכנית של סולידיטי
+שכוללת את השינויים האחרונים, אנא השתמשו ב:
 
 .. code-block:: bash
 
@@ -157,17 +153,17 @@ with the most recent changes, please use the following:
 
 .. note::
 
-    The ``solc`` snap uses strict confinement. This is the most secure mode for snap packages
-    but it comes with limitations, like accessing only the files in your ``/home`` and ``/media`` directories.
-    For more information, go to `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_.
+    ה-snap של ``solc`` משתמשת בסגירות קפדנית (strict confinement). זהו המצב המאובטח ביותר עבור חבילות snap
+ 	אבל דבר זה מגיע עם מגבלות, כמו גישה רק לקבצים בספריות ``/home`` ו``/media`` שלכם.
+ 	למידע נוסף, עבור אל `הסרת המסתורין מ-Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_.
 
 
-macOS Packages
+חבילות macOS
 ==============
 
-We distribute the Solidity compiler through Homebrew
-as a build-from-source version. Pre-built bottles are
-currently not supported.
+אנחנו מפיצים את הקומפיילר של סולידיטי דרך Homebrew
+כגרסת-בנייה-מהמקור. bottles שנבנו מראש
+כרגע לא נתמכים.
 
 .. code-block:: bash
 
@@ -176,16 +172,16 @@ currently not supported.
     brew tap ethereum/ethereum
     brew install solidity
 
-To install the most recent 0.4.x / 0.5.x version of Solidity you can also use ``brew install solidity@4``
-and ``brew install solidity@5``, respectively.
+כדי להתקין את גרסת 0.4.x / 0.5.x העדכנית ביותר של סולידיטי, אתם יכולים להשתמש גם ב-``brew install solidity@4``
+ו-``brew install solidity@5``, בהתאמה.
 
-If you need a specific version of Solidity you can install a
-Homebrew formula directly from Github.
+אם אתם צריכים גרסה ספציפית של סולידיטי, אפשר להתקין
+נוסחת Homebrew ישירות מ-Github.
 
-View
+הסתכלו ב-
 `solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
 
-Copy the commit hash of the version you want and check it out on your machine.
+העתיקו את ה-commit hash של הגרסה הרצויה ובדקו אותה במחשב שלכם.
 
 .. code-block:: bash
 
@@ -193,45 +189,44 @@ Copy the commit hash of the version you want and check it out on your machine.
     cd homebrew-ethereum
     git checkout <your-hash-goes-here>
 
-Install it using ``brew``:
-
+התקינו אותה באמצעות ``brew``:
 .. code-block:: bash
 
     brew unlink solidity
     # eg. Install 0.4.8
     brew install solidity.rb
 
-Static Binaries
-===============
+קבצים בינאריים סטטיים
+=======================
 
-We maintain a repository containing static builds of past and current compiler versions for all
-supported platforms at `solc-bin`_. This is also the location where you can find the nightly builds.
+אנחנו מתחזקים רפוזיטורי המכיל בנייות סטטיות של גרסאות קומפיילר קודמות ונוכחיות לכל
+הפלטפורמות הנתמכות ב- `solc-bin`_. זהו גם המקום שבו תוכלו למצוא את בניות ה-nightly.
 
-The repository is not only a quick and easy way for end users to get binaries ready to be used
-out-of-the-box but it is also meant to be friendly to third-party tools:
+הרפוזיטורי הוא לא רק דרך מהירה וקלה עבור משתמשי קצה להשיג קבצים בינאריים לשימוש
+אלא גם נועד להיות ידידותי לכלים של צד שלישי:
 
-- The content is mirrored to https://binaries.soliditylang.org where it can be easily downloaded over
-  HTTPS without any authentication, rate limiting or the need to use git.
-- Content is served with correct `Content-Type` headers and lenient CORS configuration so that it
-  can be directly loaded by tools running in the browser.
-- Binaries do not require installation or unpacking (exception for older Windows builds
-  bundled with necessary DLLs).
-- We strive for a high level of backward-compatibility. Files, once added, are not removed or moved
-  without providing a symlink/redirect at the old location. They are also never modified
-  in place and should always match the original checksum. The only exception would be broken or
-  unusable files with the potential to cause more harm than good if left as is.
-- Files are served over both HTTP and HTTPS. As long as you obtain the file list in a secure way
-  (via git, HTTPS, IPFS or just have it cached locally) and verify hashes of the binaries
-  after downloading them, you do not have to use HTTPS for the binaries themselves.
+- התוכן משוקף אל https://binaries.soliditylang.org שם ניתן להוריד אותו בקלות
+   דרך HTTPS ללא כל אימות, הגבלת קצב או צורך להשתמש ב-git.
+- התוכן מוגש עם כותרות 'Content-Type' נכונות ותצורת CORS מקלה כך שהוא
+   ניתן לטעינה ישירות על ידי כלים הפועלים בדפדפן.
+- קבצים בינאריים אינם דורשים התקנה או פרוק (unpack - למעט רכיבים ישנים יותר של Windows
+   שמצורפים להם קובצי DLL נחוצים).
+- אנו שואפים לרמה גבוהה של תאימות לאחור. קבצים, לאחר שנוספו, אינם מוסרים או מועברים
+   מבלי לספק הפניה מהמיקום הישן. הם גם לעולם לא משתנים
+   וצריכים תמיד להתאים ל-checksum המקורי. החריג היחיד יהיו
+   קבצים בעייתיים או בלתי שמישים עם פוטנציאל לגרימת יותר נזק מתועלת אם יישארו כפי שהם.
+- קבצים מועברים גם ב-HTTP וגם ב-HTTPS. כל עוד אתם משיגים את רשימת הקבצים בצורה מאובטחת
+   (באמצעות git, HTTPS, IPFS וכו') ומאמתים את ה-hash של הקבצים הבינאריים
+   לאחר הורדתם, אינכם צריכים להשתמש ב-HTTPS עבור הקבצים הבינאריים עצמם.
 
-The same binaries are in most cases available on the `Solidity release page on Github`_. The
-difference is that we do not generally update old releases on the Github release page. This means
-that we do not rename them if the naming convention changes and we do not add builds for platforms
-that were not supported at the time of release. This only happens in ``solc-bin``.
+אותם קבצים בינאריים זמינים ברוב המקרים ב'עמוד השחרור של סולידיטי ב-Github'_.
+ההבדל הוא שאנחנו בדרך כלל לא מעדכנים מהדורות ישנות בדף ההפצה של Github. זאת אומרת שבדרך  כלל
+לא נשנה את שמם אם אופן קביעת השמות משתנה ולא נוסיף בניות לפלטפורמות
+שלא נתמכו בזמן השחרור. זה קורה רק ב-``solc-bin``.
 
-The ``solc-bin`` repository contains several top-level directories, each representing a single platform.
-Each one includes a ``list.json`` file listing the available binaries. For example in
-``emscripten-wasm32/list.json`` you will find the following information about version 0.7.4:
+מאגר ``solc-bin`` מכיל מספר ספריות ברמה העליונה, כל אחת מייצגת פלטפורמה אחת.
+כל אחת מהן כוללת קובץ ``list.json`` המפרט את הקבצים הבינאריים הזמינים. למשל ב
+``emscripten-wasm32/list.json`` תמצא את המידע הבא לגבי גרסה 0.7.4:
 
 .. code-block:: json
 
@@ -248,55 +243,53 @@ Each one includes a ``list.json`` file listing the available binaries. For examp
       ]
     }
 
-This means that:
+זאת אומרת ש:
 
-- You can find the binary in the same directory under the name
-  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
-  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
-  git to download it or your file system does not support symlinks.
-- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
-  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
-  of the file or returning a HTTP redirect.
-- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
-- The file might in future be available on Swarm at `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_.
-- You can verify the integrity of the binary by comparing its keccak256 hash to
-  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
-  on the command-line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
-  from ethereumjs-util`_ in JavaScript.
-- You can also verify the integrity of the binary by comparing its sha256 hash to
-  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
-
-.. warning::
-
-   Due to the strong backwards compatibility requirement the repository contains some legacy elements
-   but you should avoid using them when writing new tools:
-
-   - Use ``emscripten-wasm32/`` (with a fallback to ``emscripten-asmjs/``) instead of ``bin/`` if
-     you want the best performance. Until version 0.6.1 we only provided asm.js binaries.
-     Starting with 0.6.2 we switched to `WebAssembly builds`_ with much better performance. We have
-     rebuilt the older versions for wasm but the original asm.js files remain in ``bin/``.
-     The new ones had to be placed in a separate directory to avoid name clashes.
-   - Use ``emscripten-asmjs/`` and ``emscripten-wasm32/`` instead of ``bin/`` and ``wasm/`` directories
-     if you want to be sure whether you are downloading a wasm or an asm.js binary.
-   - Use ``list.json`` instead of ``list.js`` and ``list.txt``. The JSON list format contains all
-     the information from the old ones and more.
-   - Use https://binaries.soliditylang.org instead of https://solc-bin.ethereum.org. To keep things
-     simple we moved almost everything related to the compiler under the new ``soliditylang.org``
-     domain and this applies to ``solc-bin`` too. While the new domain is recommended, the old one
-     is still fully supported and guaranteed to point at the same location.
+- אתם יכולים למצוא את הקובץ הבינארי באותה ספרייה תחת השם
+   `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4 +commit.3f05b770.js>`_.
+   שימו לב שהקובץ עשוי להיות קישור סימבולי, ותצטרכו לפתור אותו בעצמכם אם אינכם משתמשים ב-git כדי להוריד אותו או שמערכת הקבצים שלכם לא תומכת בקישורים סימבוליים.
+- עותק של הקובץ הבינארי נמצא גם ב-https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
+   במקרה זה אין צורך ב-git וקישורים סימבוליים נפתרים בשקיפות, או על ידי העברת עותק
+   של הקובץ או החזרת הפניית HTTP redirect.
+- הקובץ זמין גם ב-IPFS בכתובת `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
+- ייתכן שהקובץ יהיה זמין בעתיד ב-Swarm בכתובת `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_.
+- אתם יכולים לאמת את תקינות הקובץ הבינארי על ידי השוואת ה-keccak256 hash שלו ל-
+   ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``. ניתן לחשב את ה-hash
+   בשורת הפקודה באמצעות כלי השירות ``keccak256sum`` המסופק על ידי הפונקציה `sha3sum`_ או `keccak256()
+   מ-ethereumjs-util`_ ב-JavaScript.
+- אתם יכולים גם לאמת את תקינות הקובץ הבינארי על ידי השוואת ה-sha256 שלו ל-sha256
+   ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
 
 .. warning::
 
-    The binaries are also available at https://ethereum.github.io/solc-bin/ but this page
-    stopped being updated just after the release of version 0.7.2, will not receive any new releases
-    or nightly builds for any platform and does not serve the new directory structure, including
-    non-emscripten builds.
+   בשל דרישת התאימות-לאחור החזקה, הרפוזיטורי מכיל כמה אלמנטים מדור קודם
+	אך עליכם להימנע משימוש בהם בעת כתיבת כלים חדשים:
 
-    If you are using it, please switch to https://binaries.soliditylang.org, which is a drop-in
-    replacement. This allows us to make changes to the underlying hosting in a transparent way and
-    minimize disruption. Unlike the ``ethereum.github.io`` domain, which we do not have any control
-    over, ``binaries.soliditylang.org`` is guaranteed to work and maintain the same URL structure
-    in the long-term.
+   - השתמשו ב-``emscripten-wasm32/`` (עם חלופה (fallback) ל-``emscripten-asmjs/``) במקום ``bin/`` אם
+  	אתם רוצה את הביצועים הטובים ביותר. עד גרסה 0.6.1 סיפקנו רק קבצים בינאריים של asm.js.
+  	החל מ-0.6.2 עברנו ל- `WebAssembly builds`_ עם ביצועים טובים בהרבה. יש לנו
+  	בניה מחדש של הגרסאות הישנות יותר עבור wasm אבל קבצי asm.js המקוריים נשארים ב- ``bin/``.
+  	את הקבצים החדשים היה צריך למקם בספרייה נפרדת כדי למנוע התנגשויות בשמות.
+	- השתמשו ב-``emscripten-asmjs/`` וב-``emscripten-wasm32/`` במקום בספריות ``bin/`` ו-``wasm/``
+  	אם אתה רוצים להיות בטוחים שאתה מורידים wasm או asm.js בינארי
+	- השתמשו ב-``list.json`` במקום ``list.js`` וב-``list.txt``. פורמט רשימת JSON מכילה את הכל
+  	המידע מהישנים ועוד.
+	- השתמשו ב-https://binaries.soliditylang.org במקום https://solc-bin.ethereum.org. כדי לשמור על
+  	פשטות העברנו כמעט את כל מה שקשור לקומפיילר תחת תחום ``soliditylang.org`` החדש
+  	וזה חל גם על ``solc-bin``. בעוד שהדומיין החדש מומלץ, הישן
+  	עדיין נתמך באופן מלא ומובטח שיצביע על אותו מיקום.
+
+.. warning::
+
+    הקבצים הבינאריים זמינים גם בכתובת https://ethereum.github.io/solc-bin/ אבל דף זה
+ 	הפסיק להתעדכן מיד לאחר שחרורה של גרסה 0.7.2. דף זה לא יקבל מהדורות חדשות
+ 	או בניות nightly לכל הפלטפורמות ואינו משרת את מבנה הספריות החדש, כולל
+ 	בניה ללא emscripten.
+
+ 	אם אתם משתמשים בו, אנא עברו ל-https://binaries.soliditylang.org. דבר זה מאפשר לנו לבצע שינויים באירוח הבסיסי בצורה שקופה
+ 	ולמזער את ההפרעות. בניגוד לתחום ``ethereum.github.io``, שאין לנו כל שליטה עליו,
+ 	מובטח ש-``binaries.soliditylang.org`` יעבוד וישמור על אותו מבנה כתובת URL
+ 	בטווח הרחוק.
 
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
@@ -310,27 +303,27 @@ This means that:
 
 .. _building-from-source:
 
-Building from Source
+בנייה מקוד המקור
 ====================
-Prerequisites - All Operating Systems
+דרישות קדם - כל מערכות ההפעלה
 -------------------------------------
 
-The following are dependencies for all builds of Solidity:
+להלן התלות עבור כל הבניות של סולידיטי:
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| תוכנה                            | הערות                                                 |
 +===================================+=======================================================+
-| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| `CMake`_ (version 3.21.3+ on      | מחולל קבצי בנייה חוצה פלטפורמות.                  |
 | Windows, 3.13+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77 on         | C++ libraries.                                        |
+| `Boost`_ (version 1.77 on         | ספריות C++.                                          |
 | Windows, 1.65+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Git`_                            | Command-line tool for retrieving source code.         |
+| `Git`_                            | כלי שורוכלי שורות-פקודה לאחזור קוד מקור.           |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
+| `z3`_ (version 4.8.16+, Optional) | לשימוש עם בודק SMT.                                  |
 +-----------------------------------+-------------------------------------------------------+
-| `cvc4`_ (Optional)                | For use with SMT checker.                             |
+| `cvc4`_ (Optional)                | לשימוש עם בודק SMT.                                  |
 +-----------------------------------+-------------------------------------------------------+
 
 .. _cvc4: https://cvc4.cs.stanford.edu/web/
@@ -340,71 +333,70 @@ The following are dependencies for all builds of Solidity:
 .. _z3: https://github.com/Z3Prover/z3
 
 .. note::
-    Solidity versions prior to 0.5.10 can fail to correctly link against Boost versions 1.70+.
-    A possible workaround is to temporarily rename ``<Boost install path>/lib/cmake/Boost-1.70.0``
-    prior to running the cmake command to configure Solidity.
+    גרסאות סולידיטי לפני 0.5.10 יכולות להיכשל בקישור מול גרסאות Boost 1.70+.
+ 	פתרון אפשרי הוא שינוי שם זמני של ``<Boost Install path>/lib/cmake/Boost-1.70.0``
+ 	לפני הפעלת הפקודה cmake כדי להגדיר את סולידיטי.
 
-    Starting from 0.5.10 linking against Boost 1.70+ should work without manual intervention.
-
-.. note::
-    The default build configuration requires a specific Z3 version (the latest one at the time the
-    code was last updated). Changes introduced between Z3 releases often result in slightly different
-    (but still valid) results being returned. Our SMT tests do not account for these differences and
-    will likely fail with a different version than the one they were written for. This does not mean
-    that a build using a different version is faulty. If you pass ``-DSTRICT_Z3_VERSION=OFF`` option
-    to CMake, you can build with any version that satisfies the requirement given in the table above.
-    If you do this, however, please remember to pass the ``--no-smt`` option to ``scripts/tests.sh``
-    to skip the SMT tests.
+ 	החל מ-0.5.10 קישור מול Boost 1.70+ אמור לעבוד ללא התערבות ידנית.
 
 .. note::
-    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
-    compiler to treat all warnings as errors.
-    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
-    If you are only interested in creating a release build and do not intend to modify the source code
-    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
-    Doing this is not recommended for general use but may be necessary when using a toolchain we are
-    not testing with or trying to build an older version with newer tools.
-    If you encounter such warnings, please consider
-    `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+    תצורת הבנייה המוגדרת כברירת מחדל דורשת גרסה ספציפית של Z3 (האחרונה ביותר בזמן
+ 	שהקוד עודכן לאחרונה). שינויים שהוכנסו בין מהדורות Z3 מביאות לעתים קרובות לתוצאות מעט שונות
+ 	(אך עדיין תקפות). מבחני ה-SMT שלנו אינם מביאים בחשבון את ההבדלים הללו
+ 	וככל הנראה ייכשלו עם גרסה שונה מזו שהם נכתבו עבורה. זה לא אומר
+ 	שבנייה שמשתמשת בגרסה אחרת היא פגומה. אם תעבירו את האופציה ``-DSTRICT_Z3_VERSION=OFF``
+ 	ל- CMake, תוכלו לבנות עם כל גרסה שעומדת בדרישה שניתנה בטבלה למעלה.
+ 	עם זאת, אם תעשו זאת, בבקשה זכרו להעביר את האופציה ``--no-smt`` ל``scripts/tests.sh``
+ 	כדי לדלג על מבחני SMT.
 
-Minimum Compiler Versions
+.. note::
+    כברירת מחדל, הבנייה מתבצעת ב*מצב פדנטי* שמאפשרת אזהרות נוספות ומגדיר לקומפיילר להתייחס לכל האזהרות כשגיאות.
+ 	דבר זה מאלץ מפתחים לתקן אזהרות כשהן מתעוררות, כך שהן לא יצטברו "כדי לתקן מאוחר יותר".
+ 	אם אתם מעוניינים רק ביצירת גרסה לשחרור ואינכם מתכוונים לשנות את קוד המקור
+ 	כדי להתמודד עם אזהרות כאלה, אתם יכולים להעביר את האופציה ``-DPEDANTIC=OFF`` אל CMake כדי להשבית את המצב הזה.
+ 	פעולה זו אינה מומלצת לשימוש כללי אך עשויה להיות נחוצה בעת שימוש בשרשרת כלים שאנחנו
+ 	לא בודקים או כאשר מנסים לבנות גרסה ישנה עם כלים חדשים יותר.
+ 	אם אתם נתקלים באזהרות כאלה, אנא שקלו
+ 	`לדווח עליהם <https://github.com/ethereum/solidity/issues/new>`_.
+
+גרסת קומפיילר מינימלית
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following C++ compilers and their minimum versions can build the Solidity codebase:
+הקומפיילרים הבאים של C++ וגרסאות המינימום שלהם יכולים לבנות את בסיס הקוד של סולידיטי:
 
 - `GCC <https://gcc.gnu.org>`_, version 8+
 - `Clang <https://clang.llvm.org/>`_, version 7+
 - `MSVC <https://visualstudio.microsoft.com/vs/>`_, version 2019+
 
-Prerequisites - macOS
+דרישות קדם - macOS
 ---------------------
 
-For macOS builds, ensure that you have the latest version of
-`Xcode installed <https://developer.apple.com/xcode/resources/>`_.
-This contains the `Clang C++ compiler <https://en.wikipedia.org/wiki/Clang>`_, the
-`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ and other Apple development
-tools that are required for building C++ applications on OS X.
-If you are installing Xcode for the first time, or have just installed a new
-version then you will need to agree to the license before you can do
-command-line builds:
+כדי לבנות macOS, ודאו שיש לכם את הגרסה העדכנית ביותר של
+`Xcode מותקנת <https://developer.apple.com/xcode/resources/>`_.
+התקנה זו מכילה את `Clang C++ קומפייילר <https://en.wikipedia.org/wiki/Clang>`_,
+`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ וכלי פיתוח אחרים של Apple
+הדרושים לבניית יישומי C++ ב-OS X.
+אם אתם מתקינים Xcode בפעם הראשונה, או שזה עתה התקנתם
+גרסה חדשה אז תצטרכו להסכים לרישיון לפני שתוכלו להפעיל
+את פקודת הבנייה:
 
 .. code-block:: bash
 
     sudo xcodebuild -license accept
 
-Our OS X build script uses `the Homebrew <https://brew.sh>`_
-package manager for installing external dependencies.
-Here's how to `uninstall Homebrew
+סקריפט הבנייה של OS X שלנו משתמש במנהל החבילות 'the Homebrew <https://brew.sh>`_
+להתקנת תלויות חיצוניות.
+להלן אופן הסרת ההתקנה של Homebrew
 <https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_,
-if you ever want to start again from scratch.
+אם אי פעם תרצו להתחיל מחדש מאפס.
 
-Prerequisites - Windows
+דרישות קדם - Windows
 -----------------------
 
-You need to install the following dependencies for Windows builds of Solidity:
+עליכם להתקין את התלויות הבאות עבור בניות ל-Windows של סולידיטי:
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| תוכנה                            | הערות                                                 |
 +===================================+=======================================================+
 | `Visual Studio 2019 Build Tools`_ | C++ compiler                                          |
 +-----------------------------------+-------------------------------------------------------+
@@ -413,69 +405,69 @@ You need to install the following dependencies for Windows builds of Solidity:
 | `Boost`_ (version 1.77)           | C++ libraries.                                        |
 +-----------------------------------+-------------------------------------------------------+
 
-If you already have one IDE and only need the compiler and libraries,
-you could install Visual Studio 2019 Build Tools.
+אם כבר יש לכם IDE אחד ואתם צריכים רק את הקומפיילר והספריות,
+אתם יכולים להתקין את Visual Studio 2019 Build Tools.
 
-Visual Studio 2019 provides both IDE and necessary compiler and libraries.
-So if you have not got an IDE and prefer to develop Solidity, Visual Studio 2019
-may be a choice for you to get everything setup easily.
+Visual Studio 2019 מספק גם IDE וגם קומפיילר וספריות נחוצות.
+לכן, אם אין לכם IDE ואתם מעדיפים לפתח בסולידיטי, Visual Studio 2019
+עשויה להיות בחירה טובה עבורכם כדי להתקין הכל בקלות.
 
-Here is the list of components that should be installed
-in Visual Studio 2019 Build Tools or Visual Studio 2019:
+להלן רשימת הרכיבים שיש להתקין
+ב-Visual Studio 2019 Build Tools או Visual Studio 2019:
 
-* Visual Studio C++ core features
-* VC++ 2019 v141 toolset (x86,x64)
+* תכונות ליבה של Visual Studio C++
+* ערכת כלים VC++ 2019 v141 (x86,x64)
 * Windows Universal CRT SDK
 * Windows 8.1 SDK
-* C++/CLI support
+* תמיכה ב-C++/CLI
 
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
 .. _Visual Studio 2019 Build Tools: https://visualstudio.microsoft.com/vs/older-downloads/#visual-studio-2019-and-other-products
 
-We have a helper script which you can use to install all required external dependencies:
+יש לנו סקריפט עזר שבו אתם יכולים להשתמש כדי להתקין את כל התלויות החיצונית הנדרשות:
 
 .. code-block:: bat
 
     scripts\install_deps.ps1
 
-This will install ``boost`` and ``cmake`` to the ``deps`` subdirectory.
+סקריפט זה יתקין את ``boost`` ו``cmake`` בספריית המשנה ``deps``.
 
-Clone the Repository
+שכפול הרפוזיטורי
 --------------------
 
-To clone the source code, execute the following command:
+כדי לשכפל את קוד המקור, בצעו את הפקודה הבאה:
 
 .. code-block:: bash
 
     git clone --recursive https://github.com/ethereum/solidity.git
     cd solidity
 
-If you want to help develop Solidity,
-you should fork Solidity and add your personal fork as a second remote:
+אם אתם רוצים לעזור לפיתוח סולידיטי,
+אתם צריכים לשכפל (fork) את סולידיטי ולהוסיף את העותק האישי שלכם כ-remote שני:
 
 .. code-block:: bash
 
     git remote add personal git@github.com:[username]/solidity.git
 
 .. note::
-    This method will result in a pre-release build leading to e.g. a flag
-    being set in each bytecode produced by such a compiler.
-    If you want to re-build a released Solidity compiler, then
-    please use the source tarball on the github release page:
+    שיטה זו תגרום לבניית גרסת טרום שחרור שתגרום למשל
+ 	להגדרת דגל בכל bytecode המיוצר על ידי קומפיילר כזה.
+ 	אם אתם רוצים לבנות מחדש קומפיילר סולידיטי שישוחרר,
+ 	אנא השתמשו ב-tarball המקורי בדף השחרור של github:
 
-    https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
+ 	https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
-    (not the "Source code" provided by github).
+ 	(לא "קוד המקור" שסופק על ידי github).
 
-Command-Line Build
-------------------
+בנייה ע"י שורת-פקודה
+---------------------
 
-**Be sure to install External Dependencies (see above) before build.**
+**הקפידו להתקין תלויות חיצוניות (ראה למעלה) לפני הבנייה.**
 
-Solidity project uses CMake to configure the build.
-You might want to install `ccache`_ to speed up repeated builds.
-CMake will pick it up automatically.
-Building Solidity is quite similar on Linux, macOS and other Unices:
+פרויקט סולידיטי משתמש ב- CMake כדי להגדיר את הבנייה.
+אולי תרצו להשתמש ב- `cache`_ כדי להאיץ בנייה חוזרת.
+CMake ישתמש בו אוטומטית.
+בניית סולידיטי דומה למדי ב-Linux, macOS ו-Unices אחרים:
 
 .. _ccache: https://ccache.dev/
 
@@ -485,7 +477,7 @@ Building Solidity is quite similar on Linux, macOS and other Unices:
     cd build
     cmake .. && make
 
-or even easier on Linux and macOS, you can run:
+או אפילו יותר קל - ב-Linux וב-macOS אתם יכולים להריץ:
 
 .. code-block:: bash
 
@@ -494,9 +486,9 @@ or even easier on Linux and macOS, you can run:
 
 .. warning::
 
-    BSD builds should work, but are untested by the Solidity team.
+    בניית גרסה ל-BSD אמורה לעבוד, אך לא נבדקה על ידי צוות סולידיטי.
 
-And for Windows:
+ול-Windows:
 
 .. code-block:: bash
 
@@ -504,36 +496,36 @@ And for Windows:
     cd build
     cmake -G "Visual Studio 16 2019" ..
 
-In case you want to use the version of boost installed by ``scripts\install_deps.ps1``, you will
-additionally need to pass ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` and ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded``
-as arguments to the call to ``cmake``.
+במקרה שאתם רוצים להשתמש בגרסת ה-boost המותקנת על ידי ``scripts\install_deps.ps1``,
+תצטרכו להעביר בנוסף את ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` ואת ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded``
+כארגומנטים לקריאה ל-``cmake``.
 
-This should result in the creation of **solidity.sln** in that build directory.
-Double-clicking on that file should result in Visual Studio firing up.  We suggest building
-**Release** configuration, but all others work.
+דבר זה אמור לגרום ליצירת **solidity.sln** בספריית הבנייה הזו.
+לחיצה כפולה על הקובץ אמורה לגרום להפעלת Visual Studio. אנחנו מציעים לבנות
+תצורת **שחרור**, אבל כל האפשרויות האחרות גם יעבדו.
 
-Alternatively, you can build for Windows on the command-line, like so:
+לחלופין, אתם יכולים לבנות בשורת הפקודה עבור Windows כך:
 
 .. code-block:: bash
 
     cmake --build . --config Release
 
-CMake Options
+אפשרויות CMake
 =============
 
-If you are interested what CMake options are available run ``cmake .. -LH``.
+אם אתם מעוניינים לדעת אילו אפשרויות זמינות של CMake, הריצו את ``cmake .. -LH``.
 
 .. _smt_solvers_build:
 
-SMT Solvers
+פותרי SMT
 -----------
-Solidity can be built against SMT solvers and will do so by default if
-they are found in the system. Each solver can be disabled by a ``cmake`` option.
+ניתן לבנות סולידיטי עם שימוש בפותרי SMT, ודבר זה נעשה כברירת מחדל אם
+הם נמצאים במערכת. ניתן להשבית כל פותר על ידי אופציית ``cmake``.
 
-*Note: In some cases, this can also be a potential workaround for build failures.*
+*הערה: במקרים מסוימים, דבר זה יכול להיות גם פתרון אפשרי לכשלים בבנייה.*
 
 
-Inside the build folder you can disable them, since they are enabled by default:
+בתוך תיקיית הבנייה אפשר להשבית את הפותרים, מכיוון שהם מופעלים כברירת מחדל:
 
 .. code-block:: bash
 
@@ -546,39 +538,40 @@ Inside the build folder you can disable them, since they are enabled by default:
     # disables both Z3 and CVC4
     cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
 
-The Version String in Detail
+מחרוזת הגרסה בפירוט
 ============================
 
-The Solidity version string contains four parts:
+מחרוזת גרסת סולידיטי מכילה ארבעה חלקים:
 
-- the version number
-- pre-release tag, usually set to ``develop.YYYY.MM.DD`` or ``nightly.YYYY.MM.DD``
-- commit in the format of ``commit.GITHASH``
-- platform, which has an arbitrary number of items, containing details about the platform and compiler
+- מספר הגרסה
+- תג טרום-הפצה, בדרך כלל מוגדר ל-``develop.YYYY.MM.DD`` או ``nightly.YYYY.MM.DD``
+- commit בפורמט של ``commit.GITHASH``
+- פלטפורמה, בעלת מספר שרירותי של פריטים, המכילה פרטים על הפלטפורמה והקומפיילר
 
-If there are local modifications, the commit will be postfixed with ``.mod``.
+אם יש שינויים מקומיים, ה-commit יתוקן לאחר מכן עם ``.mod``.
 
-These parts are combined as required by SemVer, where the Solidity pre-release tag equals to the SemVer pre-release
-and the Solidity commit and platform combined make up the SemVer build metadata.
+חלקים אלה משולבים כנדרש על ידי SemVer, כאשר התג של סולידיטי לפני השחרור שווה לתג קדם השחרור של SemVer,
+ושילוב של ה-commit והפלטפורמה של Solidity מרכיבים את ה-metadata של בניית ה-SemVer.
 
-A release example: ``0.4.8+commit.60cc1668.Emscripten.clang``.
+דוגמה לגרסה: ``0.4.8+commit.60cc1668.Emscripten.clang``.
 
-A pre-release example: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
+דוגמה לפני שחרור: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
 
-Important Information About Versioning
+מידע חשוב על גירסאות
 ======================================
 
-After a release is made, the patch version level is bumped, because we assume that only
-patch level changes follow. When changes are merged, the version should be bumped according
-to SemVer and the severity of the change. Finally, a release is always made with the version
-of the current nightly build, but without the ``prerelease`` specifier.
+לאחר ביצוע שחרור גרסה, רמת מספר גרסת התיקונים מקודמת (bump), מכיוון שאנו מניחים שרק
+שינויים ברמת התיקון יבואו בהמשך. כאשר השינויים מתמזגים, יש לקדם את מספר הגרסה בהתאם
+ל-SemVer וחומרת השינוי. לבסוף, תמיד נוצרת גרסה עם בניית גרסה
+של ה-nightly הנוכחי, אך ללא מפרט ``prerelease``.
 
-Example:
 
-1. The 0.4.0 release is made.
-2. The nightly build has a version of 0.4.1 from now on.
-3. Non-breaking changes are introduced --> no change in version.
-4. A breaking change is introduced --> version is bumped to 0.5.0.
-5. The 0.5.0 release is made.
+דוגמה:
 
-This behavior works well with the  :ref:`version pragma <version_pragma>`.
+1. הגרסה 0.4.0 נוצרת.
+2. לבניית nightly יש גרסה של 0.4.1 מעתה ואילך.
+3. מוכנסים שינויים בלתי פוסקים --> אין שינוי בגרסה.
+4. הוצג שינוי שמשנה התנהגות --> הגרסה מקודמת ל-0.5.0.
+5. הגרסה 0.5.0 נוצרת.
+
+התנהגות זו עובדת היטב עם :ref:`version pragma <version_pragma>`.
