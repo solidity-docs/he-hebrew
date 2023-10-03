@@ -5,16 +5,19 @@
 | English                     | Hebrew            |
 | --------------------------- | ----------------- |
 | Breaking Changes            | שינויי התנהגות   |
+| Bump                        | קידום (במספר גרסה) |
 | Datatype                    | טיפוס נתונים     |
 | Documentation               | מסמך תיעוד        |
 | Event                       | אירוע             |
 | Exception                   | חריגה             |
+| Fallback                    | חלופה             |
 | Glossary                    | אוצר מילים        |
 | Maintainers                 | מתחזקים           |
 | Object Oriented Programming | תכנות מונחה עצמים |
 | Opcode                      | אופקוד            |
 | Pull Request                | פול ריקווסט       |
-| persistent                  | תמידי              |
+| Persistent                  | תמידי              |
+| Repository                  | רפוזיטורי (ניהול גרסאות)|
 | Statement                   | הצהרה              |
 
 ## מבוסס סולידיטי
