@@ -1,18 +1,18 @@
 ###############################
-Introduction to Smart Contracts
+מבוא לחוזים חכמים
 ###############################
 
 .. _simple-smart-contract:
 
 ***********************
-A Simple Smart Contract
+חוזה חכם פשוט
 ***********************
 
-Let us begin with a basic example that sets the value of a variable and exposes
-it for other contracts to access. It is fine if you do not understand
-everything right now, we will go into more details later.
+נתחיל בדוגמה בסיסית שקובעת את הערך של משתנה וחושפת
+אותו לגישה לחוזים אחרים. אל תדאגו אם אתם לא מבינים
+הכל עכשיו, ניכנס לפרטים נוספים מאוחר יותר.
 
-Storage Example
+דוגמה לאחסון
 ===============
 
 .. code-block:: solidity
@@ -32,55 +32,40 @@ Storage Example
         }
     }
 
-The first line tells you that the source code is licensed under the
-GPL version 3.0. Machine-readable license specifiers are important
-in a setting where publishing the source code is the default.
+השורה הראשונה מציינת שקוד המקור מורשה תחת GPL גרסה 3.0. מפרטי רישיונות קריאים  ע"י מכונה חשובים בהגדרה שבה פרסום קוד המקור הוא ברירת המחדל.
 
-The next line specifies that the source code is written for
-Solidity version 0.4.16, or a newer version of the language up to, but not including version 0.9.0.
-This is to ensure that the contract is not compilable with a new (breaking) compiler version, where it could behave differently.
-:ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
-source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
+השורה הבאה מציינת שקוד המקור נכתב עבור גרסת סולידיטי 0.4.16, או גרסה חדשה יותר של השפה עד, אך לא כולל, גרסה 0.9.0. זאת כדי להבטיח שהחוזה אינו ניתן לקומפילציה עם גרסת מהדר חדשה שבה היא יכולה להתנהג אחרת. :ref:`Pragmas<pragma>` הן הנחיות נפוצות עבור מהדרים לגבי אופן הטיפול בקוד מקור (למשל `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-A contract in the sense of Solidity is a collection of code (its *functions*) and
-data (its *state*) that resides at a specific address on the Ethereum
-blockchain. The line ``uint storedData;`` declares a state variable called ``storedData`` of
-type ``uint`` (*u*\nsigned *int*\eger of *256* bits). You can think of it as a single slot
-in a database that you can query and alter by calling functions of the
-code that manages the database. In this example, the contract defines the
-functions ``set`` and ``get`` that can be used to modify
-or retrieve the value of the variable.
+חוזה במובן של סולידיטי הוא אוסף של קוד (ה-*פונקציות* שלו) ונתונים (ה-*מצב* שלו) שנמצאים בכתובת ספציפית בבלוקצ'יין של איתריום. השורה ``;uint storedData`` מגדירה משתנה מצב בשם ``storedData`` מסוג ``uint`` ( *u*\nsigned *int*\eger של *256* ביטים). אפשר לחשוב על המשתנה כעל מקטע (Slot) בודד במסד נתונים שאפשר לבצע בו שאילתות ולשנות אותו על ידי קריאה לפונקציות של קוד שמנהל את מסד הנתונים. בדוגמה זו, החוזה מגדיר את הפונקציות ``set`` ו-``get`` שניתן להשתמש בהן כדי לשנות או לקרוא את הערך של המשתנה.
 
-To access a member (like a state variable) of the current contract, you do not typically add the ``this.`` prefix,
-you just access it directly via its name.
-Unlike in some other languages, omitting it is not just a matter of style,
-it results in a completely different way to access the member, but more on this later.
+כדי לגשת לחבר (כמו משתנה מצב) מהחוזה הנוכחי,
+בדרך כלל לא מוסיפים את הקידומת ``this.``,
+פשוט ניגשים אליו ישירות דרך השם שלו.
+שלא כמו בשפות אחרות, ההשמטה היא לא רק עניין של סגנון,
+אלא גישה אחרת לגמרי לחבר, אבל עוד על הנושא בהמשך.
 
-This contract does not do much yet apart from (due to the infrastructure
-built by Ethereum) allowing anyone to store a single number that is accessible by
-anyone in the world without a (feasible) way to prevent you from publishing
-this number. Anyone could call ``set`` again with a different value
-and overwrite your number, but the number is still stored in the history
-of the blockchain. Later, you will see how you can impose access restrictions
-so that only you can alter the number.
+החוזה הזה לא עושה הרבה עדיין מלבד (בשל התשתית שנבנתה על ידי איתריום)
+מתן אפשרות לכל אחד לאחסן מספר בודד הנגיש לכל אחד בעולם ללא דרך (אפשרית)  למנוע פרסום של המספר. כל אחד יכול לקרוא ל-``set`` שוב עם ערך אחר ולהחליף את המספר, אבל המספר עדיין מאוחסן בהיסטוריה של הבלוקצ'יין.
+יותר מאוחר, יוסבר כיצד תוכלו להטיל הגבלות גישה כך שרק אתם תוכלו לשנות את המספר.
 
 .. warning::
-    Be careful with using Unicode text, as similar looking (or even identical) characters can
-    have different code points and as such are encoded as a different byte array.
+    היזהרו בשימוש בטקסט יוניקוד, כי תווים עם מראה דומה (או אפילו זהה)
+    יכולים להיות מקודדים כמערך בתים שונה.
 
 .. note::
-    All identifiers (contract names, function names and variable names) are restricted to
-    the ASCII character set. It is possible to store UTF-8 encoded data in string variables.
+    כל המזהים (שמות חוזים, שמות פונקציות ושמות משתנים)
+    מוגבלים לקבוצת התווים ASCII. אפשר לאחסן נתונים המקודדים כ- UTF-8
+    במשתני מחרוזת.
 
 .. index:: ! subcurrency
 
-Subcurrency Example
-===================
+דוגמה לתת-מטבע (Subcurrency)
+=============================
 
-The following contract implements the simplest form of a
-cryptocurrency. The contract allows only its creator to create new coins (different issuance schemes are possible).
-Anyone can send coins to each other without a need for
-registering with a username and password, all you need is an Ethereum keypair.
+החוזה הבא מיישם את הצורה הפשוטה ביותר של מטבע מוצפן.
+החוזה מאפשר רק ליוצרו ליצור מטבעות חדשים (אפשריות תוכניות הנפקה שונות).
+כל אחד יכול לשלוח מטבעות אחד לשני ללא צורך
+להרשם עם שם משתמש וסיסמה. כל מה שצריך הוא צמד מפתחות של איתריום.
 
 .. code-block:: solidity
 
@@ -130,17 +115,17 @@ registering with a username and password, all you need is an Ethereum keypair.
         }
     }
 
-This contract introduces some new concepts, let us go through them one by one.
+חוזה זה מציג כמה מושגים חדשים, הבה נעבור עליהם אחד אחד.
 
-The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
-The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
-It is suitable for storing addresses of contracts, or a hash of the public half
-of a keypair belonging to :ref:`external accounts<accounts>`.
+השורה ``address public minter;`` מצהירה על משתנה מצב מסוג :ref:`address<address>`.
+סוג ``address`` הוא ערך של 160 ביטים שאינו מאפשר פעולות אריתמטיות כלשהן.
+דבר זה מתאים לאחסון כתובות של חוזים, או hash של החצי הציבורי
+של צמד מפתחות השייך ל-:ref:`חשבונות חיצוניים<accounts>`.
 
-The keyword ``public`` automatically generates a function that allows you to access the current value of the state
-variable from outside of the contract. Without this keyword, other contracts have no way to access the variable.
-The code of the function generated by the compiler is equivalent
-to the following (ignore ``external`` and ``view`` for now):
+מילת המפתח ``public`` מייצרת אוטומטית פונקציה המאפשרת גישה לערך הנוכחי של
+משתנה המצב מחוץ לחוזה. ללא מילת מפתח זו, לחוזים אחרים אין דרך לגשת למשתנה.
+הקוד של הפונקציה שנוצרת על ידי הקומפיילר הוא שווה ערך לקטע הקוד הבא 
+(בינתיים, התעלמו מ-``external`` ו-``view``):
 
 .. code-block:: solidity
 
@@ -148,23 +133,23 @@ to the following (ignore ``external`` and ``view`` for now):
 
 You could add a function like the above yourself, but you would have a function and state variable with the same name.
 You do not need to do this, the compiler figures it out for you.
+אפשר להוסיף פונקציה כמו הפונקציה למעלה, אבל אז יהיו פונקציה ומשתנה מצב עם אותו שם.
+ואין צורך לעשות זאת, המהדר מזהה את המצב.
 
 .. index:: mapping
 
-The next line, ``mapping(address => uint) public balances;`` also
-creates a public state variable, but it is a more complex datatype.
-The :ref:`mapping <mapping-types>` type maps addresses to :ref:`unsigned integers <integers>`.
+השורה ``mapping(address => uint) public balances;``
+גם מייצרת משתנה מצב ציבורי, אבל מטיפוס נתונים מורכב יותר.
+הטיפוס :ref:`mapping <mapping-types>` ממפה כתובות ל-:ref:`unsigned integers <integers>`.
 
-Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
-virtually initialised such that every possible key exists from the start and is mapped to a
-value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
-a mapping, nor a list of all values. Record what you
-added to the mapping, or use it in a context where this is not needed. Or
-even better, keep a list, or use a more suitable data type.
+ניתן לראות מיפויים בתור `טבלאות hash <https://en.wikipedia.org/wiki/Hash_table>`_ שהן
+שלמעשה מאותחלות כך שכל מפתח אפשרי קיים מההתחלה וממופה
+לערך שבו כל הביטים מאופסים. עם זאת, לא ניתן לקבל רשימה של כל מפתחות המיפוי, ולא רשימה של כל הערכים. צריך לרשום את מה
+שנוסף למיפוי, או להשתמש בו באופן כזה שבו אין צורך בכך. אוֹ
+אפילו טוב יותר, שימרו רשימה, או השתמשו בסוג נתונים מתאים יותר.
 
-The :ref:`getter function<getter-functions>` created by the ``public`` keyword
-is more complex in the case of a mapping. It looks like the
-following:
+ה- :ref:`getter פונקצית<getter-functions>` שנוצרה על ידי מילת המפתח ``public``
+מורכבת יותר במקרה של מיפוי. הפונקציה נראית כמו הקוד הבא:
 
 .. code-block:: solidity
 
@@ -172,21 +157,20 @@ following:
         return balances[account];
     }
 
-You can use this function to query the balance of a single account.
+אתם יכולים להשתמש בפונקציה זו כדי לברר מה היתרה של חשבון בודד.
 
 .. index:: event
 
-The line ``event Sent(address from, address to, uint amount);`` declares
-an :ref:`"event" <events>`, which is emitted in the last line of the function
-``send``. Ethereum clients such as web applications can
-listen for these events emitted on the blockchain without much
-cost. As soon as it is emitted, the listener receives the
-arguments ``from``, ``to`` and ``amount``, which makes it possible to track
-transactions.
+:ref:`"event" <events>` (אירוע), נפלט בשורה האחרונה של הפונקציה
+``send``. לקוחות איתריום כגון יישומי אינטרנט יכולים
+להקשיב לאירועים הללו הנפלטים בבלוקצ'יין בלי הרבה
+עֲלוּת. ברגע שהאירוע נפלט, המאזין מקבל את
+הארגומנטים ``from``, ``to`` ו-``amount``, המאפשרים מעקב
+אחרי עסקאות.
 
-To listen for this event, you could use the following
-JavaScript code, which uses `web3.js <https://github.com/web3/web3.js/>`_ to create the ``Coin`` contract object,
-and any user interface calls the automatically generated ``balances`` function from above:
+כדי להאזין לאירוע, אפשר להשתמש בקטע
+קוד JavaScript הבא, המשתמש ב-`web3.js <https://github.com/web3/web3.js/>`_ כדי ליצור את האובייקט של החוזה ``Coin``,
+וכל ממשק משתמש קורא לפונקציית ``balances`` שנוצרה אוטומטית מהקוד למעלה:
 
 .. code-block:: javascript
 
@@ -203,400 +187,336 @@ and any user interface calls the automatically generated ``balances`` function f
 
 .. index:: coin
 
-The :ref:`constructor<constructor>` is a special function that is executed during the creation of the contract and
-cannot be called afterwards. In this case, it permanently stores the address of the person creating the
-contract. The ``msg`` variable (together with ``tx`` and ``block``) is a
-:ref:`special global variable <special-variables-functions>` that
-contains properties which allow access to the blockchain. ``msg.sender`` is
-always the address where the current (external) function call came from.
+ה-:ref:`constructor<constructor>` היא פונקציה מיוחדת שמתבצעת במהלך יצירת החוזה ולא ניתן לרוא לה לאחר מכן. במקרה זה, היא מאחסנת לצמיתות את הכתובת של האדם שיוצר את
+החוֹזֶה. המשתנה ``msg`` (יחד עם ``tx`` ו-``block``) הוא
+:ref:`משתנה גלובלי מיוחד <special-variables-functions>` כי הוא
+מכיל מאפיינים המאפשרים גישה לבלוקצ'יין. ``msg.sender`` היא
+תמיד הכתובת שממנה הגיעה קריאת הפונקציה הנוכחית (החיצונית).
 
-The functions that make up the contract, and that users and contracts can call are ``mint`` and ``send``.
+הפונקציות המרכיבות את החוזה, ושמשתמשים וחוזים יכולים לקרוא הן ``mint`` ו``שלח``.
 
-The ``mint`` function sends an amount of newly created coins to another address. The :ref:`require
-<assert-and-require>` function call defines conditions that reverts all changes if not met. In this
-example, ``require(msg.sender == minter);`` ensures that only the creator of the contract can call
-``mint``. In general, the creator can mint as many tokens as they like, but at some point, this will
-lead to a phenomenon called "overflow". Note that because of the default :ref:`Checked arithmetic
-<unchecked>`, the transaction would revert if the expression ``balances[receiver] += amount;``
-overflows, i.e., when ``balances[receiver] + amount`` in arbitrary precision arithmetic is larger
-than the maximum value of ``uint`` (``2**256 - 1``). This is also true for the statement
-``balances[receiver] += amount;`` in the function ``send``.
+הפונקציה ``mint`` שולחת כמות של מטבעות שזה עתה נוצרו לכתובת אחרת. קריאת לפונקציה :ref:`require<assert-and-require>` מגדירה תנאים שבמידה ולא כולם מתקיימים, כל השינויים שנעשו מוחזרים לאחור ומבטלים. בדוגמה הזאת, ``require(msg.sender == minter);`` מבטיח שרק יוצר החוזה יכול לקרוא ל-``mint``. באופן כללי, אין מגבלה על כמות האסימונים שאפשר לייצר, אבל בשלב מסוים יצירת האסימונים תוביל לתופעה הנקראת "הצפה". שימו לב שבגלל ברירת המחדל :ref:`Checked arithmetic<unchecked>`, העסקה תתבטל אם הביטוי ``balances[receiver] += amount;`` יגלוש, כלומר, כאשר ``balances[receiver] + amount`` בחישוב אריתמטי עם דיוק שרירותי גדול יותר מהערך המקסימלי של ``uint`` (``2**256 - 1``). דבר זה נכון גם להצהרה ``balances[receiver] += amount;`` בפונקציה ``send``.
 
-:ref:`Errors <errors>` allow you to provide more information to the caller about
-why a condition or operation failed. Errors are used together with the
-:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
-aborts and reverts all changes similar to the ``require`` function, but it also
-allows you to provide the name of an error and additional data which will be supplied to the caller
-(and eventually to the front-end application or block explorer) so that
-a failure can more easily be debugged or reacted upon.
+:ref:`שגיאות <errors>` מאפשרות לספק מידע נוסף לקורא לפונקציה לגבי מדוע תנאי או פעולה נכשלו. שגיאות משמשות יחד עם :ref:`revert statement <revert-statement>`. הצהרת ``revert`` מחזירה לאחור ומבטלת ללא תנאי את כל השינויים, בדומה לפונקציית ``revert``, אך גם מאפשרת לספק את שם השגיאה ונתונים נוספים שיסופקו לקורא לפונקציה (ובסופו של דבר לאפליקציית ה-front-end או ה-block explorer) כך שבמקרה של כשל יהיה אפשר לנפות באגים או להגיב עליהם בקלות רבה יותר.
 
-The ``send`` function can be used by anyone (who already
-has some of these coins) to send coins to anyone else. If the sender does not have
-enough coins to send, the ``if`` condition evaluates to true. As a result, the ``revert`` will cause the operation to fail
-while providing the sender with error details using the ``InsufficientBalance`` error.
+הפונקציה ``send`` יכולה לשמש כל אחד (שכבר יש להם כמה מהמטבעות האלה) כדי לשלוח מטבעות לכל אחד אחר. אם אין לשולחים מספיק מטבעות לשלוח, התנאי ``if`` bjac כאמת. כתוצאה מכך, ה-``revert`` יגרום לפעולה להיכשל תוך מתן פרטי שגיאה לשולח באמצעות השגיאה ``InsufficientBalance``.
 
-.. note::
-    If you use
-    this contract to send coins to an address, you will not see anything when you
-    look at that address on a blockchain explorer, because the record that you sent
-    coins and the changed balances are only stored in the data storage of this
-    particular coin contract. By using events, you can create
-    a "blockchain explorer" that tracks transactions and balances of your new coin,
-    but you have to inspect the coin contract address and not the addresses of the
-    coin owners.
+.. note:: 
+    אם אתם משתמשים בחוזה הזה כדי לשלוח מטבעות לכתובת, לא תראו כלום כאשר אתה תסתכלו על הכתובת הזו ב-blockchain Explorer, בגלל שהרשומה שבה שלחתם מטבעות והיתרות שהשתנו מאוחסנים רק באחסון הנתונים של חוזה המטבע המסוים הזה. על ידי שימוש באירועים, אתם יכולים ליצור "blockchain Explorer" שעוקב אחר עסקאות ויתרות של המטבע החדש שלכם, אבל אתם צריכים לבדוק את כתובת חוזה המטבע ולא את הכתובות של בעלי המטבעות.
 
 .. _blockchain-basics:
 
-*****************
-Blockchain Basics
-*****************
+******************
+יסודות הבלוקצ'יין
+******************
 
-Blockchains as a concept are not too hard to understand for programmers. The reason is that
-most of the complications (mining, `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
+בלוקצ'יין בתור מושג לא קשה מדי להבנה ע:י מתכנתים. הסיבה היא שרוב הסיבוכים (כרייה, `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
 `elliptic-curve cryptography <https://en.wikipedia.org/wiki/Elliptic_curve_cryptography>`_,
-`peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, etc.)
-are just there to provide a certain set of features and promises for the platform. Once you accept these
-features as given, you do not have to worry about the underlying technology - or do you have
-to know how Amazon's AWS works internally in order to use it?
+`peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, וכו') הם שם רק כדי לספק קבוצה מסוימת של תכונות והבטחות לפלטפורמה. ברגע שאתם מקבלים את התכונות האלה כפי שהוגדרו, אין צורך לדאוג לגבי הטכנולוגיה הבסיסית - או שאתם צריכים לדעת איך ה-AWS של אמזון פועל באופן פנימי כדי להשתמש בו?
 
 .. index:: transaction
 
-Transactions
-============
+טרנזקציות
+===========
 
-A blockchain is a globally shared, transactional database.
-This means that everyone can read entries in the database just by participating in the network.
-If you want to change something in the database, you have to create a so-called transaction
-which has to be accepted by all others.
-The word transaction implies that the change you want to make (assume you want to change
-two values at the same time) is either not done at all or completely applied. Furthermore,
-while your transaction is being applied to the database, no other transaction can alter it.
+בלוקצ'יין הוא מסד נתוני עסקאות משותף גלובלי.
+המשמעות היא שכל אחד יכול לקרוא ערכים במסד הנתונים רק על ידי השתתפות ברשת.
+כדי לשנות משהו במסד הנתונים, צריך ליצור מה שנקרא טרנזקציה
+שצריכה להתקבל על ידי כל האחרים.
+המילה טרנזקציה מרמזת על כך שהשינוי שאותו רוצים לעשות (נניח שינוי
+שני ערכים בו-זמנית) - או שהוא לא נעשה כלל או שהוא מיושם לחלוטין. יתר על כן,
+בזמן שהטרנזקציה מוחלת על מסד הנתונים, שום טרנזקציה אחרת לא יכולה לשנות אותה.
 
-As an example, imagine a table that lists the balances of all accounts in an
-electronic currency. If a transfer from one account to another is requested,
-the transactional nature of the database ensures that if the amount is
-subtracted from one account, it is always added to the other account. If due
-to whatever reason, adding the amount to the target account is not possible,
-the source account is also not modified.
+כדוגמה, דמיינו טבלה המפרטת את היתרות של כל החשבונות של
+מטבע אלקטרוני מסויים. אם יש בקשה להעברה מחשבון אחד לאחר,
+אופי הטרנזקציות של מסד הנתונים מבטיח שאם הסכום מופחת מחשבון אחד, הוא תמיד יתווסף לחשבון השני. אם בשל
+סיבה כלשהיא, הוספת הסכום לחשבון היעד אינה אפשרית,
+גם חשבון המקור לא שונה.
 
-Furthermore, a transaction is always cryptographically signed by the sender (creator).
-This makes it straightforward to guard access to specific modifications of the
-database. In the example of the electronic currency, a simple check ensures that
-only the person holding the keys to the account can transfer some compensation, e.g. Ether, from it.
+בנוסף לכך, עסקה נחתמת תמיד בחתימה קריפטוגרפית על ידי השולח (היוצר).
+דבר זה מאפשר לפשט את ההגנה על גישה לשינויים ספציפיים של
+מאגר המידע. בדוגמה של המטבע האלקטרוני, בדיקה פשוטה מבטיחה שרק האדם המחזיק במפתחות לחשבון יכול להעביר תשלום כלשהו, למשל Ether, ממנו.
 
 .. index:: ! block
 
-Blocks
-======
+בלוקים
+=======
 
-One major obstacle to overcome is what (in Bitcoin terms) is called a "double-spend attack":
-What happens if two transactions exist in the network that both want to empty an account?
-Only one of the transactions can be valid, typically the one that is accepted first.
-The problem is that "first" is not an objective term in a peer-to-peer network.
+מכשול מרכזי אחד שצריך להתגבר עליו הוא מה שמכונה (במונחי ביטקוין) "התקפת הוצאה-כפולה" ("double-spend attack"): מה קורה אם קיימות שתי טרנזקציות ברשת ששתיהן רוצות לרוקן חשבון? רק אחת מהטרנזקציות יכולה להיות תקפה, בדרך כלל זו שמתקבלת ראשונה. הבעיה היא ש-"ראשון" אינו מונח אובייקטיבי ברשת עמית לעמית.
 
-The abstract answer to this is that you do not have to care. A globally accepted order of the transactions
-will be selected for you, solving the conflict. The transactions will be bundled into what is called a "block"
-and then they will be executed and distributed among all participating nodes.
-If two transactions contradict each other, the one that ends up being second will
-be rejected and not become part of the block.
+התשובה המופשטת לכך היא שאין לסדר חשיבות. סדר טרנזקציות מקובל גלובלית ייבחר ע"י המערכת ויפתור את ההתנגשות. הטרנזקציות יקובצו במה שנקרא "בלוק" ואז הן יבוצעו ויופצו בין כל הצמתים (Nodes) המשתתפים. אם שתי טרנזקציות סותרות זו את זו, זו שבסופו של דבר תהיה שנייה תידחה ולא להפוך לחלק מהבלוק.
 
-These blocks form a linear sequence in time, and that is where the word "blockchain" derives from.
-Blocks are added to the chain at regular intervals, although these intervals may be subject to change in the future.
-For the most up-to-date information, it is recommended to monitor the network, for example, on `Etherscan <https://etherscan.io/chart/blocktime>`_.
+בלוקים אלו יוצרים רצף ליניארי בזמן, ומכאן נובעת המילה "בלוקצ'יין". בלוקים מתווספים לשרשרת במרווחי זמן קבועים, אם כי מרווחים אלה עשויים להשתנות במשך הזמן. לקבלת המידע העדכני ביותר, מומלץ לנטר את הרשת, למשל, ב- `Etherscan <https://etherscan.io/chart/blocktime>`_.
 
-As part of the "order selection mechanism" (which is called "mining") it may happen that
-blocks are reverted from time to time, but only at the "tip" of the chain. The more
-blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
-are reverted and even removed from the blockchain, but the longer you wait, the less
-likely it will be.
+כחלק מ"מנגנון בחירת הסדר" (שנקרא "כרייה") עלול לקרות שהשינויים שבוצעו ע"י בלוקים יוחזרו לאחור ויבוטלו מדי פעם, אבל רק ב"קצה" השרשרת. כמה שיותר בלוקים מתווספים לפני בלוק מסוים, כך פוחת הסיכוי ששינויי בלוק זה יבוטלו. לכן ייתכן שהטרנזקציות שלכם יבוטלו ואולי אפילו יוסרו מהבלוקצ'יין, אך ככל שתחכו יותר כך פחות סביר שזה יקרה.
 
-.. note::
-    Transactions are not guaranteed to be included in the next block or any specific future block,
-    since it is not up to the submitter of a transaction, but up to the miners to determine in which block the transaction is included.
-
-    If you want to schedule future calls of your contract, you can use
-    a smart contract automation tool or an oracle service.
+.. note:: 
+    לא מובטח שטרנזקציות ייכללו בבלוק הבא או בכל בלוק עתידי ספציפי, מכיוון שהכורים קובעים באיזה בלוק הטרנזקציה כלולה, ולא שולח הטרנזקציה. אם אתם רוצים לתזמן פעילויות עתידיות בחוזה שלכם, אתם יכולים להשתמש בכלי אוטומציית חוזים חכמים או בשירותי אורקל.
 
 .. _the-ethereum-virtual-machine:
 
 .. index:: !evm, ! ethereum virtual machine
 
-****************************
-The Ethereum Virtual Machine
-****************************
+********************************
+מכונת איתריום הוירטואלית (EVM)
+********************************
 
-Overview
-========
+סקירה כללית
+============
 
-The Ethereum Virtual Machine or EVM is the runtime environment
-for smart contracts in Ethereum. It is not only sandboxed but
-actually completely isolated, which means that code running
-inside the EVM has no access to network, filesystem or other processes.
-Smart contracts even have limited access to other smart contracts.
+המכונה הורטואלית של איטריום (Ethereum Virtual Machine - EVM) היא סביבת זמן הריצה עבור חוזים חכמים באתריום. היא לא משמשת רק בארגז חול אלא למעשה מבודדת לחלוטין, מה שאומר שלקוד שרץ בתוך ה-EVM אין גישה לרשת, למערכת קבצים או לתהליכים אחרים. לחוזים חכמים יש אפילו גישה מוגבלת לחוזים חכמים אחרים.
 
 .. index:: ! account, address, storage, balance
 
 .. _accounts:
 
-Accounts
+חשבונות
 ========
 
-There are two kinds of accounts in Ethereum which share the same
-address space: **External accounts** that are controlled by
-public-private key pairs (i.e. humans) and **contract accounts** which are
-controlled by the code stored together with the account.
+ישנם שני סוגים של חשבונות ב-Ethereum שחולקים את אותו
+מרחב כתובת: **חשבונות חיצוניים** הנשלטים על ידי
+צמדי מפתחות ציבוריים-פרטיים (כלומר בני אדם) ו-**חשבונות חוזה**
+שנשלטים על ידי הקוד המאוחסן יחד עם החשבון.
 
-The address of an external account is determined from
-the public key while the address of a contract is
-determined at the time the contract is created
-(it is derived from the creator address and the number
-of transactions sent from that address, the so-called "nonce").
+הכתובת של חשבון חיצוני נקבעת מתוך
+המפתח הציבורי בזמן שכתובת החוזה
+נקבע במועד יצירת החוזה
+(כתובת זו נגזרת מכתובת היוצר ומהמספר
+של טרנזקציות שנשלחו מאותה כתובת, מה שנקרא "nonce").
 
-Regardless of whether or not the account stores code, the two types are
-treated equally by the EVM.
+לא משנה אם החשבון מאחסן קוד או לא, שני הסוגים
+מטופל באופן שווה על ידי ה-EVM.
 
-Every account has a persistent key-value store mapping 256-bit words to 256-bit
-words called **storage**.
+לכל חשבון יש מאגר מפתחות-ערכים (key-value) תמידי (persistent) הממפה מילים של 256 ביטים למילים של 256 ביטים
+שנקרא **Storage**.
 
-Furthermore, every account has a **balance** in
-Ether (in "Wei" to be exact, ``1 ether`` is ``10**18 wei``) which can be modified by sending transactions that
-include Ether.
+יתר על כן, לכל חשבון יש **יתרה (balance)** באיתר (ב"Wei" ליתר דיוק, ``איתר 1`` הוא ``10**18 wei``) שניתן לשנות
+על ידי שליחת טרנזקציות שכוללות איתר.
 
 .. index:: ! transaction
 
-Transactions
-============
+טרנזקציות
+==========
 
-A transaction is a message that is sent from one account to another
-account (which might be the same or empty, see below).
-It can include binary data (which is called "payload") and Ether.
+טרנזקציה היא הודעה שנשלחת מחשבון אחד
+לחשבון אחר (שעשוי להיות זהה או ריק, ראה להלן).
+הטרנזקציה יכולה גם לכלול נתונים בינאריים (שנקראים "payload") ואיתר.
 
-If the target account contains code, that code is executed and
-the payload is provided as input data.
+אם חשבון היעד מכיל קוד, קוד זה מבוצע וה-payload מסופק כנתוני קלט.
 
-If the target account is not set (the transaction does not have
-a recipient or the recipient is set to ``null``), the transaction
-creates a **new contract**.
-As already mentioned, the address of that contract is not
-the zero address but an address derived from the sender and
-its number of transactions sent (the "nonce"). The payload
-of such a contract creation transaction is taken to be
-EVM bytecode and executed. The output data of this execution is
-permanently stored as the code of the contract.
-This means that in order to create a contract, you do not
-send the actual code of the contract, but in fact code that
-returns that code when executed.
+אם חשבון היעד אינו מוגדר (אין לטרנזקציה
+נמען או הנמען מוגדר כ-``null``), הטרנזקציה
+יוצרת **חוזה חדש**.
+כאמור, כתובתו של אותו חוזה אינה
+כתובת האפס אלא כתובת הנגזרת מהשולח
+וממספר הטרנזקציות שנשלחו (ה-"nonce"). ה-payload
+של טרנזקציה כזו שיוצרת חוזה נחשבת
+כ-EVM bytecode ומבוצעת. נתוני הפלט של ביצוע זה
+מאוחסנים לצמיתות כקוד החוזה.
+משתמע מכך שכדי ליצור חוזה לא נשלח
+הקוד בפועל של החוזה, אלא למעשה נשלח קוד שמחזיר את הזה כאשר הוא מופעל.
 
-.. note::
-  While a contract is being created, its code is still empty.
-  Because of that, you should not call back into the
-  contract under construction until its constructor has
-  finished executing.
+.. note:: 
+  בזמן יצירת חוזה, הקוד שלו עדיין ריק.
+  לכן לא קוראים לחוזה בהקמה עד שהיצירה שלו מסתיימת.
+
 
 .. index:: ! gas, ! gas price
 
-Gas
+גז
 ===
 
-Upon creation, each transaction is charged with a certain amount of **gas**
-that has to be paid for by the originator of the transaction (``tx.origin``).
-While the EVM executes the
-transaction, the gas is gradually depleted according to specific rules.
-If the gas is used up at any point (i.e. it would be negative),
-an out-of-gas exception is triggered, which ends execution and reverts all modifications
-made to the state in the current call frame.
+עם היצירה, כל טרנזקציה מחויבת בכמות מסוימת של **גז**
+שעליו יש לשלם על ידי יוזם הטרנזקציה(``tx.origin``).
+בזמן שה-EVM מבצע את
+הטרנזקציה, הגז מתרוקן בהדרגה על פי כללים ספציפיים.
+אם הגז מנוצל בשלב כלשהו (כלומר, יהפוך לשלילי),
+מופעל טיפול חריג (exception) שלא משתמש בגז, אשר מסיים את הביצוע ומחזיר לאחור את כל השינויים
+שבוצעו למצב במסגרת הקריאה הנוכחית לחוזה.
 
-This mechanism incentivizes economical use of EVM execution time
-and also compensates EVM executors (i.e. miners / stakers) for their work.
-Since each block has a maximum amount of gas, it also limits the amount
-of work needed to validate a block.
+מנגנון זה מעודד שימוש חסכוני בזמן ביצוע EVM
+וכן מפצה את מבצעי EVM (כלומר כורים / משקיעים) על עבודתם.
+מכיוון שלכל בלוק יש כמות מקסימלית של גז, הוא גם מגביל את כמות
+העבודה הדרושה כדי לאמת בלוק.
 
-The **gas price** is a value set by the originator of the transaction, who
-has to pay ``gas_price * gas`` up front to the EVM executor.
-If some gas is left after execution, it is refunded to the transaction originator.
-In case of an exception that reverts changes, already used up gas is not refunded.
+**מחיר הגז** הוא ערך שנקבע על ידי יזם הטרנזקציה, אשר
+צריך לשלם ``מחיר_גז * גז`` מראש למבצע ה-EVM.
+אם נותר גז לאחר הביצוע, הוא יוחזר ליזם הטרנזקציה.
+במקרה של חריגה שמחזירה לאחור ומבטלת שינויים, דלק שכבר נוצל לא יוחזר.
 
-Since EVM executors can choose to include a transaction or not,
-transaction senders cannot abuse the system by setting a low gas price.
+מכיוון שמבצעי EVM יכולים לבחור אם לכלול טרנזקציה בבלוק,
+שולחי טרנזקציות אינם יכולים לעשות שימוש לרעה במערכת על ידי קביעת מחיר גז נמוך.
 
 .. index:: ! storage, ! memory, ! stack
 
-Storage, Memory and the Stack
-=============================
+סוגי מרחבי אחסון - Storage, Memory and the Stack
+=================================================
 
 The Ethereum Virtual Machine has three areas where it can store data:
 storage, memory and the stack.
 
-Each account has a data area called **storage**, which is persistent between function calls
-and transactions.
-Storage is a key-value store that maps 256-bit words to 256-bit words.
-It is not possible to enumerate storage from within a contract, it is
-comparatively costly to read, and even more to initialise and modify storage. Because of this cost,
-you should minimize what you store in persistent storage to what the contract needs to run.
-Store data like derived calculations, caching, and aggregates outside of the contract.
-A contract can neither read nor write to any storage apart from its own.
+לכל חשבון יש אזור נתונים שנקרא **Storage**, שנשמר בין קריאות לפונקציה
+וטרנזקציות.
+אחסון הוא מאגר מפתח-ערך שממפה מילים של 256 ביטים למילים של 256 ביטים.
+לא ניתן לבצע enumeration ל-storage מתוך חוזה, הוא
+יקר יחסית לקריאה ממנו, ואפילו יקר יותר לאתחל ולשנות את ה-storage. בגלל העלות הזו,
+צריך לצמצם למינימום את מה שמאחסנים ב-storage למה שהחוזה צריך כדי לפעול.
+אחסנו ב-storage נתונים כמו תוצאות של חישובים, שמירה במטמון ונתונים מחוץ לחוזה.
+חוזה אינו יכול לקרוא או לכתוב ל-storage כלשהו מלבד שלו.
 
-The second data area is called **memory**, of which a contract obtains
-a freshly cleared instance for each message call. Memory is linear and can be
-addressed at byte level, but reads are limited to a width of 256 bits, while writes
-can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when
-accessing (either reading or writing) a previously untouched memory word (i.e. any offset
-within a word). At the time of expansion, the cost in gas must be paid. Memory is more
-costly the larger it grows (it scales quadratically).
+אזור הנתונים השני נקרא **memory**, שמאותחל מחדש עבור כל קריאה ממנו. ה-memory הוא ליניארי ויכול להיות
+מטופל ברמת בתים, אך הקריאות מוגבלות לרוחב של 256 ביטים, כאשר כתיבה
+יכולה להתבצע הן ברוחב של 8 ביטים או ברוחב של 256 ביטים. ה-memory מורחב במילה (256 סיביות), כאשר
+ניגשים (קריאה או כתיבה) למילת memory שלא נגעו בה בעבר (כלומר כל היסט
+בתוך המילה). בעת ההרחבה יש לשלם את העלות בגז. ה-memory יותר
+יקר ככל שהוא גדל (והעלות גדלה באופן ריבועי).
 
-The EVM is not a register machine but a stack machine, so all
-computations are performed on a data area called the **stack**. It has a maximum size of
-1024 elements and contains words of 256 bits. Access to the stack is
-limited to the top end in the following way:
-It is possible to copy one of
-the topmost 16 elements to the top of the stack or swap the
-topmost element with one of the 16 elements below it.
-All other operations take the topmost two (or one, or more, depending on
-the operation) elements from the stack and push the result onto the stack.
-Of course it is possible to move stack elements to storage or memory
-in order to get deeper access to the stack,
-but it is not possible to just access arbitrary elements deeper in the stack
-without first removing the top of the stack.
+ה-EVM אינו מכונת register אלא מכונת stack, לכן כל
+החישובים מבוצעים על אזור נתונים הנקרא **stack**. ל-stack יש גודל מקסימלי של
+1024 אלמנטים והוא מכיל מילים של 256 ביטים. הגישה ל-stack
+מוגבלת לקצה העליון בצורה הבאה:
+אפשר להעתיק את אחד
+מ-16 האלמנטים העליונים ביותר לראש
+ה-stack או להחליף את
+האלמנט העליון עם אחד מ-16 האלמנטים מתחתיו.
+כל שאר הפעולות לוקחות את שני הלמנטים העליונים ביותר (אחד או יותר, תלוי
+בפעולה) מה ודוחפות את התוצאה אל ה-stack.
+כמובן שאפשר להעביר אלמנטים מה-stack ל-storage או ל-memory
+על מנת לקבל גישה עמוקה יותר ל-stack,
+אבל לא ניתן לגשת לאלמנטים שרירותיים עמוק יותר ב-stack
+מבלי להסיר תחילה את החלק העליון שלו.
 
 .. index:: ! instruction
 
-Instruction Set
-===============
+סט הוראות
+==========
 
-The instruction set of the EVM is kept minimal in order to avoid
-incorrect or inconsistent implementations which could cause consensus problems.
-All instructions operate on the basic data type, 256-bit words or on slices of memory
-(or other byte arrays).
-The usual arithmetic, bit, logical and comparison operations are present.
-Conditional and unconditional jumps are possible. Furthermore,
-contracts can access relevant properties of the current block
-like its number and timestamp.
+סט ההוראות של ה-EVM נשמרת מינימלית על מנת להימנע
+מיישומים לא נכונים או לא עקביים שעלולים לגרום לבעיות קונצנזוס בין הצמתים.
+כל ההוראות פועלות על סוג הנתונים הבסיסי, מילים של 256 ביטים או על פרוסות זיכרון (או מערכי בתים אחרים).
+קיימות הפעולות הרגילות - פעולות החשבון, ביטים, הלוגיות וההשוואה.
+קפיצות מותנות ובלתי מותנות אפשריות. יתר על כן,
+חוזים יכולים לגשת למאפיינים הרלוונטיים של הבלוק הנוכחי
+כמו המספר וחותמת הזמן שלו.
 
-For a complete list, please see the :ref:`list of opcodes <opcodes>` as part of the inline
-assembly documentation.
+לרשימה מלאה, ראה :ref:`list of opcodes <opcodes>` כחלק מתעוד האסמבלי.
 
 .. index:: ! message call, function;call
 
-Message Calls
-=============
+קריאות לחוזה (Message Calls)
+=============================
 
-Contracts can call other contracts or send Ether to non-contract
-accounts by the means of message calls. Message calls are similar
-to transactions, in that they have a source, a target, data payload,
-Ether, gas and return data. In fact, every transaction consists of
-a top-level message call which in turn can create further message calls.
+חוזים יכולים להתקשר לחוזים אחרים או לשלוח איתר
+לחשבונות שאינם חוזים באמצעות קריאות לחוזים (message calls). קריאות לחוזים דומות
+לטרנזקציות בכך שיש להן מקור, יעד, payload,
+נתוני איתר, גז ונתונים שמוחזרים לקורא (return data). למעשה, כל טרנזקציה מורכבת 
+מקריאה לחוזה ברמה העליונה אשר בתורה יכולה ליצור קריאות נוספות לחוזים.
 
-A contract can decide how much of its remaining **gas** should be sent
-with the inner message call and how much it wants to retain.
-If an out-of-gas exception happens in the inner call (or any
-other exception), this will be signaled by an error value put onto the stack.
-In this case, only the gas sent together with the call is used up.
-In Solidity, the calling contract causes a manual exception by default in
-such situations, so that exceptions "bubble up" the call stack.
+חוזה יכול להחליט כמה מה**גז** שנותר שלו ישלח
+עם הקריאה הפנימית לחוזה וכמה הוא רוצה לשמור.
+אם מתרחשת חריגה (exception) cdkk abdnr vdz בקריאה הפנימית לחוזה (או בכל
+חריגה אחרת), מצב זה יסומן על ידי ערך שגיאה שהוכנס ל-stack.
+במקרה זה, רק הגז שנשלח יחד עם הקריאה לחוזה מנוצל.
+בסולידיטי, החוזה הקורא גורם לחריגה ידנית כברירת מחדל
+במצבים כאלה, כך שחריגות "מבעבעות" דרך מחסנית הקריאות.
 
-As already said, the called contract (which can be the same as the caller)
-will receive a freshly cleared instance of memory and has access to the
-call payload - which will be provided in a separate area called the **calldata**.
-After it has finished execution, it can return data which will be stored at
-a location in the caller's memory preallocated by the caller.
-All such calls are fully synchronous.
+כפי שכבר נאמר, החוזה שנקרא (שיכול להיות זהה לחוזה הקורא)
+יקבל memory נקי ויש לו גישה
+ל-payload של הקריאה באזור נפרד הנקרא **calldata**.
+לאחר סיום הביצוע, vjuzv יכול להחזיר נתונים שיישמרו
+במיקום ב-memory שהוקצה מראש על ידי החוזה הקורא.
+כל הקריאות הללו לחוזים הן סינכרוניות לחלוטין.
 
-Calls are **limited** to a depth of 1024, which means that for more complex
-operations, loops should be preferred over recursive calls. Furthermore,
-only 63/64th of the gas can be forwarded in a message call, which causes a
-depth limit of a little less than 1000 in practice.
+קריאות לחוזים **מוגבלות** לעומק 1024, מה שאומר שעבור פעולות
+מורכבות יותר, יש להעדיף לולאות על פני קריאות רקורסיביות לחוזים. יתר על כן,
+בקריאה לחוזה ניתן להעביר רק עד 63/64 מהגז של החוזה הקורא, מה שגורם
+למגבלת עומק של קצת פחות מ-1000 בפועל.
 
 .. index:: delegatecall, library
 
 Delegatecall and Libraries
 ==========================
 
-There exists a special variant of a message call, named **delegatecall**
-which is identical to a message call apart from the fact that
-the code at the target address is executed in the context (i.e. at the address) of the calling
-contract and ``msg.sender`` and ``msg.value`` do not change their values.
+קיימת גרסה מיוחדת של קריאה לחוזה, בשם **delegatecall**
+שזהה kerhtv kjuzv מלבד העובדה
+aהקוד בכתובת היעד מבוצע בהקשר (כלומר בכתובת) של החוזה הקורא
+ו-``msg.sender`` ו-``msg.value`` אינם משנים את הערכים שלהם.
 
-This means that a contract can dynamically load code from a different
-address at runtime. Storage, current address and balance still
-refer to the calling contract, only the code is taken from the called address.
+המשמעות היא שחוזה יכול לטעון באופן דינמי קוד
+מכתובת אחרת בזמן ריצה. storage, כתובת נוכחית ויתרה (balance) עדיין
+מתייחסים לחוזה הקורא, רק הקוד נלקח מכתובת החוזה שנקרא.
 
-This makes it possible to implement the "library" feature in Solidity:
-Reusable library code that can be applied to a contract's storage, e.g. in
-order to implement a complex data structure.
+דבר זה מאפשר ליישם את תכונת "הספרייה" בסולידיטי:
+קוד ספרייה לשימוש חוזר שניתן להחיל על ה-storage של חוזה, למשל.
+על מנת ליישם מבנה נתונים מורכב.
 
 .. index:: log
 
-Logs
-====
+לוגים
+=====
 
-It is possible to store data in a specially indexed data structure
-that maps all the way up to the block level. This feature called **logs**
-is used by Solidity in order to implement :ref:`events <events>`.
-Contracts cannot access log data after it has been created, but they
-can be efficiently accessed from outside the blockchain.
-Since some part of the log data is stored in `bloom filters <https://en.wikipedia.org/wiki/Bloom_filter>`_, it is
-possible to search for this data in an efficient and cryptographically
-secure way, so network peers that do not download the whole blockchain
-(so-called "light clients") can still find these logs.
+אפשר לאחסן נתונים במבנה נתונים מסודר במיוחד
+שממפה את כל הדרך עד לרמת הבלוק. תכונה זו הנקראת **לוגים**
+משמשת את סולידיטי כדי ליישם את :ref:`ארועים <events>`.
+חוזים אינם יכולים לגשת לנתוני לוג לאחר יצירתם, אבל הם
+ניתנים לגישה ביעילות מחוץ לבלוקצ'יין.
+מכיוון שחלק מנתוני הלוג מאוחסנים ב`bloom filters <https://en.wikipedia.org/wiki/Bloom_filter>`_,
+ניתן לחפש נתונים אלה בצורה יעילה ומוצפנת
+בדרך מאובטחת, ולכן עמיתים ברשת שלא מורידים את כל הבלוקצ'יין
+(מה שנקרא "לקוחות קלים") עדיין יכולים למצוא את הלוגים האלו.
 
 .. index:: contract creation
 
-Create
-======
+יצירת חוזים
+============
 
-Contracts can even create other contracts using a special opcode (i.e.
-they do not simply call the zero address as a transaction would). The only difference between
-these **create calls** and normal message calls is that the payload data is
-executed and the result stored as code and the caller / creator
-receives the address of the new contract on the stack.
+חוזים יכולים אפילו ליצור חוזים אחרים באמצעות קוד-פעולה מיוחד (כלומר.
+הם לא פשוט קוראים לכתובת האפס כפי שטרנזקציה עושה). ההבדל היחיד בין
+**קריאה ליצירת חוזה** וקריאות לחוזה רגילות הן שנתוני ה-payload מבועים
+והתוצאה נשמרת כקוד, והחוזה הקורא
+מקבל את כתובת החוזה החדש ב-stack.
 
 .. index:: ! selfdestruct, deactivate
 
-Deactivate and Self-destruct
-============================
+נטרול והשמדה-עצמית
+====================
 
-The only way to remove code from the blockchain is when a contract at that
-address performs the ``selfdestruct`` operation. The remaining Ether stored
-at that address is sent to a designated target and then the storage and code
-is removed from the state. Removing the contract in theory sounds like a good
-idea, but it is potentially dangerous, as if someone sends Ether to removed
-contracts, the Ether is forever lost.
-
-.. warning::
-    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
-    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior
-    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+הדרך היחידה להסיר קוד מהבלוקצ'יין היא כאשר החוזה
+בכתובת הזו מבצעת את פעולת ההשמדה העצמית ``selfdestruct``. האיתר השנותר מאוחסן
+בכתובת זו נשלח ליעד ייעודי ולאחר מכן ה-storage והקוד
+מוסרים מהמצב. הסרת החוזה בתיאוריה נשמעת כמו
+רעיון טוב, אבל זה עלול להיות מסוכן, כי כאשר מישהו שולח איתר לחוזה שלא קיים, האיתר אבוד לנצח.
 
 .. warning::
-    Even if a contract is removed by ``selfdestruct``, it is still part of the
-    history of the blockchain and probably retained by most Ethereum nodes.
-    So using ``selfdestruct`` is not the same as deleting data from a hard disk.
+    מגרסה 0.8.18 ומעלה, השימוש ב-``selfdestruct`` בסולידיטי וגם ב-Yul יפעיל אזהרת הוצאה משימוש, מכיוון שהאופקוד ``SELFDESTRUCT`` יעבור בסופו של דבר שינויים בהתנהגות כפי שצוין ב-`EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+
+.. warning::
+    גם אם חוזה יוסר על ידי ``selfdestruct``, הוא עדיין חלק מההיסטוריה של הבלוקצ'יין וכנראה נשמר על ידי רוב צמתי האיתריום. לכן השימוש ב-``selfdestruct`` אינו זהה למחיקת נתונים מהדיסק הקשיח.
 
 .. note::
-    Even if a contract's code does not contain a call to ``selfdestruct``,
-    it can still perform that operation using ``delegatecall`` or ``callcode``.
+    גם אם הקוד של חוזה אינו מכיל קריאה ל-``selfdestruct``, הוא עדיין יכול לבצע את הפעולה הזו באמצעות ``delegatecall`` או ``callcode``.
 
-If you want to deactivate your contracts, you should instead **disable** them
-by changing some internal state which causes all functions to revert. This
-makes it impossible to use the contract, as it returns Ether immediately.
+אם אתם צריכים לנטרל חוזים שלכם, צריך במקום זאת **להשבית** אותם
+על ידי שינוי מצב פנימי כלשהו שגורם לכל הפונקציות להחזיר את השינויים למצב הקודם (revert). במצב זה
+אין אפשרות להשתמש בחוזה, מכיוון שהוא מחזיר איתר באופן מיידי.
 
 
 .. index:: ! precompiled contracts, ! precompiles, ! contract;precompiled
 
 .. _precompiledContracts:
 
-Precompiled Contracts
+חוזים מקומפלים מראש
 =====================
 
-There is a small set of contract addresses that are special:
-The address range between ``1`` and (including) ``8`` contains
-"precompiled contracts" that can be called as any other contract
-but their behavior (and their gas consumption) is not defined
-by EVM code stored at that address (they do not contain code)
-but instead is implemented in the EVM execution environment itself.
+יש קבוצה קטנה של כתובות חוזה מיוחדות:
+טווח הכתובות בין ``1`` ו-``8`` (כולל) מכיל
+"חוזים מקומפלים מראש" שאפשר לקרוא להם כמו כל חוזה אחר
+אך התנהגותם (וצריכת הגז שלהם) אינה מוגדרת
+לפי קוד EVM המאוחסן בכתובת זו (הם אינם מכילים קוד).
+במקום זאת הם מיושמים בסביבת הביצוע של EVM עצמה.
 
-Different EVM-compatible chains might use a different set of
-precompiled contracts. It might also be possible that new
-precompiled contracts are added to the Ethereum main chain in the future,
-but you can reasonably expect them to always be in the range between
-``1`` and ``0xffff`` (inclusive).
+רשתות תואמות EVM שונות עשויות להשתמש בסט שונה של
+חוזים שהוכנו מראש. יכול להיות גם
+שחוזים מקומפלים מראש חדשים יתווספו לרשת הראשית של איתריום בעתיד,
+אבל אתם יכולים להניח שהם תמיד יהיו בטווח הכתובות שבין
+``1`` ו-``0xffff`` (כולל).
