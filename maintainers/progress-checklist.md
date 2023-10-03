@@ -38,7 +38,7 @@ These pages need to be translated before the translation will be added as a new 
 - [ ] readme [@ChefAharoni](https://github.com/)
 - [ ] index [@ChefAharoni](https://github.com/)
 - [ ] intro-to-smart-contracts [@davidBar-On](https://github.com/davidBar-On)
-- [ ] installing-solidity
+- [ ] installing-solidity [@davidBar-On](https://github.com/davidBar-On)
 - [ ] solidity-by-example
 
 #### Language Description
