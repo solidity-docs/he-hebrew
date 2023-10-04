@@ -39,7 +39,7 @@ These pages need to be translated before the translation will be added as a new 
 - [ ] index [@ChefAharoni](https://github.com/)
 - [ ] intro-to-smart-contracts [@davidBar-On](https://github.com/davidBar-On)
 - [ ] installing-solidity [@davidBar-On](https://github.com/davidBar-On)
-- [ ] solidity-by-example
+- [ ] solidity-by-example [@davidBar-On](https://github.com/davidBar-On)
 
 #### Language Description
 
