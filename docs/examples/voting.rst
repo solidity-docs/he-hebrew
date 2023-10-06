@@ -3,32 +3,31 @@
 .. _voting:
 
 ******
-Voting
+הצבעה
 ******
 
-The following contract is quite complex, but showcases
-a lot of Solidity's features. It implements a voting
-contract. Of course, the main problems of electronic
-voting is how to assign voting rights to the correct
-persons and how to prevent manipulation. We will not
-solve all problems here, but at least we will show
-how delegated voting can be done so that vote counting
-is **automatic and completely transparent** at the
-same time.
+החוזה הבא הוא די מורכב, אבל מראה
+הרבה מהתכונות של סולידיטי. הוא מיישם חוזה
+הצבעה. כמובן, הבעיות העיקריות של הצבעות אלקטרוניות
+היא איך להקצות זכויות הצבעה לאנשים הנכונים
+וכיצד למנוע מניפולציות. אנחנו לא
+לפתור את כל הבעיות כאן, אבל לפחות נראה
+כיצד ניתן לבצע הצבעה על-ידי נציג, כך שספירת הקולות
+תהיה **אוטומטית ושקופה לחלוטין** באותו זמן.
 
-The idea is to create one contract per ballot,
-providing a short name for each option.
-Then the creator of the contract who serves as
-chairperson will give the right to vote to each
-address individually.
+הרעיון הוא ליצור חוזה אחד לכל פתק הצבעה,
+ומתן שם קצר לכל אפשרות הצבעה.
+לאחר מכן יוצר-החוזה שמשמש
+כיושב-ראש ייתן זכות הצבעה לכל
+כתובת בנפרד.
 
-The persons behind the addresses can then choose
-to either vote themselves or to delegate their
-vote to a person they trust.
+האנשים מאחורי הכתובות יכולים לבחור
+להצביע בעצמם או להאציל את זכויות ההצבעה שלהם
+לאדם שהם סומכים עליו.
 
-At the end of the voting time, ``winningProposal()``
-will return the proposal with the largest number
-of votes.
+בתום זמן ההצבעה, ``winningProposal()``
+תחזיר את אפשרות ההצבעה עם המספר הגדול ביותר
+של קולות.
 
 .. code-block:: solidity
 
@@ -190,11 +189,11 @@ of votes.
     }
 
 
-Possible Improvements
+שיפורים אפשריים
 =====================
 
-Currently, many transactions are needed to
-assign the rights to vote to all participants.
-Moreover, if two or more proposals have the same
-number of votes, ``winningProposal()`` is not able
-to register a tie. Can you think of a way to fix these issues?
+ביישום הנוכחי יש צורך בטרנזקציות רבות כדי
+להקצות את זכויות ההצבעה לכל המשתתפים.
+בנוסף לכך, אם לשתי אפשרויות או יותר יש את אותו
+מספר הצבעות, ``winningProposal()`` אינו יכול
+לרשום תיקו. האם אתם יכולים לחשוב על דרך לתקן את הבעיות האלה?

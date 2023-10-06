@@ -1,44 +1,45 @@
 ********************
-Micropayment Channel
+ערוץ מיקרו-תשלומים
 ********************
 
-In this section, we will learn how to build an example implementation
-of a payment channel. It uses cryptographic signatures to make
-repeated transfers of Ether between the same parties secure, instantaneous, and
-without transaction fees. For the example, we need to understand how to
-sign and verify signatures, and setup the payment channel.
+בחלק זה נלמד כיצד לבנות יישום לדוגמה
+של ערוץ תשלום. הערוץ משתמש בחתימות קריפטוגרפיות כדי ליצור
+העברות חוזרות ונשנות של איתר בין אותם הצדדים באופן מאובטח, מיידי
+וללא עמלות טרנזקציה. לצורך הדוגמה, עלינו להבין כיצד
+לחתום ולאמת חתימות ולהגדיר את ערוץ התשלום.
 
-Creating and verifying signatures
+יצירה ואימות של חתימות
 =================================
 
-Imagine Alice wants to send some Ether to Bob, i.e.
-Alice is the sender and Bob is the recipient.
+תארו לעצמכם שאליס רוצה לשלוח קצת איתר לבוב, כלומר,
+אליס היא השולחת ובוב הוא הנמען.
 
-Alice only needs to send cryptographically signed messages off-chain
-(e.g. via email) to Bob and it is similar to writing checks.
+אליס צריכה לשלוח רק הודעות חתומות קריפטוגרפית מחוץ לשרשרת
+(למשל באמצעות דואר אלקטרוני) לבוב בדומה לכתיבת צ'קים.
 
-Alice and Bob use signatures to authorize transactions, which is possible with smart contracts on Ethereum.
-Alice will build a simple smart contract that lets her transmit Ether, but instead of calling a function herself
-to initiate a payment, she will let Bob do that, and therefore pay the transaction fee.
+אליס ובוב משתמשים בחתימות כדי לאשר טרזקציות, מה שאפשרי בחוזים חכמים באיתריום.
+אליס תבנה חוזה חכם פשוט שיאפשר לה לשדר איתר, אבל במקום לקרוא לפונקציה בעצמה
+כדי ליזום תשלום, היא תאפשר לבוב לעשות זאת, ולכן תשלם את עמלת הטרנזקציה.
 
-The contract will work as follows:
+החוזה יפעל באופן הבא:
 
-    1. Alice deploys the ``ReceiverPays`` contract, attaching enough Ether to cover the payments that will be made.
-    2. Alice authorizes a payment by signing a message with her private key.
-    3. Alice sends the cryptographically signed message to Bob. The message does not need to be kept secret
-       (explained later), and the mechanism for sending it does not matter.
-    4. Bob claims his payment by presenting the signed message to the smart contract, it verifies the
-       authenticity of the message and then releases the funds.
+    1. אליס מתקינה את החוזה ``ReceiverPays``, ומצרפת מספיק איתר כדי לכסות את התשלומים שיבוצעו.
+ 	2. אליס מאשרת תשלום על ידי חתימה על הודעה עם המפתח הפרטי שלה.
+ 	3. אליס שולחת לבוב  ההודעה חתומה קריפטוגרפית. אין צורך לשמור את ההודעה בסוד
+    	(הסבר בהמשך), ומנגנון השליחה אינו משנה.
+ 	4. בוב תובע את התשלום שלו על ידי הצגת ההודעה החתומה לחוזה החכם, זה מאמת את
+    	האותנטיות של ההודעה ולאחר מכן משחרר את הכספים.
 
-Creating the signature
+יצירת החתימה
 ----------------------
 
-Alice does not need to interact with the Ethereum network
-to sign the transaction, the process is completely offline.
-In this tutorial, we will sign messages in the browser
-using `web3.js <https://github.com/web3/web3.js>`_ and
-`MetaMask <https://metamask.io>`_, using the method described in `EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_,
-as it provides a number of other security benefits.
+אליס לא צריכה ליצור אינטראקציה עם רשת איתריום
+כדי לחתום על העסקה, התהליך לא מקוון לחלוטין.
+במדריך זה נחתום על הודעות בדפדפן
+באמצעות `web3.js <https://github.com/web3/web3.js>`_
+ו-`MetaMask <https://metamask.io>`_, תוך שימוש בשיטה המתוארת
+ב-`EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_,
+מכיוון שהיא מספקת מספר יתרונות אבטחה נוספים.
 
 .. code-block:: javascript
 
@@ -47,48 +48,48 @@ as it provides a number of other security benefits.
     web3.eth.personal.sign(hash, web3.eth.defaultAccount, function () { console.log("Signed"); });
 
 .. note::
-  The ``web3.eth.personal.sign`` prepends the length of the
-  message to the signed data. Since we hash first, the message
-  will always be exactly 32 bytes long, and thus this length
-  prefix is always the same.
+  ``web3.eth.personal.sign`` מציין את אורך
+   ההודעה לנתונים החתומים. מכיוון שדבר ראשון אנחנו מבצעים hash, ההודעה
+   תמיד תהיה באורך של 32 בתים בדיוק, ולכן אורך
+   הקידומת הזו תמיד זהה.
 
-What to Sign
+על מה לחתום
 ------------
 
-For a contract that fulfils payments, the signed message must include:
+עבור חוזה המבצע תשלומים, ההודעה החתומה חייבת לכלול:
 
-    1. The recipient's address.
-    2. The amount to be transferred.
-    3. Protection against replay attacks.
+     1. כתובת הנמען.
+     2. הסכום להעברה.
+     3. הגנה מפני התקפות חוזרות.
 
-A replay attack is when a signed message is reused to claim
-authorization for a second action. To avoid replay attacks
-we use the same technique as in Ethereum transactions themselves,
-a so-called nonce, which is the number of transactions sent by
-an account. The smart contract checks if a nonce is used multiple times.
+התקפה חוזרת היא כאשר נעשה שימוש חוזר בהודעה חתומה
+לאישור פעולה נוספת. כדי להימנע מהתקפות חוזרות
+אנחנו משתמשים באותה טכניקה כמו בטרנזקציות איתריום עצמן,
+ה-nonce, שהוא מספר הטרנזקציות שנשלחו על ידי
+חשבון. החוזה החכם בודק אם נעשה שימוש ב-nonce מספר פעמים.
 
-Another type of replay attack can occur when the owner
-deploys a ``ReceiverPays`` smart contract, makes some
-payments, and then destroys the contract. Later, they decide
-to deploy the ``RecipientPays`` smart contract again, but the
-new contract does not know the nonces used in the previous
-deployment, so the attacker can use the old messages again.
+סוג אחר של התקפה חוזרת יכול להתרחש כאשר הבעלים
+מתקין חוזה חכם ``ReceiverPays``, עושה כמה
+תשלומים, ולאחר מכן משמיד את החוזה. אחר כך בעל החוזה מחליט
+להתקין שוב את החוזה החכם ``RecipientPays``, אבל
+החוזה החדש אינו מכיר את ה-nonces ששימשו
+בהתקנה הקודמת, כך שהתוקף יוכל להשתמש שוב בהודעות הישנות.
 
-Alice can protect against this attack by including the
-contract's address in the message, and only messages containing
-the contract's address itself will be accepted. You can find
-an example of this in the first two lines of the ``claimPayment()``
-function of the full contract at the end of this section.
+אליס יכולה להגן מפני התקפה זו על ידי הכללת
+כתובת החוזה בהודעה, ורק הודעות שמכילות
+את כתובת החוזה עצמו תתקבל. אתם יכולים למצוא
+דוגמה לכך בשתי השורות הראשונות של הפונקציה ``claimPayment()``
+של החוזה המלא בסוף סעיף זה.
 
-Packing arguments
+אריזת ארגומנטים
 -----------------
 
-Now that we have identified what information to include in the signed message,
-we are ready to put the message together, hash it, and sign it. For simplicity,
-we concatenate the data. The `ethereumjs-abi <https://github.com/ethereumjs/ethereumjs-abi>`_
-library provides a function called ``soliditySHA3`` that mimics the behavior of
-Solidity's ``keccak256`` function applied to arguments encoded using ``abi.encodePacked``.
-Here is a JavaScript function that creates the proper signature for the ``ReceiverPays`` example:
+כעת, לאחר שזיהינו איזה מידע לכלול בהודעה החתומה,
+אנחנו מוכנים לחבר את ההודעה, לבצע עליה hash ולחתום עליה. לצורך הפשטות,
+אנחנו משרשרים את הנתונים. הספרייה `ethereumjs-abi <https://github.com/ethereumjs/ethereumjs-abi>`_
+מספקת פונקציה בשם ``soliditySHA3`` המחקה את ההתנהגות של
+הפונקציה ``keccak256`` של סולידיטי ומופעלת על ארגומנטים המקודדים באמצעות ``abi.encodePacked``.
+להלן פונקציית JavaScript שיוצרת את החתימה המתאימה לדוגמא של ``ReceiverPays``:
 
 .. code-block:: javascript
 
@@ -105,38 +106,38 @@ Here is a JavaScript function that creates the proper signature for the ``Receiv
         web3.eth.personal.sign(hash, web3.eth.defaultAccount, callback);
     }
 
-Recovering the Message Signer in Solidity
+שחזור חותם ההודעות בסולידיטי
 -----------------------------------------
 
-In general, ECDSA signatures consist of two parameters,
-``r`` and ``s``. Signatures in Ethereum include a third
-parameter called ``v``, that you can use to verify which
-account's private key was used to sign the message, and
-the transaction's sender. Solidity provides a built-in
-function :ref:`ecrecover <mathematical-and-cryptographic-functions>` that
-accepts a message along with the ``r``, ``s`` and ``v`` parameters
-and returns the address that was used to sign the message.
+באופן כללי, חתימות ECDSA מורכבות משני פרמטרים,
+``r`` ו-``s``. חתימות באיתריום כוללות
+פרמטר שלישי בשם ``v``, שבו אתם יכולים להשתמש כדי לאמת איזה
+מפתח פרטי של החשבון שימש לחתימה על ההודעה, וכן לאמת את
+שולח הטרנזקציה. סולידיטי מספקת
+function :ref:`ecrecover <פונקציות-מתמטיות-ו-קריפטוגרפיות>` מובנות
+שמקבלות הודעה יחד עם הפרמטרים ``r``, ``s`` ו-``v``
+ומחזירות את הכתובת ששימשה לחתימה על ההודעה.
 
-Extracting the Signature Parameters
+חילוץ פרמטרי החתימה
 -----------------------------------
 
-Signatures produced by web3.js are the concatenation of ``r``,
-``s`` and ``v``, so the first step is to split these parameters
-apart. You can do this on the client-side, but doing it inside
-the smart contract means you only need to send one signature
-parameter rather than three. Splitting apart a byte array into
-its constituent parts is a mess, so we use
-:doc:`inline assembly <assembly>` to do the job in the ``splitSignature``
-function (the third function in the full contract at the end of this section).
+Sחתימות המיוצרות על ידי web3.js הן שרשור של ``r``,
+``s`` ו-``v``. לכן הצעד הראשון הוא לפצל את הפרמטרים הללו.
+אתם יכולים לעשות זאת בצד הלקוח, אבל הביצוע בתוך
+החוזה החכם היא שאתם צריכים לשלוח רק
+פרמטר חתימה אחד ולא שלושה. פיצול של מערך בתים
+לחלקים המרכיבים אותו הוא בעייתי, ולכן אנחנו משתמשים בפונקציה
+:doc:`הרכבה מוטבעת <assembly>` כדי לבצע את העבודה ב-``splitSignature``
+(הפונקציה השלישית בחוזה המלא בסוף סעיף זה).
 
-Computing the Message Hash
+חישוב ה-hash של ההודעה
 --------------------------
 
-The smart contract needs to know exactly what parameters were signed, and so it
-must recreate the message from the parameters and use that for signature verification.
-The functions ``prefixed`` and ``recoverSigner`` do this in the ``claimPayment`` function.
+החוזה החכם צריך לדעת בדיוק אילו פרמטרים נחתמו, ולכן הוא חייב
+ליצור מחדש את ההודעה מהפרמטרים ולהשתמש בה לאימות חתימה.
+הפונקציות ``prefixed`` ו``recoverSigner`` עושות זאת בפונקציה ``claimPayment``.
 
-The full contract
+החוזה המלא
 -----------------
 
 .. code-block:: solidity
@@ -207,71 +208,71 @@ The full contract
     }
 
 
-Writing a Simple Payment Channel
+כתיבת ערוץ תשלומים פשוט
 ================================
 
-Alice now builds a simple but complete implementation of a payment
-channel. Payment channels use cryptographic signatures to make
-repeated transfers of Ether securely, instantaneously, and without transaction fees.
+אליס בונה כעת יישום פשוט אך מלא של ערוץ תשלום.
+ערוצי תשלום עושים שימוש בחתימות קריפטוגרפיות
+להעברות חוזרות ונשנות של איתר בצורה מאובטחת, מיידית וללא עמלות עסקה.
 
-What is a Payment Channel?
+מהו ערוץ תשלומים?
 --------------------------
 
-Payment channels allow participants to make repeated transfers of Ether
-without using transactions. This means that you can avoid the delays and
-fees associated with transactions. We are going to explore a simple
-unidirectional payment channel between two parties (Alice and Bob). It involves three steps:
+ערוצי תשלום מאפשרים למשתתפים לבצע העברות חוזרות ונשנות של איתר
+ללא שימוש בטרנזקציות. זאת אומרת שאתם יכולים למנוע את העיכובים
+והעמלות הקשורות לטרנזקציות. כאן נחקור ערוץ תשלום
+חד כיווני פשוט בין שני צדדים (אליס ובוב). התהליך בערוץ כולל שלושה שלבים:
 
-    1. Alice funds a smart contract with Ether. This "opens" the payment channel.
-    2. Alice signs messages that specify how much of that Ether is owed to the recipient. This step is repeated for each payment.
-    3. Bob "closes" the payment channel, withdrawing his portion of the Ether and sending the remainder back to the sender.
+ 	1. אליס מממנת חוזה חכם עם איתר. פעולה זו "פותחת" את ערוץ התשלום.
+ 	2. אליס חותמת על הודעות שמפרטות את התשלושם מיועד לנמען. שלב זה חוזר על עצמו עבור כל תשלום.
+ 	3. בוב "סוגר" את ערוץ התשלום, מושך את חלקו מהאיתר ושולח את השארית בחזרה לאליס.
 
 .. note::
-  Only steps 1 and 3 require Ethereum transactions, step 2 means that the sender
-  transmits a cryptographically signed message to the recipient via off chain
-  methods (e.g. email). This means only two transactions are required to support
-  any number of transfers.
+   רק שלבים 1 ו-3 דורשים טרנזקציות באיתריום, בשלב 2 השולחת
+   משדרת הודעה חתומה קריפטוגרפית לנמענן דרך שיטות שהן
+   מחוץ לרשת (למשל אימייל). המשמעות היא שרק שתי טרנזקציות
+   נדרשות לתמיכה במספר כלשהו של העברות.
 
-Bob is guaranteed to receive his funds because the smart contract escrows the
-Ether and honours a valid signed message. The smart contract also enforces a
-timeout, so Alice is guaranteed to eventually recover her funds even if the
-recipient refuses to close the channel. It is up to the participants in a payment
-channel to decide how long to keep it open. For a short-lived transaction,
-such as paying an internet café for each minute of network access, the payment
-channel may be kept open for a limited duration. On the other hand, for a
-recurring payment, such as paying an employee an hourly wage, the payment channel
-may be kept open for several months or years.
+מובטח לבוב שיקבל את הכספים שלו כי החוזה החכם מפקח על
+האיתר ומכבד הודעות חתומות תקפות. החוזה החכם גם אוכף
+פסקי זמן, כך שלאליס מובטח שבסופו של דבר שתוכל לשחזר את הכסף שלה גם אם
+הנמען מסרב לסגור את הערוץ. משתתפי ערוץ התשלום הם שמחליטים
+כמה זמן לשמור אותו פתוח. לעסקה קצרת מועד,
+כגון תשלום לרשת קפה עבור כל דקה של גישה לרשת,
+הערוץ עשוי להישמר פתוח לזמן מוגבל. מצד שני, עבור
+תשלום חוזר, כמו תשלום שכר שעתי לעובד,
+ניתן לשמור את ערוץ התשלום פתוח מספר חודשים או שנים.
 
-Opening the Payment Channel
+פתיחת ערוץ התשלום
 ---------------------------
 
-To open the payment channel, Alice deploys the smart contract, attaching
-the Ether to be escrowed and specifying the intended recipient and a
-maximum duration for the channel to exist. This is the function
-``SimplePaymentChannel`` in the contract, at the end of this section.
+כדי לפתוח את ערוץ התשלום, אליס מתקינה את החוזה החכם, מצרפת את
+האיתר להפקדה וקובעת את הנמען המיועד ואת
+משך הזמן המקסימלי לקיום הערוץ. זו הפונקציה
+``SimplePaymentChannel`` בחוזה, בסוף סעיף זה.
 
-Making Payments
+ביצוע תשלומים
 ---------------
 
-Alice makes payments by sending signed messages to Bob.
-This step is performed entirely outside of the Ethereum network.
-Messages are cryptographically signed by the sender and then transmitted directly to the recipient.
+Aאליס מבצעת תשלומים על ידי שליחת הודעות חתומות לבוב.
+שלב זה מתבצע כולו מחוץ לרשת איתריום.
+ההודעות נחתמות בצורה קריפטוגרפית על ידי השולח ולאחר מכן מועברות ישירות לנמען.
 
-Each message includes the following information:
+כל הודעה כוללת את המידע הבא:
 
-    * The smart contract's address, used to prevent cross-contract replay attacks.
-    * The total amount of Ether that is owed to the recipient so far.
+ 	* כתובת החוזה החכם, המשמשת למניעת התקפות שידור חוזר בין חוזים.
+ 	* הסכום הכולל של האיתר שחייבים לנמען עד כה.
 
-A payment channel is closed just once, at the end of a series of transfers.
-Because of this, only one of the messages sent is redeemed. This is why
-each message specifies a cumulative total amount of Ether owed, rather than the
-amount of the individual micropayment. The recipient will naturally choose to
-redeem the most recent message because that is the one with the highest total.
-The nonce per-message is not needed anymore, because the smart contract only
-honours a single message. The address of the smart contract is still used
-to prevent a message intended for one payment channel from being used for a different channel.
+ערוץ תשלום נסגר רק פעם אחת, בתום סדרת ההעברות.
+לכן, רק אחת מההודעות שנשלחו נפדת. זו הסיבה לכך
+שכל הודעה מציינת סכום כולל מצטבר של איתר שחייבים, במקום את
+סכום המיקרו-תשלום הבודד. לכן, באופן טבעי הנמען יבחר
+לממש את ההודעה האחרונה כי זו ההודעה עם הסכום הגבוה ביותר.
+אין צורך יותר ב-nonce לכל הודעה, כי החוזה החכם
+מכבד הודעה אחת בלבד. הכתובת של החוזה החכם עדיין בשימוש
+כדי למנוע שימוש בהודעה המיועדת לערוץ תשלום אחד בערוץ אחר.
 
-Here is the modified JavaScript code to cryptographically sign a message from the previous section:
+הנה קוד ה-JavaScript שהשתנה כדי לחתום באופן קריפטוגרפי על הודעה מהסעיף הקודם:
 
 .. code-block:: javascript
 
@@ -299,42 +300,42 @@ Here is the modified JavaScript code to cryptographically sign a message from th
     }
 
 
-Closing the Payment Channel
+סגירת ערץ התשלום
 ---------------------------
 
-When Bob is ready to receive his funds, it is time to
-close the payment channel by calling a ``close`` function on the smart contract.
-Closing the channel pays the recipient the Ether they are owed and
-destroys the contract, sending any remaining Ether back to Alice. To
-close the channel, Bob needs to provide a message signed by Alice.
+כאשר בוב מוכן לקבל את הכספים שלו, זהו הזמן
+לסגור את ערוץ התשלום על ידי קריאה לפונקציה ``close`` בחוזה החכם.
+סגירת הערוץ משלמת לנמען את האיתר שחייבים לו,
+משמידה את החוזה, ושולחת את כל האיתר שנותר בחזרה לאליס.
+לסגירת הערוץ, בוב צריך לספק הודעה חתומה על ידי אליס.
 
-The smart contract must verify that the message contains a valid signature from the sender.
-The process for doing this verification is the same as the process the recipient uses.
-The Solidity functions ``isValidSignature`` and ``recoverSigner`` work just like their
-JavaScript counterparts in the previous section, with the latter function borrowed from the ``ReceiverPays`` contract.
+על החוזה החכם לוודא שההודעה מכילה חתימה תקפה מהשולח.
+התהליך לביצוע אימות זה זהה לתהליך בו משתמש הנמען.
+פונקציות Solidity ``isValidSignature`` ו-``recoverSigner`` פועלות בדיוק כמו
+המקבילות שלהן ב-JavaScript בסעיף הקודם, כאשר הפונקציה האחרונה נלקחה מהחוזה ``ReceiverPays``.
 
-Only the payment channel recipient can call the ``close`` function,
-who naturally passes the most recent payment message because that message
-carries the highest total owed. If the sender were allowed to call this function,
-they could provide a message with a lower amount and cheat the recipient out of what they are owed.
+רק נמען ערוץ התשלום יכול להתקשר לפונקציית ``close``,
+שמעבירה באופן טבעי את הודעת התשלום העדכנית ביותר, מכיוון שהודעה הזו
+מכילה את סך החוב הגבוה ביותר. אם השולחים היו מורשים לקרוא לפונקציה זו,
+הם היו יכולים לספק הודעה עם סכום נמוך יותר ולרמות את הנמען.
 
-The function verifies the signed message matches the given parameters.
-If everything checks out, the recipient is sent their portion of the Ether,
-and the sender is sent the rest via a ``selfdestruct``.
-You can see the ``close`` function in the full contract.
+הפונקציה מאמתת שההודעה החתומה תואמת את הפרמטרים הנתונים.
+אם הכל מסתדר, נשלח לנמען חלקו באיתר,
+והשולח מקבל את השאר באמצעות ``השמדה עצמית - selfdestruct``.
+אתם יכולים לראות את הפונקציה ``close`` בחוזה המלא.
 
-Channel Expiration
+פקיעת תוקף ערוץ
 -------------------
 
-Bob can close the payment channel at any time, but if they fail to do so,
-Alice needs a way to recover her escrowed funds. An *expiration* time was set
-at the time of contract deployment. Once that time is reached, Alice can call
-``claimTimeout`` to recover her funds. You can see the ``claimTimeout`` function in the full contract.
+בוב יכול לסגור את ערוץ התשלום בכל זמן, אך אם לא יעשה זאת,
+אליס צריכה דרך לגבות את כספי הנאמנות שלה. נקבע זמן *פקיעת תוקף*
+בזמן התקנת החוזה. ברגע שמגיע הזמן הזה, אליס יכולה להתקשר
+``claimTimeout`` כדי להחזיר את הכספים שלה. אתם יכולים לראות את הפונקציה ``claimTimeout`` בחוזה המלא.
 
-After this function is called, Bob can no longer receive any Ether,
-so it is important that Bob closes the channel before the expiration is reached.
+לאחר הקריאה לפונקציה זו, בוב לא יכול יותר לקבל איתר,
+לכן חשוב שבוב יסגור את הערוץ לפני פקיעת התוקף.
 
-The full contract
+החוזה המלא
 -----------------
 
 .. code-block:: solidity
@@ -433,30 +434,30 @@ The full contract
 
 
 .. note::
-  The function ``splitSignature`` does not use all security
-  checks. A real implementation should use a more rigorously tested library,
-  such as openzepplin's `version  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ of this code.
+   הפונקציה ``splitSignature`` לא משתמשת בכל בדיקות האבטחה.
+   יישום אמיתי צריך להשתמש בספרייה שנבדקה בקפדנות יותר,
+   כגון `גרסת openzepplin <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ של קוד זה.
 
-Verifying Payments
+אימות תשלום
 ------------------
 
-Unlike in the previous section, messages in a payment channel aren't
-redeemed right away. The recipient keeps track of the latest message and
-redeems it when it's time to close the payment channel. This means it's
-critical that the recipient perform their own verification of each message.
-Otherwise there is no guarantee that the recipient will be able to get paid
-in the end.
+שלא כמו בסעיף הקודם, הודעות בערוץ תשלום אינן
+נפדות מיד. הנמענים עוקבים אחר ההודעה האחרונה
+ומממשים אותה כשמגיע הזמן לסגור את ערוץ התשלום. לכן
+קריטי שהנמענים יבצעו אימות משלהם של כל הודעה.
+אחרת אין ערובה שהם יוכלו לקבל תשלום
+בסוף.
 
-The recipient should verify each message using the following process:
+על הנמענים לאמת כל הודעה באמצעות התהליך הבא:
 
-    1. Verify that the contract address in the message matches the payment channel.
-    2. Verify that the new total is the expected amount.
-    3. Verify that the new total does not exceed the amount of Ether escrowed.
-    4. Verify that the signature is valid and comes from the payment channel sender.
+ 	1. וידוא שכתובת החוזה בהודעה תואמת לערוץ התשלום.
+ 	2. וידוא שהסך הכולל החדש הוא הסכום הצפוי.
+ 	3. וידוא שהסכום החדש אינו עולה על סכום האיתר שהופקד.
+ 	4. וידוא שהחתימה תקפה ומגיעה משולח ערוץ התשלום.
 
-We'll use the `ethereumjs-util <https://github.com/ethereumjs/ethereumjs-util>`_
-library to write this verification. The final step can be done a number of ways,
-and we use JavaScript. The following code borrows the ``constructPaymentMessage`` function from the signing **JavaScript code** above:
+נשתמש בספרייה `ethereumjs-util <https://github.com/ethereumjs/ethereumjs-util>`_
+כדי לכתוב את האימות הזה. השלב האחרון יכול להיעשות במספר דרכים,
+ואנחנו משתמשים ב-JavaScript. הקוד הבא משתמש בפונקציה ``constructPaymentMessage`` מ-**קוד ה-JavaScript** לחתימה למעלה:
 
 .. code-block:: javascript
 

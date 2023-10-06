@@ -1,26 +1,26 @@
 .. index:: auction;blind, auction;open, blind auction, open auction
 
 *************
-Blind Auction
+מכרז עיוור
 *************
 
-In this section, we will show how easy it is to create a completely blind
-auction contract on Ethereum.  We will start with an open auction where
-everyone can see the bids that are made and then extend this contract into a
-blind auction where it is not possible to see the actual bid until the bidding
-period ends.
+בחלק זה נראה כמה קל ליצור מכרז עיוור (Blind Auction) לחלוטין
+על איתריום. נתחיל במכרז פתוח שבו
+כל אחד יכול לראות את ההצעות שהוצעו ואז נרחיב את החוזה הזה
+למכרז עיוור שבו לא ניתן לראות את הצעות המחיר עד
+שפג תוקף זמן ההצעות.
 
 .. _simple_auction:
 
-Simple Open Auction
+מכרז פתוח פשוט
 ===================
 
-The general idea of the following simple auction contract is that everyone can
-send their bids during a bidding period. The bids already include sending some compensation,
-e.g. Ether, in order to bind the bidders to their bid. If the highest bid is
-raised, the previous highest bidder gets their Ether back.  After the end of
-the bidding period, the contract has to be called manually for the beneficiary
-to receive their Ether - contracts cannot activate themselves.
+הרעיון הכללי של חוזה המכרז הפשוט הבא הוא שכולם יכולים
+לשלוח הצעות במהלך תקופת ההצעות. ההצעות כבר כוללות שליחת פיצויים,
+למשל איתר, על מנת לחייב את המציעים להצעתם. אם סכום ההצעה הגבוהה ביותר
+מועלת, המציע הקודם הגבוה ביותר מקבל את האיתר שלו בחזרה. לאחר סיום
+תקופת ההצעות, המוטב צריך לקרוא לחוזה באופן ידני
+כדי לקבל את האיתר שלו - חוזים לא יכולים להפעיל את עצמם.
 
 .. code-block:: solidity
 
@@ -164,34 +164,31 @@ to receive their Ether - contracts cannot activate themselves.
         }
     }
 
-Blind Auction
-=============
+מכרז עיוור (Blind Auction)
+===========================
 
-The previous open auction is extended to a blind auction in the following. The
-advantage of a blind auction is that there is no time pressure towards the end
-of the bidding period. Creating a blind auction on a transparent computing
-platform might sound like a contradiction, but cryptography comes to the
-rescue.
+בחלק הזה, המכרז הפתוח הקודם מורחב למכרז עיוור.
+היתרון של מכרז עיוור הוא שאין לחץ זמן לקראת סוף
+תקופת ההצעות. יצירת מכרז עיוור על פלטפורמת מחשוב שקופה
+אולי נשמעת כמו סתירה, אבל הקריפטוגרפיה מצילה את המצב.
 
-During the **bidding period**, a bidder does not actually send their bid, but
-only a hashed version of it.  Since it is currently considered practically
-impossible to find two (sufficiently long) values whose hash values are equal,
-the bidder commits to the bid by that.  After the end of the bidding period,
-the bidders have to reveal their bids: They send their values unencrypted, and
-the contract checks that the hash value is the same as the one provided during
-the bidding period.
+במהלך **תקופת ההצעות**, מציעים אינם שולחים את הצעתם בפועל, אלא
+רק גרסת hash שלה. מכיוון שמציאת שני ערכים (ארוכים מספיק) שווים של hash
+לא נחשבת כאפשרית כיום, המציעים מתחייבים להצעה בכך. לאחר תום תקופת ההצעות,
+המציעים צריכים לחשוף את הצעותיהם: הם שולחים את הערכים שלהם לא מוצפנים,
+והחוזה בודק שערך ה-hash זהה לזה שסופק במהלך תקופת ההצעה.
 
-Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the Ether after
-they won the auction is to make them send it together with the bid. Since value
-transfers cannot be blinded in Ethereum, anyone can see the value.
+אתגר נוסף הוא כיצד להפוך את המכרז ל**מחייב ועיוור** בו
+זמנית: הדרך היחידה למנוע מהמציע הזוכה פשוט לא לשלוח את האיתר בסיומו
+היא לגרום למציעים לשלוח את האיתר יחד עם ההצעה. מכיוון שהעברת ערך
+לא יכולה להיות עיוורת באיתריום, כל אחד יכול לראות את הערך.
 
-The following contract solves this problem by accepting any value that is
-larger than the highest bid. Since this can of course only be checked during
-the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high-value
-transfers): Bidders can confuse competition by placing several high or low
-invalid bids.
+החוזה הבא פותר בעיה זו על ידי קבלת כל ערך שהוא
+גדול מההצעה הגבוהה ביותר. מכיוון שכמובן ניתן לבדוק זאת רק במהלך
+שלב החשיפה, חלק מההצעות עשויות להיות **לא חוקיות**, ודבר זה נעשה בכוונה (זה
+אפילו מספק דגל מפורש להגשת הצעות לא חוקיות בעלות ערך גבוה
+להעברות): מציעים יכולים לבלבל את המתחרים על ידי הרבה הצעות לא חוקיות
+עם מחירים גבוהים או נמוכים.
 
 
 .. code-block:: solidity

@@ -1,21 +1,21 @@
 .. index:: contract;modular, modular contract
 
 *****************
-Modular Contracts
+חוזים מודולריים
 *****************
 
-A modular approach to building your contracts helps you reduce the complexity
-and improve the readability which will help to identify bugs and vulnerabilities
-during development and code review.
-If you specify and control the behavior of each module in isolation, the
-interactions you have to consider are only those between the module specifications
-and not every other moving part of the contract.
-In the example below, the contract uses the ``move`` method
-of the ``Balances`` :ref:`library <libraries>` to check that balances sent between
-addresses match what you expect. In this way, the ``Balances`` library
-provides an isolated component that properly tracks balances of accounts.
-It is easy to verify that the ``Balances`` library never produces negative balances or overflows
-and the sum of all balances is an invariant across the lifetime of the contract.
+גישה מודולרית לבניית החוזים שלכם עוזרת לכם להפחית את המורכבות
+ולשפר את הקריאות שתעזור לזהות באגים ופגיעויות
+במהלך פיתוח ובדיקת קוד.
+אם אתם מגדירים ושולטים בהתנהגות של כל מודול בנפרד,
+האינטראקציות שאתם צריכים לשקול הן רק אלו שבין מפרטי המודול
+ולא כל חלק משתנה אחר בחוזה.
+בדוגמה שלהלן, החוזה משתמש בשיטת ``move``
+של ``Balances`` :ref:`library <libraries>` כדי לבדוק שיתרות שנשלחו בין
+הכתובות תואמות למה לאלו הצפויות. בדרך זו, ספריית ``Balances``
+מספקת רכיב מבודד שעוקב כראוי אחר יתרות החשבונות.
+קל לוודא שספריית ``Balances`` לעולם לא מייצרת יתרות שליליות או גלישות (overflows)
+והסכום של כל היתרות לא משתנה לאורך כל חיי החוזה.
 
 .. code-block:: solidity
 

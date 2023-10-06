@@ -35,11 +35,11 @@ These pages need to be translated before the translation will be added as a new 
 
 #### Basics
 
-- [ ] readme [@ChefAharoni](https://github.com/)
+- [x] readme [@ChefAharoni](https://github.com/)
 - [ ] index [@ChefAharoni](https://github.com/)
-- [ ] intro-to-smart-contracts [@davidBar-On](https://github.com/davidBar-On)
-- [ ] installing-solidity [@davidBar-On](https://github.com/davidBar-On)
-- [ ] solidity-by-example [@davidBar-On](https://github.com/davidBar-On)
+- [x] intro-to-smart-contracts [@davidBar-On](https://github.com/davidBar-On)
+- [x] installing-solidity [@davidBar-On](https://github.com/davidBar-On)
+- [x] solidity-by-example [@davidBar-On](https://github.com/davidBar-On)
 
 #### Language Description
 
