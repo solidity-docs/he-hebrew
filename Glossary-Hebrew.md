@@ -26,6 +26,7 @@
 | -------------- | ---------- |
 | Amount         | כמות       |
 | Block          | בלוק       |
+| Deploment      | התקנה      |
 | Ether          | איתר       |
 | Ethereum       | איתריום    |
 | Message Call   | קריאה לחוזה |
