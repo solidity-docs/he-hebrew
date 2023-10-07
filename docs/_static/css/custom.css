@@ -79,6 +79,15 @@ hr {
     border-color: var(--color-d) !important;
 }
 
+/* RTL Support */
+/***** FIXME: need to differentiate between translated (Hebrew) and non-translated (English) document *****/
+h1,h2,h3,h4,h5,h6,p,dl,ol,ul{
+    direction: rtl;
+}
+
+.wy-side-nav-search input[type=text] {
+    direction: rtl;
+}
 
 /* HEADER STYLES */
 h1 {
