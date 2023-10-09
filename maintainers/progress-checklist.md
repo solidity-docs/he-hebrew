@@ -43,8 +43,8 @@ These pages need to be translated before the translation will be added as a new 
 
 #### Language Description
 
-- [ ] layout-of-source-files
-- [ ] structure-of-a-contract
+- [x] layout-of-source-files [@davidBar-On](https://github.com/davidBar-On)
+- [x] structure-of-a-contract [@davidBar-On](https://github.com/davidBar-On)
 - [ ] types
 - [ ] units-and-global-variables
 - [ ] control-structures

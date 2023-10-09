@@ -1,46 +1,48 @@
 ********************************
-Layout of a Solidity Source File
+מבנה קובץ מקור של סולידיטי
 ********************************
 
-Source files can contain an arbitrary number of
+קבצי מקור יכולים להכיל מספר שרירותי של הנחיות
 :ref:`contract definitions<contract_structure>`, import_ ,
-:ref:`pragma<pragma>` and :ref:`using for<using-for>` directives and
+:ref:`pragma<pragma>` והנחיות :ref:`using for<using-for>` ו-
 :ref:`struct<structs>`, :ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>`
-and :ref:`constant variable<constants>` definitions.
+והגדרות :ref:`constant variable<constants>`.
 
 .. index:: ! license, spdx
 
-SPDX License Identifier
+מזהה רישיון SPDX
 =======================
 
-Trust in smart contracts can be better established if their source code
-is available. Since making source code available always touches on legal problems
-with regards to copyright, the Solidity compiler encourages the use
-of machine-readable `SPDX license identifiers <https://spdx.org>`_.
-Every source file should start with a comment indicating its license:
+יצירת אמון בחוזים חכמים יכול להתבצע טוב יותר אם קוד המקור שלהם
+זמין. מכיוון שהפיכת קוד המקור לזמין נוגעת תמיד לבעיות משפטיות
+בכל הנוגע לזכויות יוצרים, הקומפיילר של סולידיטי מעודד את השימוש
+`במזהי רישיון SPDX <https://spdx.org>`_ הניתנים לקריאה במכונה.
+כל קובץ מקור צריך להתחיל בהערה המציינת את הרישיון שלו:
 
-``// SPDX-License-Identifier: MIT``
+.. code-block:: solidity
 
-The compiler does not validate that the license is part of the
-`list allowed by SPDX <https://spdx.org/licenses/>`_, but
-it does include the supplied string in the :ref:`bytecode metadata <metadata>`.
+  // SPDX-License-Identifier: MIT
 
-If you do not want to specify a license or if the source code is
-not open-source, please use the special value ``UNLICENSED``.
-Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
-is different from ``UNLICENSE`` (grants all rights to everyone).
-Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
+הקומפיילר אינו מאמת שהרישיון הוא חלק מה-
+`רשימה מותרת על ידי SPDX <https://spdx.org/licenses/>`_, אבל
+הוא כן כולל את המחרוזת שסופקה ב-:ref:`bytecode metadata <metadata>`. 
 
-Supplying this comment of course does not free you from other
-obligations related to licensing like having to mention
-a specific license header in each source file or the
-original copyright holder.
+אם אינכם רוצים לציין רישיון או אם קוד המקור הוא
+לא קוד פתוח, אנא השתמשו בערך המיוחד ``UNLICENSED``.
+שימו לב ש-``UNLICENSED`` (אסור בשימוש, לא קיים ברשימת הרישיונות של SPDX)
+שונה מ-``UNLICENSE`` (מעניק את כל הזכויות לכולם).
+Solidity פועלת לפי `המלצת npm <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
 
-The comment is recognized by the compiler anywhere in the file at the
-file level, but it is recommended to put it at the top of the file.
+הערה זו כמובן אינה משחררת אותכם מחובות אחרים
+הקשורות לרישוי, כמו הצורך לציין את
+הרישיון הספציפי בכל קובץ מקור או לציין את
+בעלי זכויות היוצרים המקוריים.
 
-More information about how to use SPDX license identifiers
-can be found at the `SPDX website <https://spdx.org/ids-how>`_.
+הקומפיילר מזהה את ההערה בכל מקום בקובץ,
+אך מומלץ לשים אותה בראש הקובץ.
+
+מידע נוסף על אופן השימוש במזהי רישיון SPDX
+ניתן למצוא `באתר SPDX <https://spdx.org/ids-how>`_.
 
 
 .. index:: ! pragma
@@ -50,83 +52,83 @@ can be found at the `SPDX website <https://spdx.org/ids-how>`_.
 Pragmas
 =======
 
-The ``pragma`` keyword is used to enable certain compiler features
-or checks. A pragma directive is always local to a source file, so
-you have to add the pragma to all your files if you want to enable it
-in your whole project. If you :ref:`import<import>` another file, the pragma
-from that file does *not* automatically apply to the importing file.
+מילת המפתח ``pragma`` משמשת להפעלת תכונות קומפיילר או בדיקות
+מסוימות. הוראת pragma היא תמיד מקומית לקובץ המקור, לכן
+אתם צריכים להוסיף את ה-pragma לכל הקבצים שלכם אם אתם רוצים להפעיל אותה
+בכל הפרויקטים שלכם. אם אתם :ref:`מייבאים<import>` קובץ אחר, ה-pragma
+מהקובץ הזה *לא* תחול אוטומטית על הקובץ המייבא.
 
 .. index:: ! pragma;version
 
 .. _version_pragma:
 
-Version Pragma
+גרסת Pragma
 --------------
 
-Source files can (and should) be annotated with a version pragma to reject
-compilation with future compiler versions that might introduce incompatible
-changes. We try to keep these to an absolute minimum and
-introduce them in a way that changes in semantics also require changes
-in the syntax, but this is not always possible. Because of this, it is always
-a good idea to read through the changelog at least for releases that contain
-breaking changes. These releases always have versions of the form
-``0.x.0`` or ``x.0.0``.
+ניתן (וצריך) להוסיף לקבצי מקור pragma שמציינת
+עם אילו גרסאות קומפיילר אפשר לקמפל את הקוד,
+וזאת כדי למנוע שימוש בגרסאות קומפיילר עתידיות שעלולות להכיל שינויים
+שאינם תואמים לקוד. אנחנו מנסים לצמצם את השינוייים הללו למינימום מוחלט
+ולהציג אותם באופן כזה ששינויים בסמנטיקה דורשים גם שינויים
+בתחביר, אבל זה לא תמיד אפשרי. לכן, זה תמיד
+רעיון טוב לקרוא את תאור השינויים לפחות עבור מהדורות המכילות
+שינויי התנהגות. גרסאות אלו הן  תמיד בפורמט
+``0.x.0`` או ``x.0.0``.
 
-The version pragma is used as follows: ``pragma solidity ^0.5.2;``
+השימוש ב-pragma הוא באופן הבא: ``pragma solidity ^0.5.2;``
 
-A source file with the line above does not compile with a compiler earlier than version 0.5.2,
-and it also does not work on a compiler starting from version 0.6.0 (this
-second condition is added by using ``^``). Because
-there will be no breaking changes until version ``0.6.0``, you can
-be sure that your code compiles the way you intended. The exact version of the
-compiler is not fixed, so that bugfix releases are still possible.
+קובץ מקור עם השורה למעלה לא יתקמפל עם קומפיילר מוקדם יותר מגרסה 0.5.2,
+וגם לא עם קומפיילר עם גרסה החל מ-0.6.0 (זה
+התנאי השני שהתווסף באמצעות ``^``). מכיוון
+שלא יהיו שינויי התנהגות עד לגרסה ``0.6.0``, אתם יכולים
+להיות בטוחים בכך שהקוד שלכם יתקמפל כמו שהתכוונתם. הגרסה המדויקת של
+הקומפיילר אינה מצויינת, כך ששחרור תיקוני באגים עדיין אפשרי.
 
-It is possible to specify more complex rules for the compiler version,
-these follow the same syntax used by `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_.
+אפשר לציין כללים מורכבים יותר עבור גרסת הקומפיילר.
+כללים אלו עוקבים אחר אותו תחביר המשמש את `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_.
 
 .. note::
-  Using the version pragma *does not* change the version of the compiler.
-  It also *does not* enable or disable features of the compiler. It just
-  instructs the compiler to check whether its version matches the one
-  required by the pragma. If it does not match, the compiler issues
-  an error.
+   שימוש ב-pragma הגרסה *לא* משנה את הגרסה של הקומפיילר.
+   היא גם *לא* מאפשרת או משביתה תכונות של הקומפיילר. היא רק
+   מורה לקומפיילר לבדוק אם הגרסה שלו תואמת את הגרסה
+   הנדרש על ידי ה-pragma. אם אין תאימות, הקומפיילר מוציא
+   שגיאה.
 
 .. index:: ! ABI coder, ! pragma; abicoder, pragma; ABIEncoderV2
 .. _abi_coder:
 
-ABI Coder Pragma
+מקודד ABI Pragma
 ----------------
 
-By using ``pragma abicoder v1`` or ``pragma abicoder v2`` you can
-select between the two implementations of the ABI encoder and decoder.
+באמצעות ``pragma abicoder v1`` או ``pragma abicoder v2`` אתם יכולים
+לבחור בין שני המימושים של מקודד ומפענח ABI.
 
-The new ABI coder (v2) is able to encode and decode arbitrarily nested
-arrays and structs. Apart from supporting more types, it involves more extensive
-validation and safety checks, which may result in higher gas costs, but also heightened
-security. It is considered
-non-experimental as of Solidity 0.6.0 and it is enabled by default starting
-with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+קודן ABI החדש (v2) מסוגל לקודד ולפענח
+מערכים ומבנים מקוננים באופן שרירותי. מלבד תמיכה בעוד סוגים, דבר זה כרוך
+בבדיקות אימות ובטיחות נרחבות יותר, שעשויות לגרום לעלויות גז גבוהות יותר, אבל
+גם לעלות את רמת הבטחון. דבר זה נחשב
+ללא-ניסיוני החל מגרסה 0.6.0 של סולידיטי והוא מופעל כברירת מחדל
+החל מגרסת סולידיטי 0.8.0. עדיין ניתן לבחור את קודן ABI הישן באמצעות ``pragma abicoder v1;``.
 
-The set of types supported by the new encoder is a strict superset of
-the ones supported by the old one. Contracts that use it can interact with ones
-that do not without limitations. The reverse is possible only as long as the
-non-``abicoder v2`` contract does not try to make calls that would require
-decoding types only supported by the new encoder. The compiler can detect this
-and will issue an error. Simply enabling ``abicoder v2`` for your contract is
-enough to make the error go away.
-
-.. note::
-  This pragma applies to all the code defined in the file where it is activated,
-  regardless of where that code ends up eventually. This means that a contract
-  whose source file is selected to compile with ABI coder v1
-  can still contain code that uses the new encoder
-  by inheriting it from another contract. This is allowed if the new types are only
-  used internally and not in external function signatures.
+רשימת הסוגים הנתמכים על ידי המקודד החדש היא רשימת-על ספציפית של
+אלו שנתמכו על ידי המקודד הישן. חוזים המשתמשים ברשימה יכולים ליצור אינטראקציה עם כאלו שלא משתמשים בה בלי מגבלות. ההיפך אפשרי רק כל עוד
+החוזה שאינו ``abicoder v2`` אינו מנסה לבצע קריאות שידרשו
+סוגי פענוח שנתמכים רק על ידי המקודד החדש. הקומפיילר יכול לזהות זאת
+ויוציא שגיאה. מספיק בהפעלת ``abicoder v2`` עבור החוזה שלכם
+כדי לגרום לשגיאה להיעלם.
 
 .. note::
-  Up to Solidity 0.7.4, it was possible to select the ABI coder v2
-  by using ``pragma experimental ABIEncoderV2``, but it was not possible
-  to explicitly select coder v1 because it was the default.
+   pragma זו חלה על כל הקוד המוגדר בקובץ שבו היא מופעלת,
+   ללא קשר לאן הקוד הזה מגיע בסופו של דבר. זאת אומרת שחוזה
+   שקובץ המקור שלו נבחר לקומפילציה עם קודן ABI v1
+   עדיין יכול להכיל קוד שמשתמש בקודן החדש
+   על ידי ירושה מחוזה אחר. דבר זה מותר אם הסוגים החדשים נמצאים רק
+   בשימוש פנימי ולא בחתימות של פונקציות חיצוניות.
+
+.. note::
+   עד לסולידיטי 0.7.4, ניתן היה לבחור בקודן ABI v2
+   על ידי שימוש ב- ``PRagma experimental ABIEncoderV2``, אך אי אפשר היה
+   לבחור במפורש בקודן v1 כי זה היה ברירת המחדל.
 
 .. index:: ! pragma; experimental
 .. _experimental_pragma:
@@ -134,18 +136,18 @@ enough to make the error go away.
 Experimental Pragma
 -------------------
 
-The second pragma is the experimental pragma. It can be used to enable
-features of the compiler or language that are not yet enabled by default.
-The following experimental pragmas are currently supported:
+ה-prama השנייה היא ה-prama הניסיונית. ניתן להשתמש בה כדי להפעיל
+תכונות של הקומפיילר או של השפה שעדיין לא מופעלות כברירת מחדל.
+ה-pragmas הניסיוניות הבאות נתמכות כעת:
 
 .. index:: ! pragma; ABIEncoderV2
 
 ABIEncoderV2
 ~~~~~~~~~~~~
 
-Because the ABI coder v2 is not considered experimental anymore,
-it can be selected via ``pragma abicoder v2`` (please see above)
-since Solidity 0.7.4.
+מכיוון שקודן ABI v2 אינו נחשב ניסיוני יותר,
+ניתן לבחור באמצעות ``pragma abicoder v2`` (ראו למעלה)
+מאז סולידיטי 0.7.4.
 
 .. index:: ! pragma; SMTChecker
 .. _smt_checker:
@@ -153,71 +155,72 @@ since Solidity 0.7.4.
 SMTChecker
 ~~~~~~~~~~
 
-This component has to be enabled when the Solidity compiler is built
-and therefore it is not available in all Solidity binaries.
-The :ref:`build instructions<smt_solvers_build>` explain how to activate this option.
-It is activated for the Ubuntu PPA releases in most versions,
-but not for the Docker images, Windows binaries or the
-statically-built Linux binaries. It can be activated for solc-js via the
-`smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_ if you have an SMT solver
-installed locally and run solc-js via node (not via the browser).
+יש להפעיל רכיב זה כאשר קומפיילר סולידיטי נבנה
+ולכן הוא אינו זמין בכל הקבצים הבינאריים של סולידיטי.
+הוראת :ref:`build<smt_solvers_build>` מסבירה כיצד להפעיל אפשרות זו.
+היא מופעלת עבור מהדורות Ubuntu PPA ברוב הגרסאות,
+אבל לא עבור התמונות של Docker, הקבצים הבינאריים של Windows או
+הקבצים הבינאריים של לינוקס הבנויים באופן סטטי. ניתן להפעיל
+רכיב זה עבור solc-js באמצעות ה-
+`smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_ אם יש לכם פותר SMT
+שמותקן באופן מקומי ומפעיל solc-js דרך צומת (לא דרך הדפדפן).
 
-If you use ``pragma experimental SMTChecker;``, then you get additional
-:ref:`safety warnings<formal_verification>` which are obtained by querying an
-SMT solver.
-The component does not yet support all features of the Solidity language and
-likely outputs many warnings. In case it reports unsupported features, the
-analysis may not be fully sound.
+אם אתם משתמשים ב-``pragma experimental SMTCecker;``, אתם מקבלים
+:ref:`אזהרות בטיחות<formal_verification>` נוספות המתקבלות על ידי שאילתה של
+פותר SMT.
+הרכיב עדיין לא תומך בכל התכונות של שפת סולידיטיו
+וסביר להניח שיוציא אזהרות רבות. במקרה שהוא מדווח על תכונות שאינן נתמכות,
+יתכן שהניתוח אינו נכון לחלוטין.
 
 .. index:: source file, ! import, module, source unit
 
 .. _import:
 
-Importing other Source Files
+ייבוא קבצי מקור אחרים
 ============================
 
-Syntax and Semantics
+תחביר וסמנטיקה
 --------------------
 
-Solidity supports import statements to help modularise your code that
-are similar to those available in JavaScript
-(from ES6 on). However, Solidity does not support the concept of
-a `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#description>`_.
+סולידיטי תומכת בהצהרות ייבוא כדי לסייע במודולריזציה של הקוד שלכם
+בדומה לאלו הזמינים ב-JavaScript
+(מ-ES6 ואילך). עם זאת, סולידיטי אינה תומכת במושג של
+`ייצוא ברירת מחדל <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#description>`_.
 
-At a global level, you can use import statements of the following form:
+ברמה גלובלית, אתם יכול להשתמש בהצהרות ייבוא בצורה הבאה:
 
 .. code-block:: solidity
 
     import "filename";
 
-The ``filename`` part is called an *import path*.
-This statement imports all global symbols from "filename" (and symbols imported there) into the
-current global scope (different than in ES6 but backwards-compatible for Solidity).
-This form is not recommended for use, because it unpredictably pollutes the namespace.
-If you add new top-level items inside "filename", they automatically
-appear in all files that import like this from "filename". It is better to import specific
-symbols explicitly.
+החלק ``filename`` נקרא *נתיב ייבוא (Impot Path)*.
+הצהרה זו מייבאת את כל הסימבוים הגלובליים מ-"filename" (וסמבולים שיובאו לשם) לתוך
+התחום הגלובלי נוכחי (שונה מאשר ב-ES6 אך תואם לאחור עבור סולידיטי).
+צורה זו אינה מומלצת לשימוש, מכיוון שהיא מזהמת באופן בלתי צפוי את מרחב השמות.
+אם תוסיפו פריטים חדשים ברמה העליונה בתוך "filename", הם
+מופיעים אוטומטית בכל הקבצים שמייבאים כך מ-"filename". עדיף לייבא
+סימבולים ספציפיים במפורש.
 
-The following example creates a new global symbol ``symbolName`` whose members are all
-the global symbols from ``"filename"``:
+הדוגמה הבאה יוצרת סימבול גלובלי חדש ``symbolName`` שכל האיברים שלו הם
+הסימבולים הגלובליים מתוך ``"filename"``:
 
 .. code-block:: solidity
 
     import * as symbolName from "filename";
 
-which results in all global symbols being available in the format ``symbolName.symbol``.
+מה שגורם לכך שכל הסימבולים הגלובליים יהיו זמינים בפורמט ``symbolName.symbol``.
 
-A variant of this syntax that is not part of ES6, but possibly useful is:
+גרסה של תחביר זה, שאינה חלק מ-ES6, אך אולי שימושית, היא:
 
 .. code-block:: solidity
 
   import "filename" as symbolName;
 
-which is equivalent to ``import * as symbolName from "filename";``.
+שהוא שווה ערך ל-``import * as symbolName from "filename";``.
 
-If there is a naming collision, you can rename symbols while importing. For example,
-the code below creates new global symbols ``alias`` and ``symbol2`` which reference
-``symbol1`` and ``symbol2`` from inside ``"filename"``, respectively.
+אם יש התנגשות שמות, ניתן לשנות את שמות הסימבולים בזמן הייבוא. לדוגמה,
+הקוד שלהלן יוצר סימבולים גלובליים חדשים ``alias`` ו-``symbol2`` שמתייחסים אליהם
+``symbol1`` ו-``symbol2`` מתוך ``"filename"``, בהתאמה.
 
 .. code-block:: solidity
 
@@ -225,39 +228,42 @@ the code below creates new global symbols ``alias`` and ``symbol2`` which refere
 
 .. index:: virtual filesystem, source unit name, import; path, filesystem path, import callback, Remix IDE
 
-Import Paths
+נתיבי ייבוא
 ------------
 
-In order to be able to support reproducible builds on all platforms, the Solidity compiler has to
-abstract away the details of the filesystem where source files are stored.
-For this reason import paths do not refer directly to files in the host filesystem.
-Instead the compiler maintains an internal database (*virtual filesystem* or *VFS* for short) where
-each source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
-The import path specified in an import statement is translated into a source unit name and used to
-find the corresponding source unit in this database.
+על מנת להיות מסוגל לתמוך בבנייה המאפשרת ביצוע בכל הפלטפורמות, הקומפיילר
+של סולידיטי צריך להגדיר באופן מופשט
+את הפרטים של מערכת הקבצים שבה מאוחסנים קבצי המקור.
+מסיבה זו נתיבי ייבוא (imports paths) אינם מתייחסים ישירות לקבצים במערכת הקבצים המארחת.
+במקום זאת הקומפיילר שומר על מסד נתונים פנימי (*מערכת קבצים וירטואלית (Virtual File System* או *VFS* בקיצור) שבו
+לכל יחידת מקור מוקצה *שם יחידת מקור* ייחודי שהוא מזהה לא מובנה.
+נתיב הייבוא שצוין בהצהרת import מתורגם לשם יחידת מקור ומשמש אותו
+למציאת יחידת המקור המתאימה במסד נתונים זה.
 
-Using the :ref:`Standard JSON <compiler-api>` API it is possible to directly provide the names and
-content of all the source files as a part of the compiler input.
-In this case source unit names are truly arbitrary.
-If, however, you want the compiler to automatically find and load source code into the VFS, your
-source unit names need to be structured in a way that makes it possible for an :ref:`import callback
-<import-callback>` to locate them.
-When using the command-line compiler the default import callback supports only loading source code
-from the host filesystem, which means that your source unit names must be paths.
-Some environments provide custom callbacks that are more versatile.
-For example the `Remix IDE <https://remix.ethereum.org/>`_ provides one that
-lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
-<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
+באמצעות ה-:ref:`Standard JSON <compiler-api>` API ניתן לספק ישירות את השמות
+ואת התוכן של כל קבצי המקור כחלק מקלט הקומפיילר.
+במקרה זה שמות יחידות המקור הם שרירותיים.
+עם זאת, אם אתם רוצים שהקומפיילר ימצא ויטען אוטומטית קוד המקור לתוך ה-VFS,
+שמות יחידות המקור שלכם צריכים להיות מובנים בצורה שתאפשר התקשרות חוזרת של :ref:`import callback
+<import-callback>` כדי לאתר אותם.
+בעת שימוש בקומפיילר שורת-פקודה, ברירת המחדל של ה-import callback
+תומך בטעינת קוד מקור בלבד
+ממערכת הקבצים המארחת, ולכן שמות יחידות המקור שלכם
+חייבים להיות נתיבים (paths).
+סביבות מסוימות מספקות callbacks מותאמות אישית שהן מגוונות יותר.
+לדוגמה `Remix IDE <https://remix.ethereum.org/>`_ מספק callback כזה
+שמאפשר ייבוא קבצים מכתובות URL של HTTP, IPFS ו-Swarm או הפניות ישירות לחבילות ברישום NPM
+`<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
 
-For a complete description of the virtual filesystem and the path resolution logic used by the
-compiler see :ref:`Path Resolution <path-resolution>`.
+לתיאור מלא של מערכת הקבצים הווירטואלית והלוגיקה של פתרון הנתיב המשמשת את
+הקומפיילר ראה :ref:`רזולוציית נתיב <path-resolution>`.
 
 .. index:: ! comment, natspec
 
-Comments
+הערות
 ========
 
-Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible.
+אפשר להוסיף הערות בשורה אחת (``//``) והערות מרובות שורות (``/*...*/``).
 
 .. code-block:: solidity
 
@@ -269,12 +275,12 @@ Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible
     */
 
 .. note::
-  A single-line comment is terminated by any unicode line terminator
-  (LF, VF, FF, CR, NEL, LS or PS) in UTF-8 encoding. The terminator is still part of
-  the source code after the comment, so if it is not an ASCII symbol
-  (these are NEL, LS and PS), it will lead to a parser error.
+   הערה בשורה אחת מסתיימת על ידי כל מסיים  שורה ב-unicode
+   (LF, VF, FF, CR, NEL, LS או PS) בקידוד UTF-8. המסיים הוא עדיין חלק
+   מקוד המקור אחרי ההערה, לכן, אם הוא לא סימבול ASCII
+   (אלה הם NEL, LS ו-PS), הוא יוביל לשגיאת פרסר.
 
-Additionally, there is another type of comment called a NatSpec comment,
-which is detailed in the :ref:`style guide<style_guide_natspec>`. They are written with a
-triple slash (``///``) or a double asterisk block (``/** ... */``) and
-they should be used directly above function declarations or statements.
+בנוסף, יש סוג נוסף של הערות שנקרא הערת NatSpec,
+אשר מפורט במדריך :ref:`style<style_guide_natspec>`. הם כתובים עם
+קו-נטוי משולש (``///``) או בלוק כוכבית כפולה (``/** ... */``)
+ויש להשתמש בהן ישירות מעל פקודות או הגדרת פונקציות.

@@ -3,26 +3,26 @@
 .. _contract_structure:
 
 ***********************
-Structure of a Contract
+מבנה של חוזה
 ***********************
 
-Contracts in Solidity are similar to classes in object-oriented languages.
-Each contract can contain declarations of :ref:`structure-state-variables`, :ref:`structure-functions`,
-:ref:`structure-function-modifiers`, :ref:`structure-events`, :ref:`structure-errors`, :ref:`structure-struct-types` and :ref:`structure-enum-types`.
-Furthermore, contracts can inherit from other contracts.
+חוזים בסולידיטי דומים למחלקות (classes) בשפות מונחות עצמים.
+כל חוזה יכול להכיל הצהרות של :ref:`structure-state-variables`, :ref:`structure-functions`,
+:ref:`structure-function-modifiers`, :ref:`structure-events`, :ref:`structure-errors`, :ref:`structure-struct-types` ו-:ref:`structure-enum-types`.
+בנוסף על כך, חוזים יכולים לרשת מחוזים אחרים.
 
-There are also special kinds of contracts called :ref:`libraries<libraries>` and :ref:`interfaces<interfaces>`.
+ישנם גם סוגים מיוחדים של חוזים הנקראים :ref:`ספריות<libraries>` ו-:ref:`ממשקים<interfaces>`.
 
-The section about :ref:`contracts<contracts>` contains more details than this section,
-which serves to provide a quick overview.
+הסעיף על :ref:`חוזים<contracts>` מכיל יותר פרטים מאשר סעיף זה,
+אשר נותן רק סקירה מהירה.
 
 .. _structure-state-variables:
 
-State Variables
+משתני מצב
 ===============
 
-State variables are variables whose values are permanently stored in contract
-storage.
+משתני מצב הם משתנים שהערכים שלהם מאוחסנים באופן קבוע
+ב-storage של חוזה.
 
 .. code-block:: solidity
 
@@ -34,18 +34,16 @@ storage.
         // ...
     }
 
-See the :ref:`types` section for valid state variable types and
-:ref:`visibility-and-getters` for possible choices for
-visibility.
+עיין בסעיף :ref:`types` עבור סוגי משתני מצב חוקיים ו-
+:ref:`visibility-and-getters` עבור אפשרויות של נראות (visibility).
 
 .. _structure-functions:
 
-Functions
+פונקציות
 =========
 
-Functions are the executable units of code. Functions are usually
-defined inside a contract, but they can also be defined outside of
-contracts.
+פונקציות הן יחידות ההפעלה של הקוד. פונקציות בדרך כלל
+מוגדרות בתוך חוזה, אך ניתן להגדיר אותן גם מחוץ לחוזים.
 
 .. code-block:: solidity
 
@@ -63,23 +61,23 @@ contracts.
         return x * 2;
     }
 
-:ref:`function-calls` can happen internally or externally
-and have different levels of :ref:`visibility<visibility-and-getters>`
-towards other contracts. :ref:`Functions<functions>` accept :ref:`parameters and return variables<function-parameters-return-variables>` to pass parameters
-and values between them.
+:ref:`קריאות לפונקציות` יכולות להתבצע פנימית או חיצונית
+וברמות שונות של :ref:`נראות<visibility-and-getters>`
+כלפי חוזים אחרים. :ref:`פונקציות<functions>` מקבלות את :ref:`הפרמטרים ומשתנים מוחזרים<function-parameters-return-variables>` כדי להעביר פרמטרים
+וערכים ביניהם.
 
 .. _structure-function-modifiers:
 
-Function Modifiers
+משני פונקציות
 ==================
 
-Function modifiers can be used to amend the semantics of functions in a declarative way
-(see :ref:`modifiers` in the contracts section).
+ניתן להשתמש במשני פונקציות (function modifiers) כדי לתקן את הסמנטיקה של פונקציות בצורה הצהרתית
+(ראו :ref:`modifiers` בסעיף החוזים).
 
-Overloading, that is, having the same modifier name with different parameters,
-is not possible.
+הגדרת אותו שם משנה (modifier) אבל עם פרמטרים שונים (overloading),
+בלתי אפשרית.
 
-Like functions, modifiers can be :ref:`overridden <modifier-overriding>`.
+כמו פונקציות, ניתן לבצע :ref:`override <modifier-overriding>` של משנים.
 
 .. code-block:: solidity
 
@@ -104,10 +102,10 @@ Like functions, modifiers can be :ref:`overridden <modifier-overriding>`.
 
 .. _structure-events:
 
-Events
-======
+אירועים (Events)
+=================
 
-Events are convenience interfaces with the EVM logging facilities.
+אירועים (Events) הם ממשקים נוחים עם שרותי הלוגים של EVM.
 
 .. code-block:: solidity
 
@@ -123,19 +121,19 @@ Events are convenience interfaces with the EVM logging facilities.
         }
     }
 
-See :ref:`events` in contracts section for information on how events are declared
-and can be used from within a dapp.
+ראו :ref:`events` בסעיף חוזים למידע על אופן ההגדרה על אירועים
+ואיך ניתן להשתמש בהם מתוך dapp.
 
 .. _structure-errors:
 
-Errors
+שגיאות
 ======
 
-Errors allow you to define descriptive names and data for failure situations.
-Errors can be used in :ref:`revert statements <revert-statement>`.
-In comparison to string descriptions, errors are much cheaper and allow you
-to encode additional data. You can use NatSpec to describe the error to
-the user.
+שגיאות מאפשרות לכם להגדיר שמות תיאור ונתונים עבור מצבי כשל.
+ניתן להשתמש בשגיאות ב-:ref:`פקודות revert <revert-statement>`.
+בהשוואה לתיאורי מחרוזת, שגיאות זולות הרבה יותר ומאפשרות לכם
+לקודד נתונים נוספים. אתם יכולים להשתמש ב-NatSpec כדי לתאר את השגיאות
+למשתמש.
 
 .. code-block:: solidity
 
@@ -158,15 +156,15 @@ the user.
         }
     }
 
-See :ref:`errors` in the contracts section for more information.
+למידע נוסף ראו :ref:`errors` בסעיף החוזים.
 
 .. _structure-struct-types:
 
-Struct Types
+סוגי Struct
 =============
 
-Structs are custom defined types that can group several variables (see
-:ref:`structs` in types section).
+Structs הם סוגים המוגדרים בהתאמה אישית שיכולים לקבץ מספר משתנים (ראה
+:ref:`structs` בסעיף types).
 
 .. code-block:: solidity
 
@@ -184,11 +182,12 @@ Structs are custom defined types that can group several variables (see
 
 .. _structure-enum-types:
 
-Enum Types
+סוגי Enum
 ==========
 
-Enums can be used to create custom types with a finite set of 'constant values' (see
-:ref:`enums` in types section).
+ניתן להשתמש ב-Enums ליצירת סוגים מותאמים אישית
+עם קבוצה סופית של 'ערכים קבועים'
+(ראו :ref:`enums` בקטע types).
 
 .. code-block:: solidity
 

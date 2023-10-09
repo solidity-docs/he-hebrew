@@ -15,9 +15,11 @@
 | Maintainers                 | מתחזקים           |
 | Object Oriented Programming | תכנות מונחה עצמים |
 | Opcode                      | אופקוד            |
+| Path                        | נתיב              |
 | Pull Request                | פול ריקווסט       |
 | Persistent                  | תמידי              |
-| Repository                  | רפוזיטורי (ניהול גרסאות)|
+| Repository                  | רפוזיטורי (ניהול גרסאות) |
+| Scope                       | תחום               |
 | Statement                   | הצהרה              |
 
 ## מבוסס סולידיטי
