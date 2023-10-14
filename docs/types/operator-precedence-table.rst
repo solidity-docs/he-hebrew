@@ -1,4 +1,4 @@
-The following is the order of precedence for operators, listed in order of evaluation.
+להלן סדר העדיפויות של אופרטורים, על-פי סדר הערכה (evaluation).
 
 +------------+-------------------------------------+--------------------------------------------+
 | Precedence | Description                         | Operator                                   |

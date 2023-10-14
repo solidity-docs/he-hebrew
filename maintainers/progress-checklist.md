@@ -45,7 +45,7 @@ These pages need to be translated before the translation will be added as a new 
 
 - [x] layout-of-source-files [@davidBar-On](https://github.com/davidBar-On)
 - [x] structure-of-a-contract [@davidBar-On](https://github.com/davidBar-On)
-- [ ] types
+- [ ] types [@davidBar-On](https://github.com/davidBar-On)
 - [ ] units-and-global-variables
 - [ ] control-structures
 - [ ] contracts

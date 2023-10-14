@@ -2,67 +2,66 @@
 
 .. _reference-types:
 
-Reference Types
+סוגי הפנייה (Reference)
 ===============
 
-Values of reference type can be modified through multiple different names.
-Contrast this with value types where you get an independent copy whenever
-a variable of value type is used. Because of that, reference types have to be handled
-more carefully than value types. Currently, reference types comprise structs,
-arrays and mappings. If you use a reference type, you always have to explicitly
-provide the data area where the type is stored: ``memory`` (whose lifetime is limited
-to an external function call), ``storage`` (the location where the state variables
-are stored, where the lifetime is limited to the lifetime of a contract)
-or ``calldata`` (special data location that contains the function arguments).
+ניתן לשנות ערכים של סוג הפניה (Reference) באמצעות מספר שמות שונים.
+זאת בניגוד לסוגי ערכים שבהם אתם מקבלים עותק בלתי תלוי בכל פעם
+שבה נעשה שימוש במשתנה מסוג ערך (value type). לכן, יש לטפל בסוגי הפניות
+בזהירות רבה יותר מאשר בסוגי ערכים. נכון לעכשיו, סוגי הפניות כוללים structs,
+מערכים ומיפויים. אם אתם משתמשים בסוג הפניה, אתם תמיד צריכים לספק במפורש
+את אזור הנתונים שבו מאוחסן הסוג: ``memory`` (שאורך חייו מוגבל
+לקריאת לפונקציה חיצונית), ``storage`` (המיקום בו משתני המצב
+מאוחסנים, כאשר משך החיים מוגבל למשך חיי החוזה)
+או ``calldata`` (מיקום נתונים מיוחד המכיל את הארגומנטים של הפונקציה).
 
-An assignment or type conversion that changes the data location will always incur an automatic copy operation,
-while assignments inside the same data location only copy in some cases for storage types.
+הקצאה או המרת סוג שמשנה את מיקום הנתונים תמיד תגרור פעולת העתקה אוטומטית,
+בעוד שהמשימות בתוך אותו מיקום נתונים מועתקות רק במקרים מסוימים של סוגי אחסון.
 
 .. _data-location:
 
-Data location
+מיקומי נתונים
 -------------
 
-Every reference type has an additional
-annotation, the "data location", about where it is stored. There are three data locations:
-``memory``, ``storage`` and ``calldata``. Calldata is a non-modifiable,
-non-persistent area where function arguments are stored, and behaves mostly like memory.
+לכל סוג הפניה יש תוספת "מיקום הנתונים", המציינת
+את המיקום שבו הוא מאוחסן. ישנם שלושה מיקומי נתונים: ``memory``, ``storage``, ``calldata``.
+המיקום calldata הוא מיקום לא קבוע שאינו ניתן לשינוי,
+שבו מאוחסנים ארגומנטים של פונקציה, ומתנהג בעיקר כמו memory.
 
 .. note::
-    If you can, try to use ``calldata`` as data location because it will avoid copies and
-    also makes sure that the data cannot be modified. Arrays and structs with ``calldata``
-    data location can also be returned from functions, but it is not possible to
-    allocate such types.
+    אם אפשר, נסו להשתמש ב-``calldata`` כמיקום נתונים מכיוון שהוא ימנע העתקות
+    והוא גם מוודא שאי אפשר לשנות את הנתונים. פונקציה יכולה להחזיר
+    מערכים ו-structs  ב-מיקום של `calldata``, אבל אי אפשר
+    להקצות סוגים אלו.
 
 .. note::
-    Prior to version 0.6.9 data location for reference-type arguments was limited to
-    ``calldata`` in external functions, ``memory`` in public functions and either
-    ``memory`` or ``storage`` in internal and private ones.
-    Now ``memory`` and ``calldata`` are allowed in all functions regardless of their visibility.
+    לפני גרסה 0.6.9 מיקום הנתונים עבור ארגומנטים מסוג הפניה הוגבל
+    ל-``calldata`` בפונקציות חיצוניות, ``memory`` בפונקציות ציבוריות וכן
+    ``memory`` או ``storage`` בפונקציות פנימיות או פרטיות.
+    עכשיו ``memory`` וגם ``calldata`` מותרים בכל הפונקציות ללא קשר לנראות שלהם.
 
 .. note::
-    Prior to version 0.5.0 the data location could be omitted, and would default to different locations
-    depending on the kind of variable, function type, etc., but all complex types must now give an explicit
-    data location.
+    לפני גרסה 0.5.0 ניתן היה להשמיט את מיקום הנתונים, והיתה ברירת מחדל למיקומים שונים
+    תלוי בסוג המשתנה, סוג הפונקציה וכולי, אבל עכשיו לכל הסוגים המורכבים חייבים להגדיר במפורש את מיקום הנתונים.
 
 .. _data-location-assignment:
 
-Data location and assignment behavior
+מיקום נתונים והתנהגות השמה (Assignment)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Data locations are not only relevant for persistency of data, but also for the semantics of assignments:
+מיקומי נתונים רלוונטיים לא רק להתמדה (persistency) של הנתונים, אלא גם לסמנטיקה של השמות (assignments):
 
-* Assignments between ``storage`` and ``memory`` (or from ``calldata``)
-  always create an independent copy.
-* Assignments from ``memory`` to ``memory`` only create references. This means
-  that changes to one memory variable are also visible in all other memory
-  variables that refer to the same data.
-* Assignments from ``storage`` to a **local** storage variable also only
-  assign a reference.
-* All other assignments to ``storage`` always copy. Examples for this
-  case are assignments to state variables or to members of local
-  variables of storage struct type, even if the local variable
-  itself is just a reference.
+* הקצאות בין ``storage`` ו-``memory`` (או מתוך ``calldata``)
+  תמיד מייצר עותק עצמאי.
+* הקצאות מ-``memory`` ל-``memory`` יוצרות הפניות בלבד. זאת אומרת
+  ששינויים במשתנה memory אחד נראים גם בכל משתני memory אחרים
+  המתייחסים לאותם נתונים.
+* גם הקצאות מ-``storage`` למשתנה storage **מקומי**
+  מקצות הפניות.
+* כל שאר ההקצאות ל-``storage`` תמיד מעתיקות. דוגמאות לכך
+  הן הקצאות למשתני מצב או איברים של
+  משתנים מקומיים מסוג storage struct, גם אם המשתנה המקומי
+  עצמו הוא רק הפנייה.
 
 .. code-block:: solidity
 
@@ -102,43 +101,44 @@ Data locations are not only relevant for persistency of data, but also for the s
 
 .. _arrays:
 
-Arrays
+מערכים
 ------
 
-Arrays can have a compile-time fixed size, or they can have a dynamic size.
+למערכים יכול להיות גודל קבוע או דינאמי בזמן קומפילציה.
 
-The type of an array of fixed size ``k`` and element type ``T`` is written as ``T[k]``,
-and an array of dynamic size as ``T[]``.
+מערך בגודל קבוע ``k`` וסוג רכיב ``T`` נכתב כ-``T[k]``,
+ומערך בגודל דינמי כ-``T[]``.
 
-For example, an array of 5 dynamic arrays of ``uint`` is written as
-``uint[][5]``. The notation is reversed compared to some other languages. In
-Solidity, ``X[3]`` is always an array containing three elements of type ``X``,
-even if ``X`` is itself an array. This is not the case in other languages such
-as C.
+לדוגמה, מערך של 5 מערכים דינמיים של ``uint`` נכתב בשם
+``uint[][5]``. שימו לב שהסימון הפוך בהשוואה לשפות אחרות.
+בסולידיטי, ``X[3]`` הוא תמיד מערך המכיל שלושה אלמנטים מסוג ``X``,
+גם אם ``X`` הוא עצמו מערך. זה לא המקרה בשפות אחרות כגון C.
 
-Indices are zero-based, and access is in the opposite direction of the
-declaration.
+האינדקסים מתחילים מאפס, והגישה היא בכיוון ההפוך מההצהרה.
 
-For example, if you have a variable ``uint[][5] memory x``, you access the
-seventh ``uint`` in the third dynamic array using ``x[2][6]``, and to access the
-third dynamic array, use ``x[2]``. Again,
-if you have an array ``T[5] a`` for a type ``T`` that can also be an array,
-then ``a[2]`` always has type ``T``.
+לדוגמה, אם יש לך משתנה ``uint[][5] memory x``, ניגשים ל-``uint``
+השביעי במערך הדינאמי השלישי באמצעות ``x[2][6]``, וכדי לגשת
+למערך הדינאמי השלישי, השתמשו ב-``x[2]``. שוב,
+אם יש לכם מערך ``T[5] a`` עבור סוג ``T`` שיכול להיות גם מערך,
+אז ל- ``a[2]`` תמיד יש את הסוג ``T``.
 
-Array elements can be of any type, including mapping or struct. The general
-restrictions for types apply, in that mappings can only be stored in the
-``storage`` data location and publicly-visible functions need parameters that are :ref:`ABI types <ABI>`.
+רכיבי מערך יכולים להיות מכל סוג, כולל מיפוי או strauct.
+ההגבלות הכלליות על סוגי משתנים חלות גם לגבי מערכים
+בכך שניתן לאחסן מיפויים רק ב-``storage``
+ופונקציות public זקוקות לפרמטרים שהם :ref:`סוגי ABI <ABI>`.
 
-It is possible to mark state variable arrays ``public`` and have Solidity create a :ref:`getter <visibility-and-getters>`.
-The numeric index becomes a required parameter for the getter.
+אפשר לסמן מערכי משתני מצב ``public`` ולגרום לסולידיטי 
+ליצור :ref:`getter <visibility-and-getters>`.
+האינדקס המספרי הופך לפרמטר נדרש עבור ה-getter.
 
-Accessing an array past its end causes a failing assertion. Methods ``.push()`` and ``.push(value)`` can be used
-to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns
-a reference to it.
+גישה למערך מעבר לקצה שלו גורמת לשגיאה.
+ניתן להשתמש בשיטות ``()push.`` ו-``push(value).``
+כדי להוסיף רכיב חדש בסוף מערך בגודל דינאמי,
+כאשר ``()push.`` מוסיף אלמנט מאותחל באפס ומחזיר הפניה אליו.
 
 .. note::
-    Dynamically-sized arrays can only be resized in storage.
-    In memory, such arrays can be of arbitrary size but the size cannot be changed once an array is allocated.
+    ניתן לשנות גודל מערכים בגודל דינאמי רק ב-storage.
+    ב-memory, מערכים כאלה יכולים להיות בגודל שרירותי, אך לא ניתן לשנות את הגודל לאחר הקצאת מערך.
 
 .. index:: ! string, ! bytes
 
@@ -146,46 +146,52 @@ a reference to it.
 
 .. _bytes:
 
-``bytes`` and ``string`` as Arrays
+``bytes`` ו-``string`` כמערכים
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Variables of type ``bytes`` and ``string`` are special arrays. The ``bytes`` type is similar to ``bytes1[]``,
-but it is packed tightly in calldata and memory. ``string`` is equal to ``bytes`` but does not allow
-length or index access.
+משתנים מסוג ``bytes (בתים)`` ו-``string`` (מחרוזת) הם מערכים מיוחדים.
+הסוג ``bytes`` דומה ל-``[]bytes1``,
+אבל הוא דחוס ב-calldata וב-memory. משתנה ``string`` שווה למשתנה ``bytes``
+אך אינו מאפשר אורך או גישה לאינדקס.
 
-Solidity does not have string manipulation functions, but there are
-third-party string libraries. You can also compare two strings by their keccak256-hash using
-``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` and
-concatenate two strings using ``string.concat(s1, s2)``.
+לסולידיטי אין פונקציות למניפולציות של מחרוזות, אבל ישנן
+ספריות מחרוזות צד-שלישי לבצוע פעולות כאלו.
+אתם יכולים גם להשוות בין שתי מחרוזות לפי ה-keccak256-hash שלהן
+``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))``
+וכן לשרשר שתי מחרוזות באמצעות ``string.concat(s1, s2)``.
 
-You should use ``bytes`` over ``bytes1[]`` because it is cheaper,
-since using ``bytes1[]`` in ``memory`` adds 31 padding bytes between the elements. Note that in ``storage``, the
-padding is absent due to tight packing, see :ref:`bytes and string <bytes-and-string>`. As a general rule,
-use ``bytes`` for arbitrary-length raw byte data and ``string`` for arbitrary-length
-string (UTF-8) data. If you can limit the length to a certain number of bytes,
-always use one of the value types ``bytes1`` to ``bytes32`` because they are much cheaper.
+אתם צריכים להעדיף ``bytes`` על-פני ``[]bytes1`` כי זה זול יותר,
+מכיוון ששימוש ב-``[]bytes1`` ב``memory`` מוסיף 31 בתים לריפוד בין האלמנטים.
+שימו לב שב-``storage``, הריפוד לא מתבצע עקב דחיסת הנתונים,
+ראו :ref:`bytes and string <bytes-and-string>`.
+ככלל, השתמשו ב-``bytes`` עבור נתוני בתים גולמיים באורך שרירותי
+וב-``string`` עבור נתוני מחרוזת (UTF-8) באורך שרירותי.
+אם אתם יכולים להגביל את האורך למספר מסוים של בתים,
+השתמשו תמיד באחד מסוגי הערכים ``bytes1`` עד ``bytes32``
+כי הם הרבה יותר זולים.
 
 .. note::
-    If you want to access the byte-representation of a string ``s``, use
-    ``bytes(s).length`` / ``bytes(s)[7] = 'x';``. Keep in mind
-    that you are accessing the low-level bytes of the UTF-8 representation,
-    and not the individual characters.
+    אם אתם רוצים לגשת לייצוג בתים של מחרוזת ``s``, השתמשו ב-
+    ``;'bytes(s).length`` / ``bytes(s)[7] = 'x``. 
+    זכרו שאתם ניגשים ל-bytes ברמה נמוכה של ייצוג UTF-8,
+    ולא לתווים האינדיבידואלים.
 
 .. index:: ! bytes-concat, ! string-concat
 
 .. _bytes-concat:
 .. _string-concat:
 
-The functions ``bytes.concat`` and ``string.concat``
+הפונקציות ``bytes.concat`` ו-``string.concat``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can concatenate an arbitrary number of ``string`` values using ``string.concat``.
-The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
-If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
+אתם יכולים לשרשר מספר שרירותי של ערכי ``string`` באמצעות ``string.concat``.
+הפונקציה מחזירה מערך ``string memory`` יחיד המכיל את תוכן הארגומנטים ללא ריפוד.
+אם אתם רוצים להשתמש בפרמטרים מסוגים אחרים שאינם ניתנים להמרה
+באופן פנימי ל``string``, עליכם להמיר אותם תחילה  ל-``string``.
 
-Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
-The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
-If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
+באופן דומה, הפונקציה ``bytes.concat`` יכולה לשרשר מספר שרירותי של ערכי ``bytes`` או ``bytes1 ... bytes32``.
+הפונקציה מחזירה מערך ``bytes memory`` יחיד המכיל את תוכן הארגומנטים ללא ריפוד.
+אם אתם רוצים להשתמש בפרמטרי string או סוגים אחרים שאינם ניתנים להמרה באופן פנימי ל-``bytes``, אתם צריכים להמיר אותם תחילה ל-``bytes`` או ל-``bytes1``/.../``bytes32`` .
 
 
 .. code-block:: solidity
@@ -204,21 +210,21 @@ If you want to use string parameters or other types that are not implicitly conv
         }
     }
 
-If you call ``string.concat`` or ``bytes.concat`` without arguments they return an empty array.
+אם אתם קוראים ל-``string.concat`` או ל-``bytes.concat`` ללא ארגומנטים הם מחזירים מערך ריק.
 
 .. index:: ! array;allocating, new
 
-Allocating Memory Arrays
+הקצאת מערכים ב-Memory
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Memory arrays with dynamic length can be created using the ``new`` operator.
-As opposed to storage arrays, it is **not** possible to resize memory arrays (e.g.
-the ``.push`` member functions are not available).
-You either have to calculate the required size in advance
-or create a new memory array and copy every element.
+ניתן ליצור ב-memory מערכים בעלי אורך דינאמי באמצעות האופרטור ``new``.
+בניגוד למערכים ב-storage, **לא** ניתן לשנות גודל של מערכים ב-memory (למשל
+פונקציות ``push.`` לאיבר אינן זמינות).
+אתם צריכים לחשב את הגודל הנדרש מראש
+או ליצור מערך חדש ב-memory ולהעתיק כל איבר.
 
-As all variables in Solidity, the elements of newly allocated arrays are always initialized
-with the :ref:`default value<default-value>`.
+כמו כל המשתנים בסולידיטי, האלמנטים של מערכים חדשים שהוקצו מאותחלים תמיד
+עם :ref:`ערך ברירת מחדל<default-value>`.
 
 .. code-block:: solidity
 
@@ -237,27 +243,26 @@ with the :ref:`default value<default-value>`.
 
 .. index:: ! literal;array, ! inline;arrays
 
-Array Literals
+ליטרלים של מערכים
 ^^^^^^^^^^^^^^
 
-An array literal is a comma-separated list of one or more expressions, enclosed
-in square brackets (``[...]``). For example ``[1, a, f(3)]``. The type of the
-array literal is determined as follows:
+ליטרלים של מערך היא רשימה מופרדת בפסיק של ביטוי אחד או יותר, מוקפת
+בסוגריים מרובעים (``[...]``). לדוגמה ``[1, a, f(3)]``. סוג
+הליטרל של המערך נקבע באופן הבא:
 
-It is always a statically-sized memory array whose length is the
-number of expressions.
+הוא תמיד מערך ב-memory בגודל סטטי שאורכו הוא מספר הביטויים.
 
-The base type of the array is the type of the first expression on the list such that all
-other expressions can be implicitly converted to it. It is a type error
-if this is not possible.
+סוג הבסיס של המערך הוא סוג הביטוי הראשון ברשימה כך
+שניתן להמיר אליו את כל הביטויים האחרים באופן פנימי .
+זו שגיאה אם אין ביטוי כזה במערך.
 
-It is not enough that there is a type all the elements can be converted to. One of the elements
-has to be of that type.
+לא מספיק שיש סוג שאליו ניתן להמיר את כל האלמנטים. אחד המרכיבים
+חייב להיות מהסוג הזה.
 
-In the example below, the type of ``[1, 2, 3]`` is
-``uint8[3] memory``, because the type of each of these constants is ``uint8``. If
-you want the result to be a ``uint[3] memory`` type, you need to convert
-the first element to ``uint``.
+בדוגמה למטה, הסוג של ``[1, 2, 3]`` הוא
+``uint8[3] memory``, מכיוון שהסוג של כל אחד מהקבועים הללו הוא ``uint8``.
+אם אתם רוצים שהתוצאה תהיה מסוג ``uint[3] memory``, עליכם להמיר
+את האלמנט הראשון ל-``uint``.
 
 .. code-block:: solidity
 
@@ -273,13 +278,14 @@ the first element to ``uint``.
         }
     }
 
-The array literal ``[1, -1]`` is invalid because the type of the first expression
-is ``uint8`` while the type of the second is ``int8`` and they cannot be implicitly
-converted to each other. To make it work, you can use ``[int8(1), -1]``, for example.
+המערך הליטרלי ``[1, 1-]`` אינו חוקי בגלל שסוג הביטוי הראשון
+הוא ``uint8`` בעוד הסוג של השני הוא ``int8`` והם לא יכולים להיות מומרים
+אחד לשני באופן פנימי. כדי המערך יהיה חוקי, אתם יכולים
+להשתמש ב-``[int8(1), 1-]``, למשל.
 
-Since fixed-size memory arrays of different type cannot be converted into each other
-(even if the base types can), you always have to specify a common base type explicitly
-if you want to use two-dimensional array literals:
+מכיוון שלא ניתן להמיר זה לזה מערכי memory בגודל קבוע אבל מסוג שונה
+(גם אם סוגי הבסיס יכולים), אם אתם רוצים להשתמש במערך דו מימדי ליטרלי,
+אתם תמיד צריכים לציין במפורש את סוג הבסיס:
 
 .. code-block:: solidity
 
@@ -295,8 +301,8 @@ if you want to use two-dimensional array literals:
         }
     }
 
-Fixed size memory arrays cannot be assigned to dynamically-sized
-memory arrays, i.e. the following is not possible:
+לא ניתן להציב מערכי memory בגודל קבוע במערכי memory בגודל דינאמי.
+כלומר, הדבר הבא אינו אפשרי:
 
 .. code-block:: solidity
 
@@ -312,11 +318,11 @@ memory arrays, i.e. the following is not possible:
         }
     }
 
-It is planned to remove this restriction in the future, but it creates some
-complications because of how arrays are passed in the ABI.
+מתוכנן שמגבלה זו תוסר בעתיד, אבל הסרה כזו לא פשוטה
+בגלל האופן שבו מערכים מועברים ב-ABI.
 
-If you want to initialize dynamically-sized arrays, you have to assign the
-individual elements:
+אם אתם רוצים לאתחל מערכים בגודל דינאמי, עליכם להציב ערכים בכל
+אלמנט בנפרד:
 
 .. code-block:: solidity
 
@@ -336,45 +342,46 @@ individual elements:
 
 .. _array-members:
 
-Array Members
+מרכיבים של מערך
 ^^^^^^^^^^^^^
 
 **length**:
-    Arrays have a ``length`` member that contains their number of elements.
-    The length of memory arrays is fixed (but dynamic, i.e. it can depend on
-    runtime parameters) once they are created.
-**push()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push()`` that you can use to append a zero-initialised element at the end of the array.
-     It returns a reference to the element, so that it can be used like
-     ``x.push().t = 2`` or ``x.push() = b``.
+ 	למערכים יש איבר ``length`` המכיל את מספר האלמנטים שלהם.
+ 	אורך מערכי הזיכרון קבוע (אך דינאמי, כלומר יכול להיות תלוי
+ 	בפרמטרי זמן ריצה) לאחר יצירתם.
+**()push**:
+  	למערכי storage דינמיים ו-``bytes`` (לא ``string``) יש פונקצייה
+  	שנקראת ``()push`` שאתם יכולים להשתמש בה כדי להוסיף אלמנט מאותחל אפס בסוף המערך.
+  	הפונקציה מחזירה הפניה לאלמנט, כך שניתן יהיה להשתמש בו כמו
+  	``x.push().t = 2`` או ``x.push() = b``.
 **push(x)**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push(x)`` that you can use to append a given element at the end of the array.
-     The function returns nothing.
-**pop()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member
-     function called ``pop()`` that you can use to remove an element from the
-     end of the array. This also implicitly calls :ref:`delete<delete>` on the removed element. The function returns nothing.
+  	למערכי storage דינמיים ו-``bytes`` (לא ``string``) יש פונקציה
+  	שנקראת ``push(x)`` שתוכלו להשתמש בה כדי להוסיף אלמנט נתון בסוף המערך.
+  	הפונקציה לא מחזירה כלום.
+**()pop**:
+  	למערכים דינאמיים של storage ו-``bytes`` (לא ``string``) יש
+  	פונקציה בשם ``()pop`` שתוכלו להשתמש בה כדי להסיר אלמנט
+  	מסוף המערך. פונקציה זו גם קוראת באופן פנימי
+  	ל-:ref:`delete<delete>` לאלמנט שהוסר. הפונקציה לא מחזירה כלום.
 
 .. note::
-    Increasing the length of a storage array by calling ``push()``
-    has constant gas costs because storage is zero-initialised,
-    while decreasing the length by calling ``pop()`` has a
-    cost that depends on the "size" of the element being removed.
-    If that element is an array, it can be very costly, because
-    it includes explicitly clearing the removed
-    elements similar to calling :ref:`delete<delete>` on them.
+ 	הגדלת אורך מערך storage על ידי קריאה ל-``()push``
+ 	הוא בעל עלויות גז קבועות מכיוון שה-storage  מאותחל באפס,
+ 	בעוד שלהקטנת האורך על ידי קריאת ``()pop`` יש
+ 	עלות שתלויה ב"גודל" האלמנט המוסר.
+ 	אם האלמנט הזה הוא מערך, דבר זה יכול להיות מאוד יקר מכיוון,
+ 	שהתהליך כולל את ניקוי האלמנטים שהוסרו
+ 	בדומה לקריאה ל- :ref:`delete<delete>` לגביהם.
 
 .. note::
-    To use arrays of arrays in external (instead of public) functions, you need to
-    activate ABI coder v2.
+    כדי להשתמש במערכים של מערכים בפונקציות חיצוניות (במקום ציבוריות), אתם צריכים
+    להפעיל ABI coder v2.
 
 .. note::
-    In EVM versions before Byzantium, it was not possible to access
-    dynamic arrays returned from function calls. If you call functions
-    that return dynamic arrays, make sure to use an EVM that is set to
-    Byzantium mode.
+    בגרסאות EVM לפני גרסת Byzantium, לא ניתן היה לגשת
+    למערכים דינאמיים שהוחזרו מקריאות לפונקציות. אם אתם קוראים לפונקציות
+    שמחזירים מערכים דינאמיים, הקפידו להשתמש ב-EVM שמוגדר
+    למצב Byzantium.
 
 .. code-block:: solidity
 
@@ -478,13 +485,15 @@ Array Members
 
 .. index:: ! array;dangling storage references
 
-Dangling References to Storage Array Elements
+הפניות לא-יציבות (Dangling References) לרכיבי מערך Storage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When working with storage arrays, you need to take care to avoid dangling references.
-A dangling reference is a reference that points to something that no longer exists or has been
-moved without updating the reference. A dangling reference can for example occur, if you store a
-reference to an array element in a local variable and then ``.pop()`` from the containing array:
+כאשר עובדים עם מערכים ב-storage, עליכם להקפיד
+להימנע מהפניות לא-יציבות (dangling references).
+הפניה לא-יציבה היא התייחסות שמצביעה על משהו שכבר לא קיים או
+שהועבר מבלי לעדכן את ההפניה. הפניה לא-יציבה יכולה להתרחש למשל, אם אתם
+מציבים התייחסות לאלמנט מערך במשתנה מקומי ולאחר מכן
+מבצעים  ``()pop.`` מהמערך המכיל:
 
 .. code-block:: solidity
 
@@ -508,15 +517,15 @@ reference to an array element in a local variable and then ``.pop()`` from the c
         }
     }
 
-The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no
-longer refers to a valid element of ``s``. Since the compiler assumes that unused storage
-is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage,
-so the last element of ``s`` after that ``push()`` will have length ``1`` and contain
-``0x42`` as its first element.
+הכתיבה ב-``ptr.push(0x42)`` **לא** תבצע revert, למרות העובדה ש-``ptr`` כבר לא
+מתייחס לרכיב חוקי של ``s``. מכיוון שהקומפיילר מניח ש-storage שלא בשימוש
+תמיד מאופס, ``()s.push`` עוקב לא יכתוב במפורש אפסים ל-storage,
+ולכן הרכיב האחרון של ``s`` אחרי ה-``()push`` יהיה באורך ``1`` ויכיל
+``0x42`` כאלמנט הראשון שלו.
 
-Note that Solidity does not allow to declare references to value types in storage. These kinds
-of explicit dangling references are restricted to nested reference types. However, dangling references
-can also occur temporarily when using complex expressions in tuple assignments:
+שימו לב שסולידיטי לא מאפשרת להגדיר הפניות לסוגי-ערכים ב-storage. הסוגים האלו
+של הפניות בלתי-יציבות מוגבלות לסוגי הפניות מקוננים. עם זאת, הפניות הבלתי-יציבות
+יכולות להתקיים באופן זמני בעת שימוש בביטויים מורכבים בהשמות tuple:
 
 .. code-block:: solidity
 
@@ -551,12 +560,12 @@ can also occur temporarily when using complex expressions in tuple assignments:
         }
     }
 
-It is always safer to only assign to storage once per statement and to avoid
-complex expressions on the left-hand-side of an assignment.
+תמיד בטוח יותר להציב ב-storage רק פעם אחת בכל הצהרה (statement) ולהימנע
+מביטויים מורכבים בצד שמאל של השמה.
 
-You need to take particular care when dealing with references to elements of
-``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short
-to long layout in storage<bytes-and-string>`.
+עליכם לנקוט משנה זהירות כאשר אתם עוסקים בהתייחסויות לאלמנטים של
+מערכי ``bytes``, מכיוון ש-``()push.`` במערך בתים עשוי
+לעבור :ref:`מפריסה קצרה לארוכה ב-storage<bytes-and-string>`
 
 .. code-block:: solidity
 
@@ -573,57 +582,55 @@ to long layout in storage<bytes-and-string>`.
         }
     }
 
-Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short
-layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of
-``x``. However, the second ``x.push()`` switches the bytes array to large layout.
-Now the element that ``x.push()`` referred to is in the data area of the array while
-the reference still points at its original location, which is now a part of the length field
-and the assignment will effectively garble the length of ``x``.
-To be safe, only enlarge bytes arrays by at most one element during a single
-assignment and do not simultaneously index-access the array in the same statement.
+כאן, כאשר ה-``()x.push`` הראשון מוערך, ``x`` עדיין מאוחסן 
+במבנה קצר, וכך ``()x.push`` מחזירה הפניה לרכיב בסלוט הראשון של
+``x``. עם זאת, ``()x.push`` השני מעביר את מערך הבתים למבנה גדול.
+כעת האלמנט שאליו התייחס ה-``()x.push`` נמצא באזור הנתונים של המערך
+בעוד ההפניה עדיין מצביעה על מיקומו המקורי, שהוא כעת חלק משדה האורך
+וההשמה תעוות למעשה את האורך של ``x``.
+ליתר ביטחון, הגדילו מערכי bytes רק ברכיב אחד לכל היותר במהלך השמה
+בודדת ואל תפנו בו-זמנית למערך על-ידי אינדקס באותו משפט.
 
-While the above describes the behavior of dangling storage references in the
-current version of the compiler, any code with dangling references should be
-considered to have *undefined behavior*. In particular, this means that
-any future version of the compiler may change the behavior of code that
-involves dangling references.
+בעוד האמור לעיל מתאר את ההתנהגות של הפניות storage לא-יציבות
+בגרסה הנוכחית של הקומפיילר, כל קוד עם הפניות לא-יציבות צריך
+להיחשב כבעל *התנהגות לא מוגדרת*. בפרט, המשמעות היא
+שכל גרסה עתידית של הקומפיילר עשויה לשנות את התנהגות הקוד
+כולל הפניות לא-יציבות.
 
-Be sure to avoid dangling references in your code!
+הקפידו להימנע מהפניות לא-יציבות בקוד שלכם!.
 
 .. index:: ! array;slice
 
 .. _array-slices:
 
-Array Slices
+פרוסות מערך (Array Slices)
 ------------
 
 
-Array slices are a view on a contiguous portion of an array.
-They are written as ``x[start:end]``, where ``start`` and
-``end`` are expressions resulting in a uint256 type (or
-implicitly convertible to it). The first element of the
-slice is ``x[start]`` and the last element is ``x[end - 1]``.
+פרוסות מערך (Array Slices) הן תצוגה של חלק רציף ממערך.
+הן נכתבות כ-``x[start:end]``, כאשר ``start`` ו-``end`` הם ביטויים
+מסוג uint256 (או ניתן להמיר אליו באופן פנימי). המרכיב הראשון של
+פרוסה הוא ``x[start]`` והרכיב האחרון הוא ``x[end - 1]``.
 
-If ``start`` is greater than ``end`` or if ``end`` is greater
-than the length of the array, an exception is thrown.
+אם ``start`` גדול מ-``end`` או אם ``end`` גדול יותר
+יותר מאורך המערך, נזרק exception.
 
-Both ``start`` and ``end`` are optional: ``start`` defaults
-to ``0`` and ``end`` defaults to the length of the array.
+גם ``start`` וגם ```end`` הם אופציונליים: ברירת המחדל של ``start``
+היא ``0`` וברירת מחדל של ``end`` היא אורך המערך.
 
-Array slices do not have any members. They are implicitly
-convertible to arrays of their underlying type
-and support index access. Index access is not absolute
-in the underlying array, but relative to the start of
-the slice.
+לפרוסות מערך אין איברים. באופן פנימי הן ניתנות
+להמרה למערכים מהסוג הבסיסי שלהן
+והן תומכות בגישה לפי אינדקס. הגישה לפי אינדקס אינה
+לפי המערך הבסיסי, אלא יחסית להתחלה של הפרוסה.
 
-Array slices do not have a type name which means
-no variable can have an array slices as type,
-they only exist in intermediate expressions.
+לפרוסות מערך אין שם סוג, לכן
+לאף משתנה לא יכול להיות סוג של פרוסות מערך.
+הם קיימים רק בביטויי ביניים.
 
 .. note::
-    As of now, array slices are only implemented for calldata arrays.
+    נכון לעכשיו, פרוסות מערך מיושמות רק עבור מערכים ב-calldata.
 
-Array slices are useful to ABI-decode secondary data passed in function parameters:
+פרוסות מערך שימושיות לפענוח ABI של נתונים משניים המועברים בפרמטרים של פונקציה:
 
 .. code-block:: solidity
 
@@ -661,8 +668,8 @@ Array slices are useful to ABI-decode secondary data passed in function paramete
 Structs
 -------
 
-Solidity provides a way to define new types in the form of structs, which is
-shown in the following example:
+סולידיטי מספקת דרך להגדיר טיפוסים חדשים בצורה של structs, כפי
+שמוצג בדוגמה הבאה:
 
 .. code-block:: solidity
 
@@ -721,26 +728,25 @@ shown in the following example:
         }
     }
 
-The contract does not provide the full functionality of a crowdfunding
-contract, but it contains the basic concepts necessary to understand structs.
-Struct types can be used inside mappings and arrays and they can themselves
-contain mappings and arrays.
+החוזה אינו מספק את הפונקציונליות המלאה של חוזה מימון המונים,
+אבל הוא מכיל את המושגים הבסיסיים הדרושים להבנת structs.
+ניתן להשתמש בסוגי structs בתוך מיפויים ומערכים והם יכולים בעצמם
+להכיל מיפויים ומערכים.
 
-It is not possible for a struct to contain a member of its own type,
-although the struct itself can be the value type of a mapping member
-or it can contain a dynamically-sized array of its type.
-This restriction is necessary, as the size of the struct has to be finite.
+לא ייתכן ש-struct יכיל איבר מהסוג שלו,
+למרות שה-struct עצמו יכול להיות סוג הערך של איבר מיפוי
+או שהוא יכול להכיל מערך בגודל דינאמי מסוגו.
+הגבלה זו הכרחית, מכיוון שגודל ה-struct חייב להיות סופי.
 
-Note how in all the functions, a struct type is assigned to a local variable
-with data location ``storage``.
-This does not copy the struct but only stores a reference so that assignments to
-members of the local variable actually write to the state.
+שימו לב כיצד בכל הפונקציות, סוג struct מוקצה למשתנה מקומי
+עם מיקום נתונים ``storage``.
+כתוצאה מכך, בהשמה למשתנה מקומי ה-struct לא מועתק אלא רק מאוחסנת הפניה ל-struct
+במשתנה המקומי, וכך השמה למשתנה המקומי כותבת למעשה למשתנה מצב (state).
 
-Of course, you can also directly access the members of the struct without
-assigning it to a local variable, as in
-``campaigns[campaignID].amount = 0``.
+כמובן, אתם יכולים גם לגשת ישירות לחלקי ה-struct בלי
+השמה למשתנה מקומי, כמו ב-``campaigs[campaignID].amount = 0``.
 
 .. note::
-    Until Solidity 0.7.0, memory-structs containing members of storage-only types (e.g. mappings)
-    were allowed and assignments like ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)``
-    in the example above would work and just silently skip those members.
+    עד גרסת סולידיטי  0.7.0, memory struct המכילים מרכיבים מסוג storage בלבד (למשל מיפויים)
+    היו מותרים ופקודה כמו ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)``
+    בדוגמה למעלה תעבוד ופשוט תדלג בשקט על מרכיבים אלו.

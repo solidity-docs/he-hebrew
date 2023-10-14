@@ -4,6 +4,7 @@
 
 | English                     | Hebrew            |
 | --------------------------- | ----------------- |
+| Assignment                  | (של ערכים) השמה  |
 | Breaking Changes            | שינויי התנהגות   |
 | Bump                        | קידום (במספר גרסה) |
 | Datatype                    | טיפוס נתונים     |
@@ -11,29 +12,42 @@
 | Event                       | אירוע             |
 | Exception                   | חריגה             |
 | Fallback                    | חלופה             |
+| Fixed Point Numbers         | מספרים עם נקודה קבועה |
 | Glossary                    | אוצר מילים        |
+| Layout                      | מבנה              |
+| Literal                     | ליטרל             |
 | Maintainers                 | מתחזקים           |
+| Member (of array/struct)    | איבר (של מערך \ struct) |
 | Object Oriented Programming | תכנות מונחה עצמים |
+| Operator                    | אופרטור           |
 | Opcode                      | אופקוד            |
+| Overflow                    | גלישה (נומרית)   |
 | Path                        | נתיב              |
 | Pull Request                | פול ריקווסט       |
 | Persistent                  | תמידי              |
+| Reference                   | הפניה             |
 | Repository                  | רפוזיטורי (ניהול גרסאות) |
 | Scope                       | תחום               |
+| Sequence                    | רצף               |
 | Statement                   | הצהרה              |
+| Two's Complement            | משלים ל-2         |
+| Truncation                  | קיטום             |
+| Underflow                   | גלישה (נומרית) מלמטה |
+| Wrapping Arithmetic         | אריתמטיקה מעגלית  |
 
 ## מבוסס סולידיטי
 
 | English        | Hebrew     |
 | -------------- | ---------- |
 | Amount         | כמות       |
+| Array Slice    | פרוסת מערך |
 | Block          | בלוק       |
+| Dangling References | הפניה לא יציבה |
 | Deployment     | התקנה      |
 | Ether          | איתר       |
 | Ethereum       | איתריום    |
 | Message Call   | קריאה לחוזה |
 | Mint           | יצירת מטבעות |
-| Overflow       | גלישה      |
 | Remix          | רמיקס      |
 | Revert         | החזרה לאחור \ ביטול |
 | Slot           | סלוט       |

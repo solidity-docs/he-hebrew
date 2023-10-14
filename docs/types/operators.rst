@@ -1,93 +1,97 @@
 .. index:: ! operator
 
-Operators
+אופרטורים
 =========
 
-Arithmetic and bit operators can be applied even if the two operands do not have the same type.
-For example, you can compute ``y = x + z``, where ``x`` is a ``uint8`` and ``z`` has
-the type ``uint32``. In these cases, the following mechanism will be used to determine
-the type in which the operation is computed (this is important in case of overflow)
-and the type of the operator's result:
+ניתן להחיל אופרטורים אריתמטיים ועל ביטים גם אם לשני האופרנדים אין אותו סוג.
+לדוגמה, אתם יכולים לחשב ``y = x + z``, כאשר ``x`` הוא ``uint8`` ו-``z`` הוא ``uint32``. במקרים אלה, המנגנון הבא ישמש כדי לקבוע את
+הסוג שבו מחושבת הפעולה (חשוב במקרה של הצפה)
+וסוג התוצאה של המפעיל:
 
-1. If the type of the right operand can be implicitly converted to the type of the left
-   operand, use the type of the left operand,
-2. if the type of the left operand can be implicitly converted to the type of the right
-   operand, use the type of the right operand,
-3. otherwise, the operation is not allowed.
+1. אם ניתן להמיר באופן מרומז את סוג האופרנד הימני לסוג השמאלי,
+   השתמש בסוג האופרנד השמאלי,
+2. אם ניתן להמיר באופן מרומז את סוג האופרנד השמאלי לסוג הימני,
+   השתמש בסוג האופרנד הנכון,
+3. אחרת, הפעולה אסורה.
 
-In case one of the operands is a :ref:`literal number <rational_literals>` it is first converted to its
-"mobile type", which is the smallest type that can hold the value
-(unsigned types of the same bit-width are considered "smaller" than the signed types).
-If both are literal numbers, the operation is computed with effectively unlimited precision in
-that the expression is evaluated to whatever precision is necessary so that none is lost
-when the result is used with a non-literal type.
+במקרה שאחד מהאופרנדים הוא :ref:`מספר ליטרלי<rational_literals>` הוא מומר תחילה למספר שלו "סוג mobile", שהוא הסוג הקטן ביותר שיכול להחזיק את הערך
+(טיפוסים לא חתומים באותו רוחב ביטים נחשבים "קטנים" יותר מהסוגים החתומים).
+אם שניהם מספרים ליטרליים, הפעולה מחושבת בדיוק בלתי מוגבל למעשה,
+כך שהביטוי מוערך לכל דיוק נדרש כדי שכלום  לא יאבד
+כאשר משתמשים בתוצאה עם סוג לא ליטרלי.
 
-The operator's result type is the same as the type the operation is performed in,
-except for comparison operators where the result is always ``bool``.
+סוג התוצאה של המפעיל זהה לסוג שבו מתבצעת הפעולה,
+למעט אופרטורי השוואה שבהם התוצאה היא תמיד ``bool``.
 
-The operators ``**`` (exponentiation), ``<<``  and ``>>`` use the type of the
-left operand for the operation and the result.
+האופרטורים ``**`` (העלאה בחזקה), ``<<`` ו-``>>`` משתמשים בסוג של
+האופרנד השמאלי לפעולה ולתוצאה.
 
-Ternary Operator
+אופרטור טרנרי
 ----------------
-The ternary operator is used in expressions of the form ``<expression> ? <trueExpression> : <falseExpression>``.
-It evaluates one of the latter two given expressions depending upon the result of the evaluation of the main ``<expression>``.
-If ``<expression>`` evaluates to ``true``, then ``<trueExpression>`` will be evaluated, otherwise ``<falseExpression>`` is evaluated.
+האופרטור הטרנרי ("משולש") משמש בביטויים מהצורה
+``<expression> ? <trueExpression> : <falseExpression>``.
+והוא מעריך את אחד משני הביטויים האחרונים בהתאם לתוצאת
+ההערכה של ה-``<ביטוי>`` הראשי.
+אם ``<ביטוי>`` מוערך ל-``true``, אז ``<trueExpression>`` יוערך, אחרת ה-``<falseExpression>`` יוערך.
 
-The result of the ternary operator does not have a rational number type, even if all of its operands are rational number literals.
-The result type is determined from the types of the two operands in the same way as above, converting to their mobile type first if required.
+לתוצאה של האופרטור השלישי אין סוג מספר רציונלי, גם אם כל האופרנדים שלו הם
+ליטרלים של מספר רציונלי.
+סוג התוצאה נקבע על-פי הסוגים של שני האופרנדים באותו אופן כמו לעיל, המרה
+לסוג הmobile שלהם תחילה במידת הצורך.
 
-As a consequence, ``255 + (true ? 1 : 0)`` will revert due to arithmetic overflow.
-The reason is that ``(true ? 1 : 0)`` is of ``uint8`` type, which forces the addition to be performed in ``uint8`` as well,
-and 256 exceeds the range allowed for this type.
+כתוצאה מכך, ``255 + (true ? 1 : 0)`` יחזור עקב הצפה אריתמטית.
+הסיבה היא ש-``(true ? 1 : 0)`` הוא מסוג ``uint8``, מה שמאלץ
+את התוספת להתבצע גם ב-``uint8``, ו-256 חורג מהטווח המותר לסוג זה.
 
-Another consequence is that an expression like ``1.5 + 1.5`` is valid but ``1.5 + (true ? 1.5 : 2.5)`` is not.
-This is because the former is a rational expression evaluated in unlimited precision and only its final value matters.
-The latter involves a conversion of a fractional rational number to an integer, which is currently disallowed.
+תוצאה נוספת היא שביטוי כמו ``1.5 + 1.5`` תקף אך ``1.5 + (true ? 1.5 : 2.5)`` לא.
+הסיבה לכך היא שהביטוי הראשון הוא ביטוי רציונלי המוערך בדייקנות בלתי מוגבלת
+ורק ערכו הסופי חשוב.
+הביטוי האחרון כרוך בהמרה של שבר הניתן כמספר רציונלי למספר שלם, מה שאסור כרגע.
 
 .. index:: assignment, lvalue, ! compound operators
 
-Compound and Increment/Decrement Operators
+אופרטורים מורכבים ואופרטורים של הגדלה\\הפחתה
 ------------------------------------------
 
-If ``a`` is an LValue (i.e. a variable or something that can be assigned to), the
-following operators are available as shorthands:
+אם ``a`` הוא LValue (כלומר משתנה או משהו שניתן להקצות אליו),
+האופרטורים הבאים זמינים כקיצורים:
 
-``a += e`` is equivalent to ``a = a + e``. The operators ``-=``, ``*=``, ``/=``, ``%=``,
-``|=``, ``&=``, ``^=``, ``<<=`` and ``>>=`` are defined accordingly. ``a++`` and ``a--`` are equivalent
-to ``a += 1`` / ``a -= 1`` but the expression itself still has the previous value
-of ``a``. In contrast, ``--a`` and ``++a`` have the same effect on ``a`` but
-return the value after the change.
+``a += e`` שווה ערך ל-``a = a + e``. האופרטורים ``=-``, ``=*``, ``=/``, ``=%``,
+``=|``, ``=&``, ``=^``, ``=<<`` ו-``=>>`` מוגדרים בהתאם. ``++a`` ו-``--a`` שווי ערך
+ל- ``a += 1`` / ``a -= 1`` אבל לביטוי עצמו עדיין יש את הערך הקודם של ``a``.
+לעומת זאת, ל-``a--`` ו-``a++`` יש את אותה השפעה על ``a`` אבל
+היא מחזירה את הערך לאחר השינוי.
 
 .. index:: !delete
 
 .. _delete:
 
-delete
+מחיקה (delete)
 ------
 
-``delete a`` assigns the initial value for the type to ``a``. I.e. for integers it is
-equivalent to ``a = 0``, but it can also be used on arrays, where it assigns a dynamic
-array of length zero or a static array of the same length with all elements set to their
-initial value. ``delete a[x]`` deletes the item at index ``x`` of the array and leaves
-all other elements and the length of the array untouched. This especially means that it leaves
-a gap in the array. If you plan to remove items, a :ref:`mapping <mapping-types>` is probably a better choice.
+``delete a`` מקצה את הערך ההתחלתי של סוג המשתנה ל-``a``. כְּלוֹמַר. עבור מספרים 
+הפעולה שוות ערך ל-``a = 0``, אך ניתן להשתמש בו גם במערכים, שבהם הוא מקצה דינאמית
+מערך באורך אפס או מערך סטטי באותו אורך כאשר לכל האלמנטים מוגדר
+הערך ההתחלתי של הסוג. ``delete a[x]`` מוחק את האיבר באינדקס ``x`` של המערך
+ומשאיר את כל שאר האיברים ואורך המערך ללא שינוי. במיוחד, הוא משאיר
+פער במערך. אם אתם מתכננים להסיר איברים, :ref:`mapping <mapping-types>` הוא
+כנראה בחירה טובה יותר.
 
-For structs, it assigns a struct with all members reset. In other words,
-the value of ``a`` after ``delete a`` is the same as if ``a`` would be declared
-without assignment, with the following caveat:
+עבור strucs, הוא מקצה struct עם איפוס כל האיברים. במילים אחרות,
+הערך של ``a`` לאחר ``delete a`` זהה כאילו ``a`` יוגדר
+ללא הקצאה, עם ההסתייגות הבאה:
 
-``delete`` has no effect on mappings (as the keys of mappings may be arbitrary and
-are generally unknown). So if you delete a struct, it will reset all members that
-are not mappings and also recurse into the members unless they are mappings.
-However, individual keys and what they map to can be deleted: If ``a`` is a
-mapping, then ``delete a[x]`` will delete the value stored at ``x``.
+ל-``delete`` אין השפעה על מיפויים (מכיוון שהמפתחות של המיפויים עשויים להיות שרירותיים
+ובדרך כלל לא ידועים). לכן, אם תמחק struct, כל האיברים
+שאינם מיפויים וגם recurse לאיברים אלא אם כן הם מיפויים, יאפסו.
+עם זאת, ניתן למחוק מפתחות בודדים ולמה שהם ממופים: אם ``a`` הוא
+מיפוי, אז ``delete a[x]`` תמחק את הערך המאוחסן ב-``x``.
 
-It is important to note that ``delete a`` really behaves like an
-assignment to ``a``, i.e. it stores a new object in ``a``.
-This distinction is visible when ``a`` is reference variable: It
-will only reset ``a`` itself, not the
-value it referred to previously.
+חשוב לציין ש-``delete a`` מתנהג כמו
+הקצאה ל-``a``, כלומר היא מאחסנת אובייקט חדש ב-``a``.
+הבחנה זו גלויה כאשר ``a`` הוא משתנה הפניה:
+הפעולה תאפס רק את ``a`` עצמו, לא את
+הערך שאליו הפנה בעבר.
 
 .. code-block:: solidity
 
@@ -114,7 +118,7 @@ value it referred to previously.
 .. index:: ! operator; precedence
 .. _order:
 
-Order of Precedence of Operators
+סדר עדיפות של מפעילים
 --------------------------------
 
 .. include:: types/operator-precedence-table.rst

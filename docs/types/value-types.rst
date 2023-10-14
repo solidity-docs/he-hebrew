@@ -1,131 +1,137 @@
 .. index:: ! value type, ! type;value
 .. _value-types:
 
-Value Types
+סוגי ערך (Value Types)
 ===========
 
-The following are called value types because their variables will always be passed by value, i.e. they are always copied when they
-are used as function arguments or in assignments.
+סוגי המשתנים להלן נקראים סוגי ערך מכיוון שהמשתנים שלהם תמיד יועברו לפי ערך, כלומר הם תמיד מועתקים כאשר הם משמשים כארגומנטים של פונקציה או בהשמות.
 
 .. index:: ! bool, ! true, ! false
 
-Booleans
+בולאנים
 --------
 
-``bool``: The possible values are constants ``true`` and ``false``.
+``bool``: הערכים האפשריים הם הקבועים ``true`` ו-``false``.
 
-Operators:
+אופרטורים:
 
-*  ``!`` (logical negation)
-*  ``&&`` (logical conjunction, "and")
-*  ``||`` (logical disjunction, "or")
-*  ``==`` (equality)
-*  ``!=`` (inequality)
+*  ``!`` (שלילה לוגית)
+*  ``&&`` (צירוף לוגי, "and")
+*  ``||`` (ניתוק לוגי, "or")
+*  ``==`` (שוויון)
+*  ``!=`` (אי-שוויון)
 
-The operators ``||`` and ``&&`` apply the common short-circuiting rules. This means that in the expression ``f(x) || g(y)``, if ``f(x)`` evaluates to ``true``, ``g(y)`` will not be evaluated even if it may have side-effects.
+האופרטורים ``||`` ו-``&&`` מיישמים את כללי ה"קיצור" הנפוצים. זאת אומרת שבביטוי ``(f(x) || g(y``, אם ``(f(x`` מוערך כ-``true``, אז ``(g(x`` לא יוערך גם אם עשויות להיות לכך תופעות לוואי.
 
 .. index:: ! uint, ! int, ! integer
 .. _integers:
 
-Integers
+מספרים שלמים
 --------
 
-``int`` / ``uint``: Signed and unsigned integers of various sizes. Keywords ``uint8`` to ``uint256`` in steps of ``8`` (unsigned of 8 up to 256 bits) and ``int8`` to ``int256``. ``uint`` and ``int`` are aliases for ``uint256`` and ``int256``, respectively.
+``int`` / ``uint``: מספרים שלמים עם או בלי סימן בגדלים שונים. מילות המפתח ``uint8`` עד ``uint256`` בקפיצות של ``8`` (ללא סימן מ-8 עד 256 ביטים) ו-``int8`` עד ``int256``. בנוסף, ``uint`` ו-``int`` הם כינויים עבור ``uint256`` ו-``int256``, בהתאמה.
 
-Operators:
+אופרטורים:
 
-* Comparisons: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (evaluate to ``bool``)
-* Bit operators: ``&``, ``|``, ``^`` (bitwise exclusive or), ``~`` (bitwise negation)
-* Shift operators: ``<<`` (left shift), ``>>`` (right shift)
-* Arithmetic operators: ``+``, ``-``, unary ``-`` (only for signed integers), ``*``, ``/``, ``%`` (modulo), ``**`` (exponentiation)
+* השוואה: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (התוצאה היא ``bool``)
+* אופרטורים בביטים: ``&``, ``|``, ``^`` (exclusive-or של ביטים), ``~`` (הערך ההופכי של הביטים)
+* אופרטןרי הזזה: ``<<`` (הזזה לשמאל), ``>>`` (הזזה לימין)
+* אופרטורים אריתמטיים: ``+``, ``-``, ``-`` אונארי (רק למספרים שלמים אם סימן), ``*``, ``/``, ``%`` (צםדולו), ``**`` (העלאה בחזקה)
 
-For an integer type ``X``, you can use ``type(X).min`` and ``type(X).max`` to
-access the minimum and maximum value representable by the type.
+עבור סוג מספר שלם ``X``, אתם יכולים להשתמש ב-``type(X).min`` ו-``type(X).max`` כדי
+לגשת לערך המינימלי והמקסימלי של הסוג.
 
 .. warning::
 
-  Integers in Solidity are restricted to a certain range. For example, with ``uint32``, this is ``0`` up to ``2**32 - 1``.
-  There are two modes in which arithmetic is performed on these types: The "wrapping" or "unchecked" mode and the "checked" mode.
-  By default, arithmetic is always "checked", meaning that if an operation's result falls outside the value range
-  of the type, the call is reverted through a :ref:`failing assertion<assert-and-require>`. You can switch to "unchecked" mode
-  using ``unchecked { ... }``. More details can be found in the section about :ref:`unchecked <unchecked>`.
+   מספרים שלמים בסולידיטי מוגבלים לטווח מסוים. לדוגמה, עם ``uint32``, הטווח הוא``0`` עד ``1 - 32**2``.
+   ישנם שני מצבים שבהם מתבצע חשבון על סוגים אלה: מצב ה-"wrapping" או "unchecked"  (לא נבדקת) ומצב ה-"checked" (נבדקת).
+   כברירת מחדל, אריתמטיקה תמיד "checked", כלומר אם התוצאה של פעולה נופלת מחוץ לטווח הערכים
+   של הסוג, מתבצע revert לקריאה מוחזרת באמצעות :ref:`failing assertion<assert-and-require>`.
+   אתם יכולים לעבור למצב "unchecked"  באמצעות ``{ ... } unchecked``.
+   פרטים נוספים ניתן למצוא בסעיף אודות :ref:`unchecked <unchecked>`.
 
-Comparisons
+
+
+השוואות
 ^^^^^^^^^^^
 
-The value of a comparison is the one obtained by comparing the integer value.
+הערך של השוואה מתקבל מהשוואת המספרים.
 
-Bit operations
+פעולות בביטים
 ^^^^^^^^^^^^^^
 
-Bit operations are performed on the two's complement representation of the number.
-This means that, for example ``~int256(0) == int256(-1)``.
+פעולות בביטים מבוצעות על-ידי ייצוג המשלים ל-2 של המספר.
+המשמעות היא, למשל:
 
-Shifts
+.. code-block:: solidity
+    ~int256(0) == int256(-1)
+
+הזזות
 ^^^^^^
 
-The result of a shift operation has the type of the left operand, truncating the result to match the type.
-The right operand must be of unsigned type, trying to shift by a signed type will produce a compilation error.
+סוג התוצאה של פעולת הזזה הוא הסוג של האופרנד השמאלי, תוך קיטום התוצאה כך שתתאים לסוג.
+האופרנד הימני חייב להיות מסוג ללא סימן, ניסיון להזיז לפי סוג עם סימן יגרום לשגיאת קומפילציה.
 
-Shifts can be "simulated" using multiplication by powers of two in the following way. Note that the truncation
-to the type of the left operand is always performed at the end, but not mentioned explicitly.
+ניתן "לדמות" הזזות באמצעות הכפל בחזקות של שתיים באופן הבא. שימו לב שהקיטום
+לסוג האופרנד השמאלי מבוצע תמיד בסוף, אך לא מוזכר במפורש.
 
-- ``x << y`` is equivalent to the mathematical expression ``x * 2**y``.
-- ``x >> y`` is equivalent to the mathematical expression ``x / 2**y``, rounded towards negative infinity.
+- ``x << y`` מוערך כביטוי האריתמטי ``x * 2**y``.
+- ``x >> y`` is מוערך כביטוי האריתמטי ``x / 2**y``, מעוגל בכיוון של האינסוף השלילי.
 
 .. warning::
-    Before version ``0.5.0`` a right shift ``x >> y`` for negative ``x`` was equivalent to
-    the mathematical expression ``x / 2**y`` rounded towards zero,
-    i.e., right shifts used rounding up (towards zero) instead of rounding down (towards negative infinity).
+    לפני גרסה ``0.5.0`` הזזה לימין ``x >> y`` ל-``x`` שלילי היתה מוערכת 
+    כביטוי המתמטי ``x / 2**y`` מעוגל לכיוון אפס,
+    למשל, שימוש בהזזה ימינה עם עיגול כלפי מעלה (לכיוון אפס) במקום עיגול כלפי מטה (לכיוון אינסוף שלילי).
 
 .. note::
-    Overflow checks are never performed for shift operations as they are done for arithmetic operations.
-    Instead, the result is always truncated.
+    בדיקות גלישה לעולם אינן מבוצעות עבור פעולות הזזה כפי שהן נעשות עבור פעולות אריתמטיות.
+    במקום זאת, התוצאה תמיד מקוצצת.
 
-Addition, Subtraction and Multiplication
+חיבור, חיסור וכפל
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Addition, subtraction and multiplication have the usual semantics, with two different
-modes in regard to over- and underflow:
+לחיבור, חיסור וכפל יש את הסמנטיקה הרגילה, עם שני
+מצבים שונים לגבי גלישה (overflow) וגלישה-מלמטה (underflow):
 
-By default, all arithmetic is checked for under- or overflow, but this can be disabled
-using the :ref:`unchecked block<unchecked>`, resulting in wrapping arithmetic. More details
-can be found in that section.
+כברירת מחדל, בכל חישוב אריתמטי נבדק אם התרחשה גלישה, אך ניתן לבטל זאת
+על-ידי שימוש בבלוק :ref:`unchecked<unchecked>`, וכתוצאה מכך תתבצע
+אריתמטיקה מעגלית (wrapping arithmetic). פרטים נוספים
+ניתן למצוא בסעיף הזה.
 
-The expression ``-x`` is equivalent to ``(T(0) - x)`` where
-``T`` is the type of ``x``. It can only be applied to signed types.
-The value of ``-x`` can be
-positive if ``x`` is negative. There is another caveat also resulting
-from two's complement representation:
+הביטוי ``x-`` שווה ערך ל``(T(0) - x)`` שבו
+``T`` הוא הסוג של ``x``. ניתן להחיל אותו רק על סוגים בעלי סימן.
+הערך של ``x-`` יכול להיות
+חיובי אם ``x`` הוא שלילי. קיימת גם בעיה שצריך להיזהר ממנה בגלל
+הייצוג המשלים ל-2:
 
-If you have ``int x = type(int).min;``, then ``-x`` does not fit the positive range.
-This means that ``unchecked { assert(-x == x); }`` works, and the expression ``-x``
-when used in checked mode will result in a failing assertion.
+אם השתמשתם בקוד ``;int x = type(int).min``, אז ``x-`` אינו מתאים לטווח החיובי.
+פירוש הדבר הוא ש-``unchecked { assert(-x == x); }`` עובד, והביטוי ``x-``
+במצב checked גורם ל-assert להכשל.
 
-Division
+חלוקה
 ^^^^^^^^
 
-Since the type of the result of an operation is always the type of one of
-the operands, division on integers always results in an integer.
-In Solidity, division rounds towards zero. This means that ``int256(-5) / int256(2) == int256(-2)``.
+מכיוון שסוג התוצאה של פעולה הוא תמיד סוג של אחד
+האופרנדים, תוצאת חלוקה של מספרים שלמים היא תמיד מספר שלם.
+בסולידיטי, עיגול של חלוקה מתבצע לכיוון האפס. משמעות הדבר היא
+ש-``int256(-5) / int256(2) == int256(-2)``.
 
-Note that in contrast, division on :ref:`literals<rational_literals>` results in fractional values
-of arbitrary precision.
-
-.. note::
-  Division by zero causes a :ref:`Panic error<assert-and-require>`. This check can **not** be disabled through ``unchecked { ... }``.
+שימו לב שבניגוד לכך, שחלוקה ב-:ref:`ליטרלים רציונליים<rational_literals>` גורמת לערכים עם דיוק שרירותי.
 
 .. note::
-  The expression ``type(int).min / (-1)`` is the only case where division causes an overflow.
-  In checked arithmetic mode, this will cause a failing assertion, while in wrapping
-  mode, the value will be ``type(int).min``.
+  חלוקה באפס גורמת ל- :ref:`Panic error<assert-and-require>`. אין אפשרות לבטל בדיקה זו על-ידי ``{ ... } unchecked``.
 
-Modulo
+.. note::
+  הביטוי ``type(int).min / (-1)`` הוא המקרה היחיד שבו החלוקה גורמת לגלישה.
+  במצב אריתמטי עם בדיקה (checked), דבר זה יגרום ל-assertion כושל, בעוד
+  שבמצב של אריתמטיקה מעגלית (wrapping), הערך יהיה ``type(int).min``.
+
+מודולו
 ^^^^^^
 
-The modulo operation ``a % n`` yields the remainder ``r`` after the division of the operand ``a``
-by the operand ``n``, where ``q = int(a / n)`` and ``r = a - (n * q)``. This means that modulo
-results in the same sign as its left operand (or zero) and ``a % n == -(-a % n)`` holds for negative ``a``:
+פעולת המודולו ``a % n`` מניבה שארית ``r`` אחרי החלוקה של האופרנד ``a``
+באופרנד ``n``, כאשר ``q = int(a / n)`` ו-``r = a - (n * q)``. משתמע מכך שתוצאת מודולו
+היא עם אותו סימן של האופרנד השמאלי (או אפס) ו-``a % n == -(-a % n)`` מתקיים לערכים שליליים של ``a``:
 
 * ``int256(5) % int256(2) == int256(1)``
 * ``int256(5) % int256(-2) == int256(1)``
@@ -133,113 +139,115 @@ results in the same sign as its left operand (or zero) and ``a % n == -(-a % n)`
 * ``int256(-5) % int256(-2) == int256(-1)``
 
 .. note::
-  Modulo with zero causes a :ref:`Panic error<assert-and-require>`. This check can **not** be disabled through ``unchecked { ... }``.
+  מודולו אפס גורם ל-:ref:`Panic error<assert-and-require>`. אין אפשרות לבטל בדיקה זו על-ידי ``{ ... } unchecked``.
 
-Exponentiation
+העלאה בחזקה
 ^^^^^^^^^^^^^^
 
-Exponentiation is only available for unsigned types in the exponent. The resulting type
-of an exponentiation is always equal to the type of the base. Please take care that it is
-large enough to hold the result and prepare for potential assertion failures or wrapping behavior.
+העלאה בחזקה אפשרית רק עבור סוגים ללא סימן במעריך. הסוג המתקבל
+של העלאה בחזקה שווה תמיד לסוג הבסיס. בבקשה תדאגו לכך שהמשתנה יהיה
+גדול מספיק כדי להחזיק את התוצאה והתכוננו לכשלים פוטנציאליים ב-assertion
+או בהתנהגות האריתמטיקה המעגלית.
 
 .. note::
-  In checked mode, exponentiation only uses the comparatively cheap ``exp`` opcode for small bases.
-  For the cases of ``x**3``, the expression ``x*x*x`` might be cheaper.
-  In any case, gas cost tests and the use of the optimizer are advisable.
+  במצב checked, ההעלאה בחזקה משתמשת רק באופקוד ``exp`` הזול יחסית עבור בסיסים קטנים.
+  במקרים כמו ``x**3``, הביטוי ``x*x*x`` עשוי להיות זול יותר.
+  בכל מקרה, מומלץ לבצע בדיקות עלות גז ושימוש באופטימיזר.
 
 .. note::
-  Note that ``0**0`` is defined by the EVM as ``1``.
+  שימו לב ש-``0**0`` מוגדר על-ידי ה-EVM כ-``1``.
 
 .. index:: ! ufixed, ! fixed, ! fixed point number
 
-Fixed Point Numbers
+מספרי נקודה קבועה
 -------------------
 
 .. warning::
-    Fixed point numbers are not fully supported by Solidity yet. They can be declared, but
-    cannot be assigned to or from.
+    מספרי נקודה קבועה עדיין לא נתמכים במלואם על ידי סולידיטי. אפשר להגדיר אותם, אבל
+    לא ניתן להשים אל או מהם.
 
-``fixed`` / ``ufixed``: Signed and unsigned fixed point number of various sizes. Keywords ``ufixedMxN`` and ``fixedMxN``, where ``M`` represents the number of bits taken by
-the type and ``N`` represents how many decimal points are available. ``M`` must be divisible by 8 and goes from 8 to 256 bits. ``N`` must be between 0 and 80, inclusive.
-``ufixed`` and ``fixed`` are aliases for ``ufixed128x18`` and ``fixed128x18``, respectively.
+``fixed`` / ``ufixed``: מספרי נקודה קבועה עם או בלי סימן בגדלים שונים. מילות המפתח ``ufixedMxN`` ו-``fixedMxN``, כאשר ``M`` מייצג את מספר הביטים שבהם הסוג משתמש
+ו-``N`` מייצג את מספר הנקודות העשרוניות הזמינות. ``M`` חייב להיות ניתן לחלוקה ב-8 -
+בין 8 ל-256 ביטים. ``N`` חייב להיות בין 0 ל-80, כולל.
+``ufixed`` ו-``fixed`` הם כינויים עבור ``ufixed128x18`` ו-``fixed128x18``, בהתאמה.
 
-Operators:
+אופרטורים:
 
-* Comparisons: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (evaluate to ``bool``)
-* Arithmetic operators: ``+``, ``-``, unary ``-``, ``*``, ``/``, ``%`` (modulo)
+* השוואות: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (התןצאה היא מסוג ``bool``)
+* אופרטורים אריתמטיים: ``+``, ``-``, unary ``-``, ``*``, ``/``, ``%`` (מודולו)
 
 .. note::
-    The main difference between floating point (``float`` and ``double`` in many languages, more precisely IEEE 754 numbers) and fixed point numbers is
-    that the number of bits used for the integer and the fractional part (the part after the decimal dot) is flexible in the former, while it is strictly
-    defined in the latter. Generally, in floating point almost the entire space is used to represent the number, while only a small number of bits define
-    where the decimal point is.
+    ההבדל העיקרי בין נקודה צפה (``float`` ו``double`` בשפות תכנות רבות, ליתר דיוק מספרי IEEE 754) למספרי נקודה קבועה הוא
+    שמספר הביטים המשמשים למספר השלם ולחלק של ההשבר (החלק שאחרי הנקודה העשרונית) גמיש בראשון, בעוד שהוא קבוע
+    באחרון. בדרך כלל, בנקודה צפה כמעט כל הביטים משמשים לייצוג המספר, בעוד שרק מספר קטן של ביטים מגדירים
+    את מיקום הנקודה העשרונית.
 
 .. index:: address, balance, send, call, delegatecall, staticcall, transfer
 
 .. _address:
 
-Address
+כתובת
 -------
 
-The address type comes in two largely identical flavors:
+הסוג כתובת מגיע בשני טעמים זהים במידה רבה:
 
-- ``address``: Holds a 20 byte value (size of an Ethereum address).
-- ``address payable``: Same as ``address``, but with the additional members ``transfer`` and ``send``.
+- ``address``: מכיל ערך ב-20 בתים (גודל של כתובת איתריום).
+- ``address payable``: כמו ``address``, אבל עם מרכיבים נוספים ``transfer`` ו-``send``.
 
-The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
-while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
-that was not built to accept Ether.
+הרעיון מאחורי ההבחנה הזו הוא ש-``address payable`` (כתובת לתשלום) היא כתובת שאליה ניתן לשלוח איתר,
+בזמן שאתם לא אמורים לשלוח איתר לכתובת רגילה, למשל מכיוון שזה עשוי להיות חוזה חכם
+שלא נבנה לקבל את האיתר.
 
-Type conversions:
+המרה בין סוגים:
 
-Implicit conversions from ``address payable`` to ``address`` are allowed, whereas conversions from ``address`` to ``address payable``
-must be explicit via ``payable(<address>)``.
+המרות פנימיות מ-``address payable`` ל-``address`` מותרות, כאשר המרה מ-``address`` ל-``address payable``
+חייבת להיות חיצונית על-ידי ``payable(<address>)``.
 
-Explicit conversions to and from ``address`` are allowed for ``uint160``, integer literals,
-``bytes20`` and contract types.
+המרות חיצוניות מ\\אל ``address`` מותרות ל-``uint160``, ליטרלים של מספרים שלמים,
+``bytes20`` וסוגי חוזה.
 
-Only expressions of type ``address`` and contract-type can be converted to the type ``address
-payable`` via the explicit conversion ``payable(...)``. For contract-type, this conversion is only
-allowed if the contract can receive Ether, i.e., the contract either has a :ref:`receive
-<receive-ether-function>` or a payable fallback function. Note that ``payable(0)`` is valid and is
-an exception to this rule.
+רק ביטויים מסוג ``address`` וסוגי חוזה יכולים להיות מומרים ל-``address
+payable`` על-ידי המרות חיצוניות ``payable(...)``. בשביל סוג של חוזה, המרה זו מותרת
+רק אם החוזה יכול לקבל איתר, זאת אומרת שלחוזה יש פונקציית :ref:`receive
+<receive-ether-function>` או פונקציית payable fallback. שימו לב ש-``payable(0)`` הוא חוקי
+והוא יוצא מן הכלל לכלל הזה.
 
 .. note::
-    If you need a variable of type ``address`` and plan to send Ether to it, then
-    declare its type as ``address payable`` to make this requirement visible. Also,
-    try to make this distinction or conversion as early as possible.
+    אם אתם צריכים משתנה מסוג ``address`` ומתכוונים לשלוח אליו איתר, צריך
+    להגדיר את הסוג כ-``address payable`` כדי להפוך את הדרישה הזו לגלויה.
+    נסו גם לעשות את ההבחנה או ההמרה הזו מוקדם ככל האפשר.
 
-    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
-    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
-    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+    ההבחנה בין ``address`` ו``address payable`` הוצגה עם גרסה 0.5.0.
+    כמו כן, החל מגרסה זו, חוזים אינם ניתנים להמרה באופן פנימי לסוג ``address``, אך עדיין ניתן להמיר אותם במפורש
+    ל-``address`` או ל-``address payable``, אם יש להם פונקציית receive או פונקציית payable fallback.
 
 
-Operators:
+אופרטורים:
 
-* ``<=``, ``<``, ``==``, ``!=``, ``>=`` and ``>``
+* ``<=``, ``<``, ``==``, ``!=``, ``>=`` ו-``>``
 
 .. warning::
-    If you convert a type that uses a larger byte size to an ``address``, for example ``bytes32``, then the ``address`` is truncated.
-    To reduce conversion ambiguity, starting with version 0.4.24, the compiler will force you to make the truncation explicit in the conversion.
-    Take for example the 32-byte value ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
+    אם אתם ממירים סוג שמשתמש בגודל בתים גדול יותר מ-``address``, למשל ``bytes32``, אז ה-``address`` נקטם.
+    כדי להפחית את עמימות ההמרה, החל מגרסה 0.4.24, הקומפיילר יאלץ אותכם להפוך את הקיטוע למפורש בהמרה.
+    קחו לדוגמה את הערך של 32 בתים ``0x1111222223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
 
-    You can use ``address(uint160(bytes20(b)))``, which results in ``0x111122223333444455556666777788889999aAaa``,
-    or you can use ``address(uint160(uint256(b)))``, which results in ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc``.
+    אתם יכולים להשתמש ב-``address(uint160(bytes20(b)))``,  עם התוצאה ``0x111122223333444455556666777788889999aAaa``,
+    או אתם יכולים להשתמש ב-``address(uint160(uint256(b)))``, עם התוצאה ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc``.
 
 .. note::
-    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
+    מספרים הקסדצימליים מעורבים באותיות גדולות וקטנות התואמים ל-`EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ מטופלים באופן אוטומטי כליטרלים מסוג ``address``. ראו :ref:`Address Literals<address_literals>`.
 
 .. _members-of-addresses:
 
-Members of Addresses
+מרכיבים של כתובות
 ^^^^^^^^^^^^^^^^^^^^
 
-For a quick reference of all members of address, see :ref:`address_related`.
+לעיון מהיר בכל מרכיבי הכתובת, ראו :ref:`address_related`.
 
-* ``balance`` and ``transfer``
+* ``balance`` ו-``transfer``
 
-It is possible to query the balance of an address using the property ``balance``
-and to send Ether (in units of wei) to a payable address using the ``transfer`` function:
+אפשר לבדוק מה היתרה של כתובת באמצעות המאפיין ``balance``
+ולשלוח את איתר (ביחידות של wei) לכתובת payable באמצעות פונקציית ``transfer``:
 
 .. code-block:: solidity
     :force:
@@ -248,35 +256,36 @@ and to send Ether (in units of wei) to a payable address using the ``transfer`` 
     address myAddress = address(this);
     if (x.balance < 10 && myAddress.balance >= 10) x.transfer(10);
 
-The ``transfer`` function fails if the balance of the current contract is not large enough
-or if the Ether transfer is rejected by the receiving account. The ``transfer`` function
-reverts on failure.
+פונקציית ``transfer`` נכשלת אם יתרת החוזה הנוכחית אינה גדולה מספיק
+או אם העברת האיתר נדחתה על ידי החשבון המקבל. בכישלון, פונקציית ``transfer``
+מבצעת revert.
 
 .. note::
-    If ``x`` is a contract address, its code (more specifically: its :ref:`receive-ether-function`, if present, or otherwise its :ref:`fallback-function`, if present) will be executed together with the ``transfer`` call (this is a feature of the EVM and cannot be prevented). If that execution runs out of gas or fails in any way, the Ether transfer will be reverted and the current contract will stop with an exception.
+    אם ``x`` הוא כתובת חוזה, הקוד שלו (ליתר דיוק: :ref:`receive-ether-function` שלו, אם קיים, או אחרת :ref:`fallback-function` שלו, אם קיים) יתבצע יחד עם הקריאה ל-``transfer`` (זוהי תכונה של ה-EVM ולא ניתן למנוע אותה). אם  הביצוע נכשל בכל דרך או שנגמר לו הגז,
+    העברת האיתר תבוטל (יתבצע revert) והחוזה הנוכחי יעצר עם חריגה.
 
 * ``send``
 
-``send`` is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
+``send`` הוא המקבילה ברמה נמוכה של ``transfer``. אם הביצוע נכשל, החוזה הנוכחי לא יעצר עם חריגה, אבל ``send`` יחזיר ``false``.
 
 .. warning::
-    There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
-    (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
-    to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
-    use a pattern where the recipient withdraws the Ether.
+    ישנן כמה סכנות בשימוש ב``send``: ההעברה נכשלת אם עומק מחסנית השיחה הוא 1024
+    (הקורא תמיד יכול לאלץ מצב זה) וההברה תכשל גם אם לנמען נגמר הגז. אז כדי
+    לבצע העברות איתר בטוחות, תמיד צריך לבדוק את ערך ההחזרה של ``send``, השתמשו ב-`transfer`` או אפילו טוב יותר:
+    השתמשו בתבנית שבה הנמען מושך את האיתר.
 
-* ``call``, ``delegatecall`` and ``staticcall``
+* ``call``, ``delegatecall`` ו-``staticcall``
 
-In order to interface with contracts that do not adhere to the ABI,
-or to get more direct control over the encoding,
-the functions ``call``, ``delegatecall`` and ``staticcall`` are provided.
-They all take a single ``bytes memory`` parameter and
-return the success condition (as a ``bool``) and the returned data
+על מנת להתממשק עם חוזים שאינם עומדים ב-ABI,
+או לקבל שליטה ישירה יותר על הקידוד,
+קיימות הפונקציות `` call``, ``delegatecall`` ו``staticcall``.
+כולן מקבלות פרמטר אחד של ``bytes memory`` ו
+ומחזירות את תנאי ההצלחה (כ-``bool``) ואת הנתונים המוחזרים
 (``bytes memory``).
-The functions ``abi.encode``, ``abi.encodePacked``, ``abi.encodeWithSelector``
-and ``abi.encodeWithSignature`` can be used to encode structured data.
+הפונקציות ``abi.encode``, ``abi.encodePacked``, ``abi.encodeWithSelector``
+ו-``abi.encodeWithSignature`` יכולות לשמש לקידוד נתונים מובנים (structured data).
 
-Example:
+דוגמה:
 
 .. code-block:: solidity
 
@@ -285,68 +294,69 @@ Example:
     require(success);
 
 .. warning::
-    All these functions are low-level functions and should be used with care.
-    Specifically, any unknown contract might be malicious and if you call it, you
-    hand over control to that contract which could in turn call back into
-    your contract, so be prepared for changes to your state variables
-    when the call returns. The regular way to interact with other contracts
-    is to call a function on a contract object (``x.f()``).
+    כל הפונקציות הללו הן פונקציות ברמה נמוכה ויש להשתמש בהן בזהירות.
+    באופן ספציפי, כל חוזה לא ידוע עלול להיות זדוני ואם תקראו לו, אתם
+    מעבירים את השליטה לחוזה הזה שיכול בתורו להתקשר בחזרה
+    לחוזה שלכם. לכן צריך להיות מוכנים שלינויים במשתני מצב
+    כאשר הקריאה חוזרת. הדרך הרגילה לאינטראקציה עם חוזים אחרים
+    היא לקרוא לפונקציה על אובייקט חוזה (``x.f()``).
 
 .. note::
-    Previous versions of Solidity allowed these functions to receive
-    arbitrary arguments and would also handle a first argument of type
-    ``bytes4`` differently. These edge cases were removed in version 0.5.0.
+    גרסאות קודמות של סולידיטי אפשרו לפונקציות אלו לקבל
+    ארגומנטים שרירותיים וגם טיפלו בארגומנט ראשון מסוג
+    ``bytes4`` אחרת. מקרי קצה אלו הוסרו בגרסה 0.5.0.
 
-It is possible to adjust the supplied gas with the ``gas`` modifier:
+אפשר לכוונן את הגז המסופק עם ה-``gas`` modifier:
 
 .. code-block:: solidity
 
     address(nameReg).call{gas: 1000000}(abi.encodeWithSignature("register(string)", "MyName"));
 
-Similarly, the supplied Ether value can be controlled too:
+באופן דומה, ניתן לשלוט גם על ערך האיתר שיסופק:
 
 .. code-block:: solidity
 
     address(nameReg).call{value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
-Lastly, these modifiers can be combined. Their order does not matter:
+לבסוף, ניתן לשלב את השינויים הללו. הסדר שלהם לא משנה:
 
 .. code-block:: solidity
 
     address(nameReg).call{gas: 1000000, value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
-In a similar way, the function ``delegatecall`` can be used: the difference is that only the code of the given address is used, all other aspects (storage, balance, ...) are taken from the current contract. The purpose of ``delegatecall`` is to use library code which is stored in another contract. The user has to ensure that the layout of storage in both contracts is suitable for delegatecall to be used.
+באופן דומה, ניתן להשתמש בפונקציה ``delegacall``: ההבדל הוא שרק הקוד של הכתובת הנתונה יהיה בשימוש. כל שאר ההיבטים (אחסון, יתרה,...) נלקחים מהחוזה הנוכחי. מטרת ``delegacall`` היא להשתמש בקוד ספרייה המאוחסן בחוזה אחר. על המשתמש לוודא שפריסת ה-storage בשני החוזים מתאימה לשימוש ב-delegatecall.
 
 .. note::
-    Prior to homestead, only a limited variant called ``callcode`` was available that did not provide access to the original ``msg.sender`` and ``msg.value`` values. This function was removed in version 0.5.0.
+    לפני גרסת homestead של הקומפיילר, רק גרסה מוגבלת בשם ``callcode`` הייתה זמינה  והיאלא סיפקה גישה לערכי ``msg.sender`` ו-``msg.value`` המקוריים. פונקציה זו הוסרה בגרסה 0.5.0.
 
-Since byzantium ``staticcall`` can be used as well. This is basically the same as ``call``, but will revert if the called function modifies the state in any way.
+מאז גרסת byzantium
+ של הקומפיילר ניתן להשתמש גם ב-``staticcall``. לקריאה זו פונקציונליות זהה ל-``call``, אבל היא תבצע revert אם הפונקציה שנקראה תשנה את משתני המצב בכל דרך שהיא.
 
-All three functions ``call``, ``delegatecall`` and ``staticcall`` are very low-level functions and should only be used as a *last resort* as they break the type-safety of Solidity.
+כל שלוש הפונקציות ``call``, ``delegatecall`` ו-``staticcall`` הן פונקציות ברמה נמוכה מאוד ויש להשתמש בהן רק כמוצא אחרון מכיוון שהן פוגעות בבטיחות הסוג של סולידיטי.
 
-The ``gas`` option is available on all three methods, while the ``value`` option is only available
-on ``call``.
-
-.. note::
-    It is best to avoid relying on hardcoded gas values in your smart contract code,
-    regardless of whether state is read from or written to, as this can have many pitfalls.
-    Also, access to gas might change in the future.
-
-* ``code`` and ``codehash``
-
-You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
-``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
-(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+האפשרות ``gas`` זמינה בכל שלוש השיטות, בעוד האפשרות ``value`` זמינה רק
+ב``call``.
 
 .. note::
-    All contracts can be converted to ``address`` type, so it is possible to query the balance of the
-    current contract using ``address(this).balance``.
+    עדיף להימנע מהסתמכות על ערכי גז מקודדים בקוד החוזה החכם שלכם,
+ 	ללא קשר לשאלה אם משתני מצב נקראים או נכתבים בחוזה, מכיוון שיכולים להיות לכך הרבה מכשולים.
+ 	כמו כן, הגישה לגז עשויה להשתנות בעתיד.
+
+* ``code`` ו-``codehash``
+
+אתם יכולים לתשאל את הקוד שנפרס עבור כל חוזה חכם. השתמשו ב-``code.`` כדי לקבל את ה-EVM bytecode בתור
+``bytes memory``, שעשוי להיות ריק. השתמשו ב-``codehash.`` כדי לקבל את ה-hash Keccak-256 של הקוד הזה
+(כמו ``bytes32``). שימו לב ש-``addr.codehash`` זול יותר משימוש ב-``keccak256(addr.code)``.
+
+.. note::
+    ניתן להמיר את כל החוזים לסוג ``address``, כך שניתן לבדוק את היתרה של
+    החוזה הנוכחי באמצעות ``address(this).balance``.
 
 .. index:: ! contract type, ! type; contract
 
 .. _contract_types:
 
-Contract Types
+סוגי חוזה
 --------------
 
 Every :ref:`contract<contracts>` defines its own type.

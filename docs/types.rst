@@ -3,20 +3,21 @@
 .. _types:
 
 *****
-Types
+סוגי משתנים (Types)
 *****
 
-Solidity is a statically typed language, which means that the type of each
-variable (state and local) needs to be specified.
-Solidity provides several elementary types which can be combined to form complex types.
+סולידיטי היא שפה עם סוגי משתנים סטטית, כלומר יש לציין את הסוג של כל
+משתנה (מצב ומקומי).
+סולידיטי מספקת מספר סוגי משתנים אלמנטריים שניתן לשלבם ליצירת סוגים מורכבים.
 
-In addition, types can interact with each other in expressions containing
-operators. For a quick reference of the various operators, see :ref:`order`.
+בנוסף לכך, סוגי משתנים יכולים לקיים אינטראקציה זה עם זה בביטויים המכילים
+אופרטורים. לסקירה מהירה של האופרטורים השונים, ראו :ref:`order`.
 
-The concept of "undefined" or "null" values does not exist in Solidity, but newly
-declared variables always have a :ref:`default value<default-value>` dependent
-on its type. To handle any unexpected values, you should use the :ref:`revert function<assert-and-require>` to revert the whole transaction, or return a
-tuple with a second ``bool`` value denoting success.
+המושגים "undefined" או "null" אינם קיימים בסולידיטי, אבל
+למשתנים חדשים שמוגדרים תמיד יש :ref:`ערכי ברירת מחדל<default-value>` בתלות
+בסוג שלהם. כדי לטפל בערכים בלתי צפויים, עליכם להשתמש
+ב-:ref:`פונקציית revert<assert-and-require>` כדי לבטל את כל העסקה, או להחזיר
+ערך ``bool`` שני המציין הצלחה.
 
 .. include:: types/value-types.rst
 

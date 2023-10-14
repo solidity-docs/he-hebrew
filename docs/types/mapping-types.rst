@@ -1,47 +1,51 @@
 .. index:: !mapping
 .. _mapping-types:
 
-Mapping Types
+סוגי מיפוי
 =============
 
-Mapping types use the syntax ``mapping(KeyType KeyName? => ValueType ValueName?)`` and variables of
-mapping type are declared using the syntax ``mapping(KeyType KeyName? => ValueType ValueName?)
-VariableName``. The ``KeyType`` can be any built-in value type, ``bytes``, ``string``, or any
-contract or enum type. Other user-defined or complex types, such as mappings, structs or array types
-are not allowed. ``ValueType`` can be any type, including mappings, arrays and structs. ``KeyName``
-and ``ValueName`` are optional (so ``mapping(KeyType => ValueType)`` works as well) and can be any
-valid identifier that is not a type.
+סוגי משתני מיפוי משתמשים בתחביר
+``mapping(KeyType KeyName? => ValueType ValueName?)``
+ובמשתנים של סוג המיפוי המוצהר באמצעות התחביר
+``mapping(KeyType KeyName? => ValueType ValueName?) VariableName``.
+ה-``KeyType`` יכול להיות כל סוג מובנה של ערך, ``bytes``, ``string`` או כל
+סוג חוזה או enum. סוגים אחרים המוגדרים על ידי המשתמש
+או סוגים מורכבים, כגון מיפויים, structs או סוגי מערכים
+לא מורשים. ``ValueType`` יכול להיות כל סוג, כולל מיפויים, מערכים ו-structs. ``KeyName``
+ו-``ValueName`` הם אופציונליים (לכן ``mapping(KeyType => ValueType)`` עובד גם כן) ויכולים להיות כל מזהה חוקי שאינו סוג משתנה.
 
-You can think of mappings as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_, which are virtually initialised
-such that every possible key exists and is mapped to a value whose
-byte-representation is all zeros, a type's :ref:`default value <default-value>`.
-The similarity ends there, the key data is not stored in a
-mapping, only its ``keccak256`` hash is used to look up the value.
+אתם יכולים לחשוב על מיפויים כעל
+`טבלאות hash <https://en.wikipedia.org/wiki/Hash_table>`_,
+שמאותחלות באופן וירטואלי, כך שכל מפתח אפשרי קיים וממופה לערך
+שהייצוג שלו בבתים הוא כולו אפסים,
+:ref:`ערך ברירת מחדל <default-value>` של סוג המשתנה.
+הדמיון מסתיים שם. נתוני המפתח אינם מאוחסנים ב-mapping,
+רק ה-hash ``keccak256`` שלו משמש כדי לחפש את הערך.
 
-Because of this, mappings do not have a length or a concept of a key or
-value being set, and therefore cannot be erased without extra information
-regarding the assigned keys (see :ref:`clearing-mappings`).
+מכיוון שכך, למיפויים אין אורך או מושג של מפתח או
+ערך מוגדר, ולכן לא ניתן למחוק אותם ללא מידע נוסף
+לגבי המפתחות שהוקצו (ראו :ref:`clearing-mappings`).
 
-Mappings can only have a data location of ``storage`` and thus
-are allowed for state variables, as storage reference types
-in functions, or as parameters for library functions.
-They cannot be used as parameters or return parameters
-of contract functions that are publicly visible.
-These restrictions are also true for arrays and structs that contain mappings.
+מיפויים יכולים להיות מאוחסנים רק ב-``storage`` וכך
+מאופשרים למשתני מצב, כסוגי התייחסות ל-storage
+בפונקציות, או כפרמטרים לפונקציות של ספרייה.
+לא ניתן להשתמש בהם כפרמטרים או לפרמטרים המוחזרים מפונקציות
+חוזה גלויות לכולם.
+הגבלות אלו נכונות גם עבור מערכים ו-structs המכילים מיפויים.
 
-You can mark state variables of mapping type as ``public`` and Solidity creates a
-:ref:`getter <visibility-and-getters>` for you. The ``KeyType`` becomes a parameter
-with name ``KeyName`` (if specified) for the getter.
-If ``ValueType`` is a value type or a struct, the getter returns ``ValueType`` with
-name ``ValueName`` (if specified).
-If ``ValueType`` is an array or a mapping, the getter has one parameter for
-each ``KeyType``, recursively.
+ניתן לסמן משתני מצב מסוג מיפוי כ-``public`` וסולידיטי יוצר
+:ref:`getter <visibility-and-getters>` בשבילכם. ה- ``KeyType`` הופך לפרמטר
+עם השם ``KeyName`` (אם צויין) עבור ה-getter.
+אם ``ValueType`` הוא סוג ערך או struct, ה-getter מחזיר ``ValueType`` עם
+השם ``ValueName`` (אם צויין).
+אם ``ValueType`` הוא מערך או מיפוי, למקבל יש פרמטר אחד עבור
+כל ``KeyType``, רקורסיבית.
 
-In the example below, the ``MappingExample`` contract defines a public ``balances``
-mapping, with the key type an ``address``, and a value type a ``uint``, mapping
-an Ethereum address to an unsigned integer value. As ``uint`` is a value type, the getter
-returns a value that matches the type, which you can see in the ``MappingUser``
-contract that returns the value at the specified address.
+בדוגמה למטה, החוזה ``MappingExample`` מגדיר סוג מיפוי ``balances`` ציבורי,
+עם מפתח מסוג ``address``, וערך מסוג ``uint``, ממפה
+כתובת איתריום לערך מספר שלם ללא סימן. מכיוון ש-``uint`` הוא סוג של ערך, ה-getter
+מחזירה ערך התואם לסוג זה, אותו תוכלו לראות בחוזה ``MappingUser``
+שמחזיר את הערך בכתובת שצוינה.
 
 .. code-block:: solidity
 
@@ -64,13 +68,14 @@ contract that returns the value at the specified address.
         }
     }
 
-The example below is a simplified version of an
-`ERC20 token <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_.
-``_allowances`` is an example of a mapping type inside another mapping type.
+הדוגמה שלהלן היא גרסה פשוטה של
+`token ERC20 <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_.
+``_allowances`` היא דוגמה לסוג מיפוי בתוך סוג מיפוי אחר.
 
-In the example below, the optional ``KeyName`` and ``ValueName`` are provided for the mapping.
-It does not affect any contract functionality or bytecode, it only sets the ``name`` field
-for the inputs and outputs in the ABI for the mapping's getter.
+בדוגמה, ה-``KeyName`` וה-``ValueName`` האופצונליים מסופקים עבור המיפוי.
+לדבר זה אין כל השפעה על הפונקציונליות של החוזה או של ה-bytecode. הוא רק מגדיר
+את השדה ``name``
+עבור הכניסות והיציאות ב-ABI עבור ה-getter של המיפוי.
 
 .. code-block:: solidity
 
@@ -86,7 +91,7 @@ for the inputs and outputs in the ABI for the mapping's getter.
     }
 
 
-The example below uses ``_allowances`` to record the amount someone else is allowed to withdraw from your account.
+הדוגמה שלהלן משתמשת ב-``allowances_`` כדי לרשום את הסכום שמישהו אחר רשאי למשוך מחשבונך.
 
 .. code-block:: solidity
 
@@ -135,14 +140,15 @@ The example below uses ``_allowances`` to record the amount someone else is allo
 .. index:: !iterable mappings
 .. _iterable-mappings:
 
-Iterable Mappings
+מיפוי איטרטיבי
 -----------------
 
-You cannot iterate over mappings, i.e. you cannot enumerate their keys.
-It is possible, though, to implement a data structure on
-top of them and iterate over that. For example, the code below implements an
-``IterableMapping`` library that the ``User`` contract then adds data to, and
-the ``sum`` function iterates over to sum all the values.
+אתם לא יכולים לבצע מיפויים איטרטיביים, כלומר אתם
+לא יכולים לבצע enumerate למפתחות שלהם.
+עם זאת, ניתן ליישם מבנה נתונים מעליהם
+ולבצע איטרציות עליו. לדוגמה, הקוד שלהלן מיישם
+ספריית ``IterableMapping`` שחוזה ``User`` מוסיף לה נתונים,
+והפונקציה ``sum`` מבצעת איטרציות כדי לסכם את כל הערכים.
 
 .. code-block:: solidity
     :force:
