@@ -18,6 +18,7 @@
 | Literal                     | ליטרל             |
 | Maintainers                 | מתחזקים           |
 | Member (of array/struct)    | איבר (של מערך \ struct) |
+| modifier                    | משנה               |
 | Object Oriented Programming | תכנות מונחה עצמים |
 | Operator                    | אופרטור           |
 | Opcode                      | אופקוד            |
