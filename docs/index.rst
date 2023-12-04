@@ -10,10 +10,10 @@
 
 ניתן למצוא מידע נוסף על השפות מהן הושפעה סולידיטי ב :doc:`language influences <language-influences>`
 
-סולידיטי נכתבת בצורה סטטית, תומכת ירושה, ספריות,
-Solidity is statically typed, supports inheritance, libraries, and complex user-defined types, among other features.
+סולידיטי נכתבת בצורה סטטית, תומכת ירושה, ספריות, וסוגי משתמש מסובכים מוגדרים מראש, בין התכונות האחרות.
 
-With Solidity, you can create contracts for uses such as voting, crowdfunding, blind auctions, and multi-signature wallets.
+עם סולידיטי, ניתן ליצור חוזים לשימושים כגון הצבעה, גיוס תרומות, מכרזים עיוורים, וארנקים מרובי חתימה.
+
 
 When deploying contracts, you should use the latest released version of Solidity.
 Apart from exceptional cases, only the latest version receives
