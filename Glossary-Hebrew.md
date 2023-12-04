@@ -22,6 +22,7 @@
 | Literal                     | ליטרל                    |
 | Maintainers                 | מתחזקים                  |
 | Member (of array/struct)    | איבר (של מערך \ struct)  |
+<!-- Perhaps there's a better translation for the word "struct"? Such as מבנה -->
 | modifier                    | משנה                     |
 | Object Oriented Programming | תכנות מונחה עצמים        |
 | Operator                    | אופרטור                  |
