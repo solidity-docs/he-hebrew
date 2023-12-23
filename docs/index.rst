@@ -19,13 +19,15 @@
 מלבד מקרים יוצאי דופן, רק הגרסה האחרונה מקבלת.
 `תיקוני אבטחה <https://github.com/ethereum/solidity/security/policy#supported-versions>`_.
 .. `security fixes <https://github.com/ethereum/solidity/security/policy#supported-versions>`_.
-Furthermore, breaking changes, as well as new features, are introduced regularly.
-We currently use a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+בנוסף, שינויים ״שוברים״ (שוברי גרסא) ותכונות חדשות מוצגות באופן קבוע.
+כדי לייצג את הקצב המהיר של השינויים, אנחנו כרגע משתמשים במספר גרסה 0.y.z
+`כדי לציין את הקצב המהיר של השינויים <https://semver.org/#spec-item-4>`_.
+.. We currently use a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
 
 .. warning::
+   סולידיטי לאחרונה שחררה את גרסא 0.8x, שהכילה שינויים רבים ששוברו תאימות עם גרסאות קודמות.
+  ודאו שקראתם את :doc:`רשימת השינויים המלאה <080-breaking-changes>`.
 
-  Solidity recently released the 0.8.x version that introduced a lot of breaking changes.
-  Make sure you read :doc:`the full list <080-breaking-changes>`.
 
 Ideas for improving Solidity or this documentation are always welcome,
 read our :doc:`contributors guide <contributing>` for more details.

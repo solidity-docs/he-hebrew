@@ -12,6 +12,8 @@
 | --------------------------- | ------------------------ |
 | Assignment                  | (של ערכים) השמה          |
 | Breaking Changes            | שינויי התנהגות           |
+<!-- I think breaking changes should have a different meaning than שינויי התנהגות-->
+<!-- I believe this term means that these changes might break the code of someone, since they're being deprecated-->
 | Bump                        | קידום (במספר גרסה)       |
 | Datatype                    | טיפוס נתונים             |
 | Documentation               | מסמך תיעוד               |
