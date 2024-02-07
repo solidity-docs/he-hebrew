@@ -38,11 +38,16 @@ Solidity פועלת לפי `המלצת npm <https://docs.npmjs.com/cli/v7/config
 הרישיון הספציפי בכל קובץ מקור או לציין את
 בעלי זכויות היוצרים המקוריים.
 
+<<<<<<< HEAD
 הקומפיילר מזהה את ההערה בכל מקום בקובץ,
 אך מומלץ לשים אותה בראש הקובץ.
 
 מידע נוסף על אופן השימוש במזהי רישיון SPDX
 ניתן למצוא `באתר SPDX <https://spdx.org/ids-how>`_.
+=======
+More information about how to use SPDX license identifiers
+can be found at the `SPDX website <https://spdx.dev/learn/handling-license-info/#how>`_.
+>>>>>>> english/develop
 
 
 .. index:: ! pragma

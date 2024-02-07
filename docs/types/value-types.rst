@@ -821,9 +821,21 @@ Enums דורשים לפחות איבר אחד, וערך ברירת המחדל ה
     סימון הפרמטרים בתור ``calldata`` משפיע רק על יישום הפונקציה החיצונית והוא
     חסר משמעות למצביע פונקציה בצד הקורא.
 
+<<<<<<< HEAD
 ספריות אינן נכללות מכיוון שהן דורשות ``delegatecall`` ומשתמשות ב-:ref:`מוסכמות ABI אחרות
 עבור הבוררים שלהן <library-selectors>`.
 לפונקציות המוצהרות בממשקים אין הגדרות ולכן גם הצבעה עליהן אינה הגיונית.
+=======
+.. warning::
+    Comparison of internal function pointers can have unexpected results in the legacy pipeline with the optimizer enabled,
+    as it can collapse identical functions into one, which will then lead to said function pointers comparing as equal instead of not.
+    Such comparisons are not advised, and will lead to the compiler issuing a warning, until the next breaking release (0.9.0),
+    when the warning will be upgraded to an error, thereby making such comparisons disallowed.
+
+Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
+convention for their selectors <library-selectors>`.
+Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
+>>>>>>> english/develop
 
 מרכיבים:
 
