@@ -140,11 +140,20 @@
 מייצרת גם משתנה מצב ציבורי, אבל מטיפוס נתונים מורכב יותר.
 הטיפוס :ref:`mapping <mapping-types>` ממפה כתובות ל-:ref:`unsigned integers <integers>`.
 
+<<<<<<< HEAD
 ניתן לראות מיפויים בתור `טבלאות hash <https://en.wikipedia.org/wiki/Hash_table>`_
 שלמעשה מאותחלות כך שכל מפתח אפשרי קיים מההתחלה וממופה
 לערך שבו כל הביטים מאופסים. עם זאת, לא ניתן לקבל רשימה של כל מפתחות המיפוי, ולא רשימה של כל הערכים. צריך לרשום את מה
 שנוסף למיפוי, או להשתמש בו באופן כזה שבו אין צורך בכך. או
 אפילו טוב יותר, שימרו רשימה, או השתמשו בסוג נתונים מתאים יותר.
+=======
+Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
+virtually initialized such that every possible key exists from the start and is mapped to a
+value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
+a mapping, nor a list of all values. Record what you
+added to the mapping, or use it in a context where this is not needed. Or
+even better, keep a list, or use a more suitable data type.
+>>>>>>> english/develop
 
 ה- :ref:`getter פונקצית<getter-functions>` שנוצרה על ידי מילת המפתח ``public``
 מורכבת יותר במקרה של מיפוי. הפונקציה נראית כמו הקוד הבא:
@@ -246,7 +255,15 @@
 
 בלוקים אלו יוצרים רצף ליניארי בזמן, ומכאן נובעת המילה "בלוקצ'יין". בלוקים מתווספים לשרשרת במרווחי זמן קבועים, אם כי מרווחים אלה עשויים להשתנות במשך הזמן. לקבלת המידע העדכני ביותר, מומלץ לנטר את הרשת, למשל, ב- `Etherscan <https://etherscan.io/chart/blocktime>`_.
 
+<<<<<<< HEAD
 כחלק מ"מנגנון בחירת הסדר" (שנקרא "כרייה") עלול לקרות שהשינויים שבוצעו ע"י בלוקים יוחזרו לאחור ויבוטלו מדי פעם, אבל רק ב"קצה" השרשרת. כמה שיותר בלוקים מתווספים לפני בלוק מסוים, כך פוחת הסיכוי ששינויי בלוק זה יבוטלו. לכן ייתכן שהטרנזקציות שלכם יבוטלו ואולי אפילו יוסרו מהבלוקצ'יין, אך ככל שתחכו יותר כך פחות סביר שזה יקרה.
+=======
+As part of the "order selection mechanism", which is called `attestation <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_, it may happen that
+blocks are reverted from time to time, but only at the "tip" of the chain. The more
+blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
+are reverted and even removed from the blockchain, but the longer you wait, the less
+likely it will be.
+>>>>>>> english/develop
 
 .. note:: 
     לא מובטח שטרנזקציות ייכללו בבלוק הבא או בכל בלוק עתידי ספציפי, מכיוון שהכורים קובעים באיזה בלוק הטרנזקציה כלולה, ולא שולח הטרנזקציה. אם אתם רוצים לתזמן פעילויות עתידיות בחוזה שלכם, אתם יכולים להשתמש בכלי אוטומציית חוזים חכמים או בשירותי אורקל.
