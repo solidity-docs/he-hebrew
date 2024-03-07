@@ -83,14 +83,29 @@ Use the ``stable`` tag for the latest released version, and ``nightly`` for pote
 
     docker run ethereum/solc:stable --help
 
+<<<<<<< HEAD
 לדוגמה, אתם יכולים לציין גרסאות בניית גרסה ע"י תג עבור גרסה 0.5.4.
+=======
+You can specify release build versions in the tag. For example:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
-    docker run ethereum/solc:0.5.4 --help
+    docker run ethereum/solc:stable --help
 
+Note
+
+Specific compiler versions are supported as the Docker image tag such as `ethereum/solc:0.8.23`. We will be passing the
+`stable` tag here instead of specific version tag to ensure that users get the latest version by default and avoid the issue of
+an out-of-date version.
+
+<<<<<<< HEAD
 כדי להשתמש בתמונת דוקר כדי לקמפל קבצי סולידיטי במחשב המארח, התקינו
 תיקיה מקומית עבור קלט ופלט, וציינו את החוזה לקימפול. לדוגמה:
+=======
+To use the Docker image to compile Solidity files on the host machine, mount a
+local folder for input and output, and specify the contract to compile. For example:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -183,8 +198,13 @@ Use the ``stable`` tag for the latest released version, and ``nightly`` for pote
 אם אתם צריכים גרסה ספציפית של סולידיטי, אפשר להתקין
 נוסחת Homebrew ישירות מ-Github.
 
+<<<<<<< HEAD
 הסתכלו ב-
 `solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+=======
+View
+`solidity.rb commits on GitHub <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+>>>>>>> english/develop
 
 העתיקו את ה-commit hash של הגרסה הרצויה ובדקו אותה במחשב שלכם.
 
@@ -224,10 +244,17 @@ Use the ``stable`` tag for the latest released version, and ``nightly`` for pote
    (באמצעות git, HTTPS, IPFS וכו') ומאמתים את ה-hash של הקבצים הבינאריים
    לאחר הורדתם, אינכם צריכים להשתמש ב-HTTPS עבור הקבצים הבינאריים עצמם.
 
+<<<<<<< HEAD
 אותם קבצים בינאריים זמינים ברוב המקרים ב'עמוד השחרור של סולידיטי ב-Github'_.
 ההבדל הוא שאנחנו בדרך כלל לא מעדכנים מהדורות ישנות בדף ההפצה של Github. זאת אומרת שבדרך  כלל
 לא נשנה את שמם אם אופן קביעת השמות משתנה ולא נוסיף בניות לפלטפורמות
 שלא נתמכו בזמן השחרור. זה קורה רק ב-``solc-bin``.
+=======
+The same binaries are in most cases available on the `Solidity release page on GitHub`_. The
+difference is that we do not generally update old releases on the GitHub release page. This means
+that we do not rename them if the naming convention changes and we do not add builds for platforms
+that were not supported at the time of release. This only happens in ``solc-bin``.
+>>>>>>> english/develop
 
 מאגר ``solc-bin`` מכיל מספר ספריות ברמה העליונה, כל אחת מייצגת פלטפורמה אחת.
 כל אחת מהן כוללת קובץ ``list.json`` המפרט את הקבצים הבינאריים הזמינים. למשל ב
@@ -299,7 +326,7 @@ Use the ``stable`` tag for the latest released version, and ``nightly`` for pote
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
 .. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on github: https://github.com/ethereum/solidity/releases
+.. _Solidity release page on GitHub: https://github.com/ethereum/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
 .. _keccak256() function from ethereumjs-util: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
 .. _WebAssembly builds: https://emscripten.org/docs/compiling/WebAssembly.html
@@ -459,14 +486,25 @@ Visual Studio 2019 מספק גם IDE וגם קומפיילר וספריות נח
     git remote add personal git@github.com:[username]/solidity.git
 
 .. note::
+<<<<<<< HEAD
     שיטה זו תגרום לבניית גרסת טרום שחרור שתגרום למשל
  	להגדרת דגל בכל bytecode המיוצר על ידי קומפיילר כזה.
  	אם אתם רוצים לבנות מחדש קומפיילר סולידיטי שישוחרר,
  	אנא השתמשו ב-tarball המקורי בדף השחרור של github:
+=======
+    This method will result in a pre-release build leading to e.g. a flag
+    being set in each bytecode produced by such a compiler.
+    If you want to re-build a released Solidity compiler, then
+    please use the source tarball on the GitHub release page:
+>>>>>>> english/develop
 
  	https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
+<<<<<<< HEAD
  	(לא "קוד המקור" שסופק על ידי github).
+=======
+    (not the "Source code" provided by GitHub).
+>>>>>>> english/develop
 
 בנייה ע"י שורת-פקודה
 -----------------------
